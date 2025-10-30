@@ -60,7 +60,7 @@ export default function Home() {
     };
     // Initial check
     checkMobile();
-    // Add event listener for window resize
+    // Add event listener for windo
     window.addEventListener('resize', checkMobile);
     // Cleanup
     return () => {
