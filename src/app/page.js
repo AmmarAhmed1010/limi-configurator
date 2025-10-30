@@ -68,7 +68,7 @@ export default function Home() {
     };
   }, []);
  
-  // Custom hook to handle splash screen completion
+  // Custom hook to handle splash completion
   useEffect(() => {
     // Listen for splash screen completion
     const handleSplashComplete = () => {
