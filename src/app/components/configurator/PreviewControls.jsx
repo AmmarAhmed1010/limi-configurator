@@ -643,13 +643,13 @@ export const PreviewControls = ({
         </AnimatePresence>
       </div>
       <div className="absolute top-24 right-8 z-50 flex gap-2">
-        <button
+        {/* <button
           className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
           onClick={() => setIsPreviewMode(!isPreviewMode)}
           title={isPreviewMode ? "Exit Preview Mode" : "Enter Preview Mode"}
         >
           <FaEye size={16} />
-        </button>
+        </button> */}
 
         {/* Tour Guide Button */}
         {/* <motion.button
