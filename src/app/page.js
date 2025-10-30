@@ -111,20 +111,6 @@ export default function Home() {
 
   return (
     <main>
-      {/* <SplashScreen onComplete={() => window.dispatchEvent(new Event('splashComplete'))} /> */}
-      {/* <UserSelectionPopup isVisible={showUserSelection} onSelect={handleUserTypeSelect} /> */}
-      {/* TESTING: HourSelector for dynamic theme (hide after testing) */}
-      <div style={{
-  position: 'fixed',
-  top: 16,
-  right: 16,
-  zIndex: 99999,
-  background: 'rgba(255,255,255,0.9)',
-  padding: 8,
-  borderRadius: 8
-}}>
-  <HourSelector hour={testHour} onChange={handleHourChange} />
-</div>
       <TransitionLayout>
       
         <HeroSection />
