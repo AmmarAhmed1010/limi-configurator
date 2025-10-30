@@ -651,7 +651,7 @@ export const PreviewControls = ({
           <FaEye size={16} />
         </button> */}
 
-        {/* Tour Guide Button */}
+        {/* Tour Guide */}
         {/* <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
