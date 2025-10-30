@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { buildApiUrl, buildApi1Url } from '../../../../config/api.config';
+import { buildApiUrl, buildApi1Url } from '../../../config/api.config';
 import { FaClone, FaSpinner, FaSearch, FaEye, FaCheckSquare, FaSquare, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import SlidePreviewModal from './SlidePreviewModal';
 

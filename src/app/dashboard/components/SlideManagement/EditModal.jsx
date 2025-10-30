@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { buildApi1Url } from '../../../../config/api.config';
+import { buildApi1Url } from '../../../config/api.config';
 import { FaColumns, FaVideo, FaLayerGroup,FaExclamationCircle, FaUpload, FaSpinner, FaCheck, FaTimes } from 'react-icons/fa';
 import { getThemeStyles, getThemeBackgroundColor } from './utils/themeUtils';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { buildApiUrl } from '../../../../config/api.config';
+import { buildApiUrl } from '../../../config/api.config';
 import { FaTimes, FaUserPlus } from 'react-icons/fa';
 
 const AddCustomerModal = ({ isOpen, onClose, onCustomerAdded, token }) => {
