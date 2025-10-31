@@ -292,127 +292,25 @@ const PlayCanvasViewer = ({
       {/* Enhanced Interactive Skeleton Loader - Only shown until app:ready1 message is received */}
       {!appReady && (
         <div id="playcanvas-loader" className="absolute inset-0 flex flex-col items-center justify-center bg-[#2B2D2F] z-10 overflow-hidden">
-          {/* Background animated pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-full h-full">
-              {[...Array(20)].map((_, i) => (
-                <div 
-                  key={i}
-                  className="absolute bg-emerald-500 rounded-full"
-                  style={{
-                    // width: `${Math.random() * 10 + 5}px`,
-                    // height: `${Math.random() * 10 + 5}px`,
-                    // top: `${Math.random() * 100}%`,
-                    // left: `${Math.random() * 100}%`,
-                    // opacity: Math.random() * 0.5 + 0.25,
-                    // animation: `float ${Math.random() * 10 + 10}s infinite linear`,
-                    // animationDelay: `${Math.random() * 5}s`
-                    width: '10px',
-                    height: '10px',
-                    top: '50%',
-                    left: '50%',
-                    opacity: 1,
-                    animation: 'float 5s infinite linear',
-                    animationDelay: '0s'
-                  }}
+          <div className="flex flex-col items-center justify-center space-y-8">
+            {/* Logo */}
+            <div className="relative flex items-center justify-center">
+              {/* Spinner */}
+              <div className="w-24 h-24 absolute border-2 border-t-white border-transparent rounded-full animate-spin"></div>
+              {/* Logo */}
+              <div className="w-12 h-12">
+                <img 
+                  src="/images/svgLogos/__Logo_Icon_White.svg" 
+                  alt="LIMI Logo" 
+                  className="w-full h-full object-contain"
                 />
-              ))}
-            </div>
-          </div>
-          
-          <div className="relative w-4/5 max-w-md aspect-square mb-8">
-            {/* Ceiling */}
-            <div className="absolute top-0 w-full h-8 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 rounded-t-lg shadow-md">
-              {/* Ceiling mount */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-3 bg-gray-600 rounded-md"></div>
-            </div>
-            
-            {/* Multiple pendants hanging from ceiling */}
-            <div className="absolute top-0 left-1/4 w-1/5 aspect-square">
-              {/* Pendant cable */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-20 bg-gray-600 origin-top animate-sway-slow"></div>
-              {/* Pendant light */}
-              <div className="absolute top-20 left-1/2 -translate-x-1/2 w-full aspect-square rounded-full bg-gradient-to-br from-gray-700 to-gray-800 shadow-lg overflow-hidden animate-sway-slow">
-                <div className="absolute inset-2 rounded-full bg-emerald-500 opacity-20 animate-pulse-slow"></div>
               </div>
             </div>
             
-            {/* Main pendant being loaded */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 aspect-square">
-              {/* Pendant cable with loading animation */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-24 bg-gradient-to-b from-gray-600 to-gray-700 origin-top animate-sway-reverse-slow">
-                {/* Cable loading indicator */}
-                <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-                  <div className="w-full h-2 bg-emerald-500 opacity-40 animate-cable-loading"></div>
-                </div>
-              </div>
-              
-              {/* Main pendant light */}
-              <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full aspect-square rounded-full bg-gradient-to-br from-gray-700 to-gray-800 shadow-lg overflow-hidden origin-top animate-sway-reverse-slow">
-                {/* Pendant light effect */}
-                <div className="absolute inset-2 rounded-full bg-emerald-500 opacity-30 animate-pulse-slow"></div>
-                
-                {/* Pendant detail */}
-                <div className="absolute inset-4 rounded-full border border-gray-600"></div>
-                
-                {/* Loading indicator inside pendant */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-1/2 h-1/2 rounded-full border-2 border-transparent border-t-emerald-500 animate-spin"></div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Another pendant on the right */}
-            <div className="absolute top-0 right-1/4 w-1/5 aspect-square">
-              {/* Pendant cable */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-16 bg-gray-600 origin-top animate-sway-medium"></div>
-              {/* Pendant light */}
-              <div className="absolute top-16 left-1/2 -translate-x-1/2 w-full aspect-square rounded-full bg-gradient-to-br from-gray-700 to-gray-800 shadow-lg overflow-hidden animate-sway-medium">
-                <div className="absolute inset-2 rounded-full bg-emerald-500 opacity-20 animate-pulse-slow"></div>
-              </div>
-            </div>
-            
-            {/* Glowing circle under main pendant */}
-            <div className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/4 rounded-full bg-emerald-500 opacity-10 animate-ping-slow blur-md"></div>
-            
-            {/* Skeleton floor with reflection */}
-            <div className="absolute bottom-0 w-full h-1/6 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 rounded-lg shadow-md">
-              {/* Floor reflection */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-emerald-500 opacity-20 blur-sm"></div>
-            </div>
-            
-            {/* Skeleton controls with hover effect */}
-            <div className="absolute bottom-[-80px] w-full flex justify-center space-x-6">
-              {[1, 2, 3].map((num) => (
-                <div 
-                  key={num}
-                  className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 shadow-md flex items-center justify-center group cursor-pointer"
-                  style={{ animationDelay: `${num * 0.2}s` }}
-                >
-                  <div className="w-12 h-12 rounded-full bg-gray-800 group-hover:bg-emerald-900 transition-colors duration-300 flex items-center justify-center">
-                    <div className="w-8 h-8 rounded-full bg-gray-700 group-hover:bg-emerald-800 transition-colors duration-300 animate-pulse"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <div className="text-center px-4 relative z-10">
-            {/* Loading text with animated dots */}
-            <div className="h-8 flex items-center justify-center mb-3">
-              <div className="text-emerald-500 text-xl font-bold">Loading 3D Preview</div>
-              <div className="loading-dots ml-2">
-                <span className="dot"></span>
-                <span className="dot"></span>
-                <span className="dot"></span>
-              </div>
-            </div>
-            <div className="text-gray-400 text-sm animate-pulse">Preparing your LIMI experience</div>
-            
-            {/* Progress bar */}
-            <div className="mt-6 w-64 h-2 bg-gray-800 rounded-full overflow-hidden mx-auto">
-              <div className="h-full bg-emerald-500 animate-progress-indeterminate"></div>
-            </div>
+            {/* Loading text */}
+            <p className="text-white mt-4 text-lg font-medium">
+              Preparing your 3D LIMI experience
+            </p>
           </div>
         </div>
       )}
