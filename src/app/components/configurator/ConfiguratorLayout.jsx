@@ -556,8 +556,7 @@ const ConfiguratorLayout = () => {
     // Search through each mount object for matching light type
     let matchingMount;
     if (type === "ceiling") {
-      // For ceiling type, find all matching mounts and filter based on baseType
-
+      // For ceiling type, find all matching mounts and filter based on baseTyp
 
       if (config.baseType === "round") {
         const ceilingMounts = mounts.filter((mount) => mount.mountLightType === type);
@@ -592,6 +591,7 @@ const ConfiguratorLayout = () => {
       }
       sendMessageToPlayCanvas(`light_amount:${newAmount}`);
       sendMessageToPlayCanvas(`mount_model:${modelUrl}`);
+      sendMessageToPlayCanvas(`scene:0`);
 
       setConfig((prev) => ({
         ...prev,
