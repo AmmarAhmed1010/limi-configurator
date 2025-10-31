@@ -17,6 +17,7 @@ import { saveConfiguration } from "../../../app/redux/slices/userSlice.js";
 import { useRouter, useSearchParams } from "next/navigation";
 import ConfigurationSummary from "../lightConfigurator/ConfigurationSummary";
 import { fetchUserByToken } from "../../../app/redux/slices/userSlice.js";
+import { useBarState } from '../../hooks/useBarState';
 import {
   chandelierAssignments,
   getSystemAssignments,
@@ -59,7 +60,11 @@ const ConfiguratorLayout = () => {
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useSelector((state) => state.user);
   const searchParams = useSearchParams();
-
+  const {
+    barArray,
+    setBarState,
+    initializeBarArray
+  } = useBarState();
   // Version constant to track localStorage schema changes
   const STORAGE_VERSION = "1.4.6";
 
@@ -132,7 +137,9 @@ const ConfiguratorLayout = () => {
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-
+  useEffect(() => {
+    console.log('barArray updated:', barArray);
+  }, [barArray]);
   // Use system assignments hook for optimized data access
   const {
     systemAssignments: hookSystemAssignments,
@@ -521,7 +528,7 @@ const ConfiguratorLayout = () => {
           sendMessageToPlayCanvas("allmodelsloaded");
           // sendMessagesForDesign("fina", 0);
           // Send lighting messages with delays
- sendMessageToPlayCanvas(`guidedtourstarted`);
+          sendMessageToPlayCanvas(`guidedtourstarted`);
         }
 
         // If we have a configuration from URL, load it now
@@ -536,13 +543,13 @@ const ConfiguratorLayout = () => {
     return () => window.removeEventListener("message", handleMessage);
   }, [configFromUrl, handleLoadSpecificConfig]); // Added handleLoadSpecificConfig to dependencies
 
-   // Handle light type change
+  // Handle light type change
   // Handle light type change
   const handleLightTypeChange = (type) => {
     // Save current ceiling light amount if switching from ceiling
     if (config.lightType === "ceiling" && type !== "ceiling") {
       setLastCeilingLightAmount(config.lightAmount);
-      
+
     }
     const mounts = getMountDataSync();
 
@@ -550,15 +557,15 @@ const ConfiguratorLayout = () => {
     let matchingMount;
     if (type === "ceiling") {
       // For ceiling type, find all matching mounts and filter based on baseType
-      
-      
+
+
       if (config.baseType === "round") {
         const ceilingMounts = mounts.filter((mount) => mount.mountLightType === type);
-        
-        matchingMount = ceilingMounts.find((mount) => mount.mountCableNumber === lastCeilingLightAmount &&  mount.mountBaseType === "round");
+
+        matchingMount = ceilingMounts.find((mount) => mount.mountCableNumber === lastCeilingLightAmount && mount.mountBaseType === "round");
       } else if (config.baseType === "rectangular") {
         const ceilingMounts = mounts.filter((mount) => mount.mountLightType === type);
-        matchingMount = ceilingMounts.find((mount) => mount.mountCableNumber === lastCeilingLightAmount  &&  mount.mountBaseType === "rectangular");
+        matchingMount = ceilingMounts.find((mount) => mount.mountCableNumber === lastCeilingLightAmount && mount.mountBaseType === "rectangular");
       }
 
     } else {
@@ -567,7 +574,7 @@ const ConfiguratorLayout = () => {
         return mount.mountLightType === type;
       });
     }
-       // Get new amount and pendants using utility function
+    // Get new amount and pendants using utility function
     const { newAmount, newPendants } = getLightTypeChangeData(
       type,
       config,
@@ -576,8 +583,8 @@ const ConfiguratorLayout = () => {
 
     if (matchingMount && (matchingMount.mountModel || matchingMount.modelUrl)) {
       const modelUrl = matchingMount.modelUrl || matchingMount.mountModel;
-      
-     
+
+
       // Send light type message
       sendMessageToPlayCanvas(`light_type:${type}`);
       if (type === "ceiling") {
@@ -603,8 +610,8 @@ const ConfiguratorLayout = () => {
       setCables((prev) => [
         ...prev,
         {
-          design: pendant.design,  
-       },
+          design: pendant.design,
+        },
       ]);
     });
 
@@ -977,6 +984,7 @@ const ConfiguratorLayout = () => {
       // Find the system for this design
       const system = findSystemAssignmentByDesign(design);
 
+      console.log("systemDesignBar", system);
       // Check if the system type is chandelier
       let hasChandelier = false;
       cables.forEach((cable) => {
@@ -1022,7 +1030,25 @@ const ConfiguratorLayout = () => {
           });
           return updatedCables;
         });
-
+        if (system.systemType === "bar") {
+          // For bar systems, update only the bar attachment state
+         selectedCables.forEach((cableIndex) => {
+            // Get current state first
+            const currentState = barArray[cableIndex] || {};
+            setBarState(cableIndex, {
+              hasBarModel: currentState.hasBarModel || false, // Keep existing or default to false
+              hasBarAttachment: true  // Only update this property
+            });
+          });
+        }else{
+            selectedCables.forEach((cableIndex) => {
+            // Get current state first
+            setBarState(cableIndex, {
+              hasBarModel: false, // Keep existing or default to false
+              hasBarAttachment: false  // Only update this property
+            });
+          });
+        }
         // Send messages to iframe
         const designToIds = {};
         selectedCables.forEach((id) => {

@@ -28,7 +28,7 @@ import {
   removeFromFavorites,
   fetchFavorites,
 } from "../../../redux/slices/favoritesSlice";
-
+import { useBarState } from "../../../hooks/useBarState";
 export const ConfigPanel = ({
   configuringType,
   configuringSystemType,
@@ -38,6 +38,7 @@ export const ConfigPanel = ({
   onBreadcrumbNavigation,
   onSystemTypeSelection,
   selectedLocation,
+  setCables,
   selectedPendants,
   cables, // Add cables prop
   onPendantDesignChange,
@@ -72,6 +73,7 @@ export const ConfigPanel = ({
       handleBreadcrumbNavigation("home");
     }
   }, [showConfigurationTypeSelector]);
+
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const [currentDesign, setCurrentDesign] = useState(null);
@@ -79,7 +81,7 @@ export const ConfigPanel = ({
   const [localSelectedCableSize, setLocalSelectedCableSize] = useState(1);
   // Force re-render when data changes
   const [dataRefreshTrigger, setDataRefreshTrigger] = useState(0);
-  
+
   // State for async data - only visible items (isShow: true)
   const [pendantAssignments, setPendantAssignments] = useState([]);
   const [systemAssignments, setSystemAssignments] = useState([]);
@@ -91,7 +93,16 @@ export const ConfigPanel = ({
   const [pendantLoading, setPendantLoading] = useState(false);
   // Ref to store the timeout ID for cleanup
   const loadingTimeoutRef = useRef(null);
-  
+  const {
+    barArray,
+    setBarState,
+    initializeBarArray
+  } = useBarState();
+// Add this useEffect right after the useBarState hook
+useEffect(() => {
+  console.log('barArray updated:', barArray);
+}, [barArray]); // This will run every time barArray changes
+
   // Function to turn off pendant loading
   const turnOffPendantLoading = () => {
     setPendantLoading(false);
@@ -112,7 +123,7 @@ export const ConfigPanel = ({
     };
 
     window.addEventListener("message", handleMessage);
-    
+
     // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("message", handleMessage);
@@ -141,16 +152,16 @@ export const ConfigPanel = ({
         getUniversalAssignments(),
         getChandelierAssignments()
       ]);
-      
+
       setSystemAssignments(systemData);
       setPendantAssignments(pendantData);
       setBarAssignments(barData);
       setBallAssignments(ballData);
       setUniversalAssignments(universalData);
       setChandelierAssignments(chandelierData);
-      
-    
-      
+
+
+
     } catch (error) {
       console.error('Error loading configurator data:', error);
     }
@@ -549,7 +560,7 @@ export const ConfigPanel = ({
   }, [configuringType, configuringSystemType]);
 
   // Debug log for tracking props and state
-  useEffect(() => {}, [
+  useEffect(() => { }, [
     configuringType,
     configuringSystemType,
     currentDesign,
@@ -681,7 +692,7 @@ export const ConfigPanel = ({
       title: "",
       showBreadcrumb: true,
       items: [],
-      onItemSelect: () => {},
+      onItemSelect: () => { },
       breadcrumbItems: [],
     };
 
@@ -760,18 +771,18 @@ export const ConfigPanel = ({
     else if (configuringType === "chandelier") {
       config.title = "Chandelier Selection";
       config.showBreadcrumb = true;
-      
+
       // Get parent config to check baseType
       const parentConfig =
         typeof window !== "undefined"
           ? JSON.parse(localStorage.getItem("lightConfig") || "{}")
           : {};
-      
+
       // Filter chandelierAssignments based on baseType
-      const filteredChandeliers = chandelierAssignments.filter((chand) => 
+      const filteredChandeliers = chandelierAssignments.filter((chand) =>
         chand.baseType === parentConfig.baseType
       );
-      
+
       config.items = filteredChandeliers.map((chand) => ({
         id: chand.design,
         name: chand.name,
@@ -783,9 +794,9 @@ export const ConfigPanel = ({
       config.onItemSelect = (itemId) => {
         // Show loading overlay
         setPendantLoading(true);
-        
+
         // Loading will only be turned off when "loadingOff" message is received from iframe
-        
+
         // Call the chandelier type change handler
         if (handleChandelierTypeChange) {
           handleChandelierTypeChange(itemId);
@@ -845,11 +856,11 @@ export const ConfigPanel = ({
       config.onItemSelect = (itemId) => {
         // Show loading overlay
         setPendantLoading(true);
-        
+
         // Loading will only be turned off when "loadingOff" message is received from iframe
-        
+
         setCurrentDesign(itemId);
-    
+
         // Use all selected pendants if available, otherwise fall back to just the first one
         const pendantsToUpdate =
           selectedPendants && selectedPendants.length > 0
@@ -884,49 +895,31 @@ export const ConfigPanel = ({
         config.onItemSelect = (systemType) => {
           // Fire specific messages for each system type
 
-         
-          if (systemType === "bar") {
 
-            // Check each cable individually and fire messages conditionally
-            if (cables && cables.length > 0) {
-              cables.forEach((cable, index) => {
-                if (cable && cable.design) {
-                  // Find the design in systemAssignments
-                  const barOption = systemAssignments.find(
-                    (assignment) => assignment.design === cable.design
-                  );
-                  
-                  // Only fire messages if this cable's design is NOT a bar system
-                  if (!barOption || barOption.systemType !== "bar") {
-                    // Fire messages for this specific cable ID
-                    if (selectedPendants.includes(index)) {
-                      sendMessageToPlayCanvas(`cable_${index}`);
-                      sendMessageToPlayCanvas("bars");
-                      sendMessageToPlayCanvas("glass_none");
-                      sendMessageToPlayCanvas("color_gold");
-                      sendMessageToPlayCanvas("silver_none");
-                      sendMessageToPlayCanvas(
-                        "product_https://dev.api1.limitless-lighting.co.uk/configurator_dynamic/models/Bar_1756732230450.glb"
-                      );
-                    }
-                  } 
-                }
+          if (systemType === "bar") {
+            // Initialize the bar array with the number of selected pendants
+            initializeBarArray(selectedPendants.length);
+
+            // For each selected pendant, update the bar state
+            selectedPendants.forEach((cableIndex) => {
+              // Set hasBarModel to true and hasBarAttachment to false for this index
+              setBarState(cableIndex, {
+                hasBarModel: true,
+                hasBarAttachment: false
               });
-              sendMessageToPlayCanvas("allmodelsloaded");
-            } else {
-              // Fallback: if no cables, fire for all selectedPendants
-              selectedPendants.forEach((id) => {
-                sendMessageToPlayCanvas(`cable_${id}`);
-                sendMessageToPlayCanvas("bars");
-                sendMessageToPlayCanvas("glass_none");
-                sendMessageToPlayCanvas("color_gold");
-                sendMessageToPlayCanvas("silver_none");
-                sendMessageToPlayCanvas(
-                  "product_https://dev.api1.limitless-lighting.co.uk/configurator_dynamic/models/Bar_1756732230450.glb"
-                );
-              });
-              sendMessageToPlayCanvas("allmodelsloaded");
-            }
+
+              // Send the necessary messages to PlayCanvas
+              sendMessageToPlayCanvas(`cable_${cableIndex}`);
+              sendMessageToPlayCanvas("bars");
+              sendMessageToPlayCanvas("glass_none");
+              sendMessageToPlayCanvas("color_gold");
+              sendMessageToPlayCanvas("silver_none");
+              sendMessageToPlayCanvas(
+                "product_https://dev.api1.limitless-lighting.co.uk/configurator_dynamic/models/Bar_1756732230450.glb"
+              );
+            });
+
+            sendMessageToPlayCanvas("allmodelsloaded");
           }
           // Call the parent handler to update state and send message to iframe
           onSystemTypeSelection(systemType);
@@ -969,9 +962,9 @@ export const ConfigPanel = ({
           config.onItemSelect = (itemId) => {
             // Show loading overlay
             setPendantLoading(true);
-            
+
             // Loading will only be turned off when "loadingOff" message is received from iframe
-            
+
             setCurrentDesign(itemId);
             const selectedBase = config.items.find(
               (item) => item.id === itemId
@@ -997,10 +990,9 @@ export const ConfigPanel = ({
           ];
         } else {
           // System base design selection for other system types (ball, universal)
-          config.title = `${
-            configuringSystemType.charAt(0).toUpperCase() +
+          config.title = `${configuringSystemType.charAt(0).toUpperCase() +
             configuringSystemType.slice(1)
-          }`;
+            }`;
           config.showBreadcrumb = true;
 
           // Map of base IDs to names and image numbers based on available files
@@ -1064,10 +1056,9 @@ export const ConfigPanel = ({
                 { id: "system", name: "System Type" },
                 {
                   id: configuringSystemType,
-                  name: `${
-                    configuringSystemType.charAt(0).toUpperCase() +
+                  name: `${configuringSystemType.charAt(0).toUpperCase() +
                     configuringSystemType.slice(1)
-                  }`,
+                    }`,
                 },
                 { id: "shades", name: "Shades" },
               ];
@@ -1077,9 +1068,9 @@ export const ConfigPanel = ({
               config.onItemSelect = (itemId) => {
                 // Show loading overlay
                 setPendantLoading(true);
-                
+
                 // Loading will only be turned off when "loadingOff" message is received from iframe
-                
+
                 setCurrentDesign(itemId);
                 const selectedBase = config.items.find(
                   (item) => item.id === itemId
@@ -1108,25 +1099,23 @@ export const ConfigPanel = ({
                 { id: "system", name: "System Type" },
                 {
                   id: configuringSystemType,
-                  name: `${
-                    configuringSystemType.charAt(0).toUpperCase() +
+                  name: `${configuringSystemType.charAt(0).toUpperCase() +
                     configuringSystemType.slice(1)
-                  }`,
+                    }`,
                 },
               ];
-              config.title = `${
-                configuringSystemType.charAt(0).toUpperCase() +
+              config.title = `${configuringSystemType.charAt(0).toUpperCase() +
                 configuringSystemType.slice(1)
-              }`;
+                }`;
             }
           } else {
             // Show base options
             config.onItemSelect = (itemId) => {
               // Show loading overlay
               setPendantLoading(true);
-              
+
               // Loading will only be turned off when "loadingOff" message is received from iframe
-              
+
               setCurrentDesign(itemId);
               const selectedBase = config.items.find(
                 (item) => item.id === itemId
@@ -1150,16 +1139,14 @@ export const ConfigPanel = ({
               { id: "system", name: "System Type" },
               {
                 id: configuringSystemType,
-                name: `${
-                  configuringSystemType.charAt(0).toUpperCase() +
+                name: `${configuringSystemType.charAt(0).toUpperCase() +
                   configuringSystemType.slice(1)
-                }`,
+                  }`,
               },
             ];
-            config.title = `${
-              configuringSystemType.charAt(0).toUpperCase() +
+            config.title = `${configuringSystemType.charAt(0).toUpperCase() +
               configuringSystemType.slice(1)
-            }`;
+              }`;
           }
         }
       }
@@ -1284,32 +1271,50 @@ export const ConfigPanel = ({
           </div>
         </motion.div>
       )}
-      
+
       <div className="flex justify-center items-center w-full">
         <motion.div
-        className={`fixed h-[150px] sm:absolute bottom-0 sm:bottom-1 -translate-x-1/2 bg-black/95 sm:backdrop-blur-sm border border-gray-700 rounded-t-lg sm:rounded-lg z-40 w-full sm:max-w-[320px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[540px] sm:w-[80vw] md:w-[55vw] lg:w-[40vw] xl:w-[24vw] max-h-[60vh] sm:max-h-[30vh] shadow-lg overflow-hidden ${className}`}
-        initial={
-          isMobileView ? { y: "100%", opacity: 0 } : { y: 30, opacity: 0 }
-        }
-        animate={isMobileView ? { y: 0, opacity: 1 } : { y: 0, opacity: 1 }}
-        exit={isMobileView ? { y: "100%", opacity: 0 } : { y: 30, opacity: 0 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-      >
-        <div className="px-2 sm:px-2 pt-2">
-          {/* Responsive header */}
-          <div className="flex items-center justify-between mb-2">
-            {panelConfig.showBreadcrumb ? (
-              <>
-                <div className="flex items-center w-full">
-                  <div className="flex-1 min-w-0">
-                    <Breadcrumb
-                      path={panelConfig.breadcrumbItems}
-                      onNavigate={handleBreadcrumbNavigation}
-                    />
+          className={`fixed h-[150px] sm:absolute bottom-0 sm:bottom-1 -translate-x-1/2 bg-black/95 sm:backdrop-blur-sm border border-gray-700 rounded-t-lg sm:rounded-lg z-40 w-full sm:max-w-[320px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[540px] sm:w-[80vw] md:w-[55vw] lg:w-[40vw] xl:w-[24vw] max-h-[60vh] sm:max-h-[30vh] shadow-lg overflow-hidden ${className}`}
+          initial={
+            isMobileView ? { y: "100%", opacity: 0 } : { y: 30, opacity: 0 }
+          }
+          animate={isMobileView ? { y: 0, opacity: 1 } : { y: 0, opacity: 1 }}
+          exit={isMobileView ? { y: "100%", opacity: 0 } : { y: 30, opacity: 0 }}
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        >
+          <div className="px-2 sm:px-2 pt-2">
+            {/* Responsive header */}
+            <div className="flex items-center justify-between mb-2">
+              {panelConfig.showBreadcrumb ? (
+                <>
+                  <div className="flex items-center w-full">
+                    <div className="flex-1 min-w-0">
+                      <Breadcrumb
+                        path={panelConfig.breadcrumbItems}
+                        onNavigate={handleBreadcrumbNavigation}
+                      />
+                    </div>
+                    <h3 className="ml-4 text-xs sm:text-sm font-medium text-white font-['Amenti'] truncate text-right">
+                      {panelConfig.title}
+                    </h3>
+                    {panelConfig.showCloseButton && (
+                      <button
+                        onClick={onClose}
+                        className="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 ml-2"
+                        aria-label="Close panel"
+                      >
+                        <FaTimes size={10} className="text-gray-300" />
+                      </button>
+                    )}
                   </div>
-                  <h3 className="ml-4 text-xs sm:text-sm font-medium text-white font-['Amenti'] truncate text-right">
-                    {panelConfig.title}
-                  </h3>
+                </>
+              ) : (
+                <>
+                  <div className="flex-1">
+                    <h3 className="text-xs sm:text-sm font-medium text-white font-['Amenti'] truncate">
+                      {panelConfig.title}
+                    </h3>
+                  </div>
                   {panelConfig.showCloseButton && (
                     <button
                       onClick={onClose}
@@ -1319,140 +1324,119 @@ export const ConfigPanel = ({
                       <FaTimes size={10} className="text-gray-300" />
                     </button>
                   )}
+                </>
+              )}
+            </div>
+            {/* Items carousel or cable size segmented control */}
+            {configuringType === "cableSize" ? (
+              <div className="flex flex-col gap-2 w-full">
+                <label className="text-sm font-semibold text-gray-400 mb-1">
+                  Length
+                </label>
+                <div className="flex w-full bg-[#2B2D2F] rounded-full p-1 justify-between">
+                  {[1, 2, 3, 4, 5, 6].map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => {
+                        panelConfig.onItemSelect(size);
+                      }}
+                      className={`flex-1 py-2 rounded-full font-semibold transition text-sm
+                    ${panelConfig.selectedItem === size
+                          ? "bg-[#50C878] text-[#F6F6F6] shadow" // charleston green bg, light text
+                          : "bg-transparent text-[#50C878] hover:bg-[#E3F9EF]"
+                        } // charleston green text, emerald-tinted hover
+                  `}
+                      style={{ margin: "0 2px" }}
+                    >
+                      {size}mm
+                    </button>
+                  ))}
                 </div>
-              </>
+              </div>
             ) : (
-              <>
-                <div className="flex-1">
-                  <h3 className="text-xs sm:text-sm font-medium text-white font-['Amenti'] truncate">
-                    {panelConfig.title}
-                  </h3>
-                </div>
-                {panelConfig.showCloseButton && (
-                  <button
-                    onClick={onClose}
-                    className="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 ml-2"
-                    aria-label="Close panel"
-                  >
-                    <FaTimes size={10} className="text-gray-300" />
-                  </button>
+              <div className="relative w-full">
+                {panelConfig.items.length > (isMobileView ? 2 : 3) && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
+                    <button
+                      onClick={() => scrollCarousel("left")}
+                      className="w-7 h-7 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors shadow"
+                      aria-label="Scroll left"
+                    >
+                      <FaChevronLeft size={12} />
+                    </button>
+                  </div>
                 )}
-              </>
+                <div
+                  ref={carouselRef}
+                  className={`flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-2 px-1 sm:px-5 max-w-full`}
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                  {panelConfig.items.map((item) => (
+                    <motion.div
+                      key={item.id}
+                      className="flex flex-col items-center flex-shrink-0 px-1 sm:px-2"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => panelConfig.onItemSelect(item.id)}
+                    >
+                      <div
+                        className={`relative ${isMobileView ? "w-14 h-14" : "w-16 h-16"
+                          } rounded-full overflow-hidden ${panelConfig.selectedItem === item.id
+                            ? "ring-2 ring-emerald-500"
+                            : "ring-1 ring-gray-600"
+                          }`}
+                      >
+                        {/* Wishlist Icon Overlay */}
+
+                        {item.image ? (
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            width={isMobileView ? 56 : 64}
+                            height={isMobileView ? 56 : 64}
+                            className="object-cover w-full h-full"
+                            priority
+                          />
+                        ) : (
+                          <div
+                            className="w-full h-full flex items-center justify-center"
+                            style={{ backgroundColor: "#2C3539", color: "white" }}
+                          >
+                            <p className="text-base sm:text-lg font-bold">
+                              {item.baseNumber}
+                            </p>
+                          </div>
+                        )}
+                        {panelConfig.selectedItem === item.id && (
+                          <div className="absolute inset-0 bg-emerald-500/20 flex items-center justify-center">
+                            <FaCheck className="text-white text-xs" />
+                          </div>
+                        )}
+                      </div>
+                      <p
+                        className={`text-center text-xs sm:text-[13px] mt-1.5 text-gray-200 font-medium capitalize`}
+                      >
+                        {item.name}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+                {panelConfig.items.length > (isMobileView ? 2 : 3) && (
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
+                    <button
+                      onClick={() => scrollCarousel("right")}
+                      className="w-7 h-7 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors shadow"
+                      aria-label="Scroll right"
+                    >
+                      <FaChevronRight size={12} />
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
-          {/* Items carousel or cable size segmented control */}
-          {configuringType === "cableSize" ? (
-            <div className="flex flex-col gap-2 w-full">
-              <label className="text-sm font-semibold text-gray-400 mb-1">
-                Length
-              </label>
-              <div className="flex w-full bg-[#2B2D2F] rounded-full p-1 justify-between">
-                {[1, 2, 3, 4, 5, 6].map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => {
-                      panelConfig.onItemSelect(size);
-                    }}
-                    className={`flex-1 py-2 rounded-full font-semibold transition text-sm
-                    ${
-                      panelConfig.selectedItem === size
-                        ? "bg-[#50C878] text-[#F6F6F6] shadow" // charleston green bg, light text
-                        : "bg-transparent text-[#50C878] hover:bg-[#E3F9EF]"
-                    } // charleston green text, emerald-tinted hover
-                  `}
-                    style={{ margin: "0 2px" }}
-                  >
-                    {size}mm
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="relative w-full">
-              {panelConfig.items.length > (isMobileView ? 2 : 3) && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
-                  <button
-                    onClick={() => scrollCarousel("left")}
-                    className="w-7 h-7 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors shadow"
-                    aria-label="Scroll left"
-                  >
-                    <FaChevronLeft size={12} />
-                  </button>
-                </div>
-              )}
-              <div
-                ref={carouselRef}
-                className={`flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-2 px-1 sm:px-5 max-w-full`}
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-              >
-                {panelConfig.items.map((item) => (
-                  <motion.div
-                    key={item.id}
-                    className="flex flex-col items-center flex-shrink-0 px-1 sm:px-2"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => panelConfig.onItemSelect(item.id)}
-                  >
-                    <div
-                      className={`relative ${
-                        isMobileView ? "w-14 h-14" : "w-16 h-16"
-                      } rounded-full overflow-hidden ${
-                        panelConfig.selectedItem === item.id
-                          ? "ring-2 ring-emerald-500"
-                          : "ring-1 ring-gray-600"
-                      }`}
-                    >
-                      {/* Wishlist Icon Overlay */}
-                      
-                      {item.image ? (
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          width={isMobileView ? 56 : 64}
-                          height={isMobileView ? 56 : 64}
-                          className="object-cover w-full h-full"
-                          priority
-                        />
-                      ) : (
-                        <div
-                          className="w-full h-full flex items-center justify-center"
-                          style={{ backgroundColor: "#2C3539", color: "white" }}
-                        >
-                          <p className="text-base sm:text-lg font-bold">
-                            {item.baseNumber}
-                          </p>
-                        </div>
-                      )}
-                      {panelConfig.selectedItem === item.id && (
-                        <div className="absolute inset-0 bg-emerald-500/20 flex items-center justify-center">
-                          <FaCheck className="text-white text-xs" />
-                        </div>
-                      )}
-                    </div>
-                    <p
-                      className={`text-center text-xs sm:text-[13px] mt-1.5 text-gray-200 font-medium capitalize`}
-                    >
-                      {item.name}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-              {panelConfig.items.length > (isMobileView ? 2 : 3) && (
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
-                  <button
-                    onClick={() => scrollCarousel("right")}
-                    className="w-7 h-7 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors shadow"
-                    aria-label="Scroll right"
-                  >
-                    <FaChevronRight size={12} />
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </motion.div>
-    </div>
+        </motion.div>
+      </div>
     </>
   );
 };

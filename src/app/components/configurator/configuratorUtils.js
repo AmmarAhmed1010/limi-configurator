@@ -1,6 +1,7 @@
 import { getSystemAssignments, getSystemAssignmentsSync, findSystemAssignmentByDesign, onDataRefresh } from "./pendantSystemData";
 import { useState, useEffect } from "react";
-
+import { store } from '../../redux/store';
+import { useBarState } from '../../hooks/useBarState';
 // ============================================================================
 // REACT HOOKS FOR SYSTEM ASSIGNMENTS
 // ============================================================================
@@ -163,7 +164,7 @@ export const getDefaultDesigns = (amount) => {
  * @param {string} message - The message to send
  */
 export const sendMessageToPlayCanvas = (message) => {
-  // console.log("Sending message to PlayCanvas iframe:", message);
+  console.log("Sending message to PlayCanvas iframe:", message);
   const iframe = document.getElementById("playcanvas-app");
   if (iframe && iframe.contentWindow) {
     iframe.contentWindow.postMessage(message, "*");
@@ -182,9 +183,23 @@ export const sendMessagesForDesign = (designName, idOrIds) => {
 
   // Track previous systemType to control message sending
 
+  // Get the current bar state
+ const barArray = store.getState().bar.barArray || [];
 
   // Helper to send all messages for a single id
   const sendAllMessages = (id) => {
+
+    const barState = barArray[id] || {};
+     if (barState.hasBarAttachment) {
+      sendMessageToPlayCanvas(`cable_${id}`);
+      sendMessageToPlayCanvas("bars");
+      sendMessageToPlayCanvas("glass_none");
+      sendMessageToPlayCanvas("color_gold");
+      sendMessageToPlayCanvas("silver_none");
+      sendMessageToPlayCanvas(
+        "product_https://dev.api1.limitless-lighting.co.uk/configurator_dynamic/models/Bar_1756732230450.glb"
+      );
+    }
     if (assignment.systemType === "bar") {
       sendMessageToPlayCanvas("barextra");
     }else{

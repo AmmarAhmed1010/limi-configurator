@@ -9,10 +9,12 @@ import slideAnalyticsReducer from './slices/slideAnalyticsSlice';
 import assetsReducer from './slices/assetsSlice';
 import activityReducer from './slices/activitySlice';
 import authReducer from './slices/authSlice';
+import barReducer from './slices/barSlice';
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    user: userReducer,  
+    bar: barReducer,
     theme: themeReducer,
     cart: cartReducer,
     favorites: favoritesReducer,

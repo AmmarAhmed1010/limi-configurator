@@ -45,6 +45,8 @@ import {
 //adsaldasldja
 const VerticalNavBar = ({
   activeStep,
+  setCables,
+
   setActiveStep,
   showConfigurationTypeSelector,
   setShowConfigurationTypeSelector,
@@ -1127,6 +1129,7 @@ const VerticalNavBar = ({
               selectedLocation={selectedPendants[0]}
               selectedPendants={selectedPendants}
               cables={cables}
+              setCables={setCables}
               onCableSizeChange={onCableSizeChange}
               handleChandelierTypeChange={handleChandelierTypeChange}
               onPendantDesignChange={onPendantDesignChange}
