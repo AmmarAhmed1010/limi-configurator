@@ -936,7 +936,7 @@ useEffect(() => {
           config.title = "Add On";
           config.showBreadcrumb = true;
 
-          // Get bar assignments and filter out "Luga" design
+          // Get bar assignments and filter out "Luga" des
           const systemTypeBases = (barAssignments || []).filter(
             (base) => base.design !== "luga"
           );
