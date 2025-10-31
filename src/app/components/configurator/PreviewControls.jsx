@@ -292,7 +292,7 @@ export const PreviewControls = ({
 
       {/* Navigation Guide */}
       <div
-        className="absolute top-24 left-4 sm:left-8 z-50 flex gap-2"
+        className="absolute top-6 left-4 sm:left-8 z-50 flex gap-2"
         ref={guideRef}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -364,7 +364,7 @@ export const PreviewControls = ({
       </div>
 
       <div
-        className="absolute left-14 sm:left-[4.5rem] top-[5.94rem] z-50 flex gap-2"
+        className="absolute left-14 sm:left-[4.5rem] top-[1.44rem] z-50 flex gap-2"
         ref={lightingRef}
       >
         <motion.button
