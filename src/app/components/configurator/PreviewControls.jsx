@@ -292,22 +292,21 @@ export const PreviewControls = ({
 
       {/* Navigation Guide */}
       <div
-        className="absolute top-6 left-4 sm:left-8 z-50 flex gap-2"
+        className="absolute top-[19%] left-4 sm:left-8 z-50 flex gap-2"
         ref={guideRef}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onTouchStart={handleTouch}
       >
-        <button
-          className={`p-2 rounded-full bg-gray-700 text-white transition-all shadow-lg ${isHovered
-              ? " hover:bg-[#50C878]"
-              : "hover:scale-110 hover:bg-[#50C878]"
-            }`}
+        <motion.button
+          whileHover={{ scale: 0.95 }}
+          whileTap={{ scale: 0.95 }}
+          className={`p-2 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm border bg-gray-700/90 border-gray-600 text-white hover:bg-[#50C878]`}
           title="View Navigation Guide"
           aria-expanded={isHovered}
         >
           <FaInfo size={16} />
-        </button>
+        </motion.button>
 
         {/* Lighting Control Button */}
 
@@ -364,7 +363,7 @@ export const PreviewControls = ({
       </div>
 
       <div
-        className="absolute left-14 sm:left-[4.5rem] top-[1.44rem] z-50 flex gap-2"
+        className="absolute left-14 sm:left-[4.5rem] top-[19%] z-50 flex gap-2"
         ref={lightingRef}
       >
         <motion.button
@@ -372,7 +371,7 @@ export const PreviewControls = ({
           whileTap={{ scale: 0.95 }}
           className={`p-2 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm border ${isLightingPanelOpen
               ? "bg-blue-600/90 border-blue-400 text-white"
-              : "bg-gray-900/80 border-gray-600 text-gray-300 hover:bg-gray-800/90 hover:border-gray-500"
+              : "bg-gray-700/90 border-gray-600 text-white hover:bg-gray-600/90"
             }`}
           onClick={() => setIsLightingPanelOpen(!isLightingPanelOpen)}
           title="Lighting Controls"
@@ -602,16 +601,17 @@ export const PreviewControls = ({
                     Quick Presets
                   </label>
                   <div className="flex gap-2">
-                    <motion.button
+                    
+                        <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => {
-                        setColorTemperature(20);
-                        setBrightness(80);
+                        setColorTemperature(80);
+                        setBrightness(90);
                       }}
-                      className="flex-1 px-3 py-2 bg-orange-500/20 border border-orange-500/30 rounded-lg text-orange-300 text-xs font-medium hover:bg-orange-500/30 transition-all"
+                      className="flex-1 px-3 py-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-300 text-xs font-medium hover:bg-blue-500/30 transition-all"
                     >
-                      Cozy
+                      Focus
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
@@ -624,16 +624,16 @@ export const PreviewControls = ({
                     >
                       Natural
                     </motion.button>
-                    <motion.button
+                   <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => {
-                        setColorTemperature(80);
-                        setBrightness(90);
+                        setColorTemperature(20);
+                        setBrightness(80);
                       }}
-                      className="flex-1 px-3 py-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-300 text-xs font-medium hover:bg-blue-500/30 transition-all"
+                      className="flex-1 px-3 py-2 bg-orange-500/20 border border-orange-500/30 rounded-lg text-orange-300 text-xs font-medium hover:bg-orange-500/30 transition-all"
                     >
-                      Focus
+                      Cozy
                     </motion.button>
                   </div>
                 </div>

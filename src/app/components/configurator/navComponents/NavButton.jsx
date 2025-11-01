@@ -81,7 +81,7 @@ export const NavButton = ({
     <div key={step?.id} className="relative">
       {/* Tooltip only shows when dropdown is closed */}
       {openDropdown !== step?.id && (
-        <Tooltip content={step?.tooltip || 'Navigation option'} position="left" className="">
+        <Tooltip content={step?.tooltip || 'Navigation option'} position="right" className="">
           <div className="relative group">
             <motion.button
               className={`relative w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-300 ${activeStep === step?.id ? 'shadow-lg' : 'opacity-80 hover:opacity-100'} ${step?.disabled ? 'opacity-50 cursor-not-allowed' : ''} ${isCompleted ? 'ring-2 ring-emerald-500' : ''}`}
@@ -126,8 +126,8 @@ export const NavButton = ({
         {openDropdown === step?.id && (
           <div
             ref={el => step?.id && (dropdownRefs.current[step.id] = el)}
-            className="absolute max-sm:fixed right-full mr-4 top-0 bg-gray-800 max-sm:bg-[#2b2d2f] rounded-lg shadow-xl z-[200] overflow-hidden
-              sm:right-full sm:mr-3 sm:top-0 max-sm:top-[25vh] max-sm:-mr-[16px] max-sm:right-0"
+            className="absolute max-sm:fixed left-full ml-4 top-0 bg-gray-800 max-sm:bg-[#2b2d2f] rounded-lg shadow-xl z-[200] overflow-hidden
+              sm:left-full sm:ml-3 sm:top-0 max-sm:top-[25vh] max-sm:left-auto max-sm:right-0"
             style={{
               boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px ${isMobile ? charlestonGreen : emerald}20`,
               width: isMobile ? `${containerDimensions.width || screenWidth}px` : '280px',

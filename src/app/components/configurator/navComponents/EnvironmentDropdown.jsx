@@ -165,7 +165,7 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
 
   return (
     <div
-      className="max-sm:left-0 max-sm:w-full p-4"
+      className="max-sm:right-0 max-sm:w-full p-4"
       onClick={(e) => e.stopPropagation()}
       onTouchStart={(e) => e.stopPropagation()}
     >
