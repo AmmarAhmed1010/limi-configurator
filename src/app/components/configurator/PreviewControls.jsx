@@ -298,16 +298,16 @@ export const PreviewControls = ({
         onMouseLeave={handleMouseLeave}
         onTouchStart={handleTouch}
       >
-        <button
+        {/* <button
           className={`p-2 rounded-full bg-gray-700 text-white transition-all shadow-lg ${isHovered
-              ? " hover:bg-[#50C878]"
-              : "hover:scale-110 hover:bg-[#50C878]"
+            ? " hover:bg-[#50C878]"
+            : "hover:scale-110 hover:bg-[#50C878]"
             }`}
           title="View Navigation Guide"
           aria-expanded={isHovered}
         >
           <FaInfo size={16} />
-        </button>
+        </button> */}
 
         {/* Lighting Control Button */}
 
@@ -367,26 +367,7 @@ export const PreviewControls = ({
         className="absolute left-14 sm:left-[4.5rem] top-[1.44rem] z-50 flex gap-2"
         ref={lightingRef}
       >
-        <motion.button
-          whileHover={{ scale: 0.95 }}
-          whileTap={{ scale: 0.95 }}
-          className={`p-2 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm border ${isLightingPanelOpen
-              ? "bg-blue-600/90 border-blue-400 text-white"
-              : "bg-gray-900/80 border-gray-600 text-gray-300 hover:bg-gray-800/90 hover:border-gray-500"
-            }`}
-          onClick={() => setIsLightingPanelOpen(!isLightingPanelOpen)}
-          title="Lighting Controls"
-        >
-          <motion.div
-            animate={{ rotate: isLightingPanelOpen ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <FaLightbulb
-              size={16}
-              className={lighting ? "text-yellow-300" : ""}
-            />
-          </motion.div>
-        </motion.button>
+
 
         {/* Lighting Control Panel */}
         <AnimatePresence>
@@ -396,7 +377,7 @@ export const PreviewControls = ({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.9 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute top-10 -left-12 sm:left-0 sm:top-16 
+              className="absolute top-28 left-10 sm:left-0 sm:top-16 
                          bg-[#1d1e1f] sm:bg-gray-900/95 
                          backdrop-blur-xl sm:backdrop-blur-md 
                          border border-white/20 sm:border-gray-600/50 
@@ -469,8 +450,8 @@ export const PreviewControls = ({
                   <span className="text-gray-200 font-medium">Power</span>
                   <span
                     className={`text-xs px-2 py-1 rounded-full ${lighting
-                        ? "bg-green-500/20 text-green-400"
-                        : "bg-red-500/20 text-red-400"
+                      ? "bg-green-500/20 text-green-400"
+                      : "bg-red-500/20 text-red-400"
                       } transition-colors duration-300`}
                   >
                     {lighting ? "ON" : "OFF"}
@@ -643,13 +624,13 @@ export const PreviewControls = ({
         </AnimatePresence>
       </div>
       <div className="absolute top-24 right-8 z-50 flex gap-2">
-        {/* <button
+        <button
           className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
           onClick={() => setIsPreviewMode(!isPreviewMode)}
           title={isPreviewMode ? "Exit Preview Mode" : "Enter Preview Mode"}
         >
           <FaEye size={16} />
-        </button> */}
+        </button>
 
         {/* Tour Guide */}
         {/* <motion.button
@@ -887,7 +868,27 @@ export const PreviewControls = ({
           )}
         </div> */}
 
-        {/* <button
+        <motion.button
+          whileHover={{ scale: 0.95 }}
+          whileTap={{ scale: 0.95 }}
+          className={`p-2 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm border ${isLightingPanelOpen
+            ? "bg-blue-600/90 border-blue-400 text-white"
+            : "bg-gray-900/80 border-gray-600 text-gray-300 hover:bg-gray-800/90 hover:border-gray-500"
+            }`}
+          onClick={() => setIsLightingPanelOpen(!isLightingPanelOpen)}
+          title="Lighting Controls"
+        >
+          <motion.div
+            animate={{ rotate: isLightingPanelOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <FaLightbulb
+              size={16}
+              className={lighting ? "text-yellow-300" : ""}
+            />
+          </motion.div>
+        </motion.button>
+        <button
           type="button"
           className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
           onClick={() => {
@@ -897,9 +898,9 @@ export const PreviewControls = ({
           title="Save Configuration"
         >
           <FaSave size={16} />
-        </button> */}
+        </button>
 
-        {/* <button
+        <button
           className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
           onClick={() => {
             onLoadConfig();
@@ -908,7 +909,7 @@ export const PreviewControls = ({
           title="Load Configuration"
         >
           <FaFolderOpen size={16} />
-        </button> */}
+        </button>
       </div>
 
       {/* Onboarding CSS Animations */}
@@ -988,9 +989,9 @@ export const PreviewControls = ({
       <LoadingScreen isVisible={showLoadingScreen} />
 
       {/* Pendant Length Overlay */}
-      <PendantLengthOverlay 
-        isVisible={showPendantLengthOverlay} 
-        onClose={() => setShowPendantLengthOverlay(false)} 
+      <PendantLengthOverlay
+        isVisible={showPendantLengthOverlay}
+        onClose={() => setShowPendantLengthOverlay(false)}
       />
 
       {/* Click Animation GIF */}
