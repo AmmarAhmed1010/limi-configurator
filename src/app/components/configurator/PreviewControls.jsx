@@ -15,6 +15,7 @@ import {
   FaHandPaper,
   FaLightbulb,
   FaRoute,
+  FaChevronLeft,
 } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -212,6 +213,31 @@ export const PreviewControls = ({
     }
   };
 
+  // iOS-style button component
+  const IOSIconButton = ({ icon: Icon, onClick, style = {}, iconStyle = {}, title = '' }) => (
+    <button
+      onClick={onClick}
+      className="flex items-center justify-center rounded-full transition-all duration-200 hover:opacity-90 active:scale-95"
+      title={title}
+      style={{
+        width: '34px',
+        height: '34px',
+        backgroundColor: '#2b2f33',
+        border: 'none',
+        padding: 0,
+        margin: '0 2px',
+        ...style
+      }}
+    >
+      <Icon style={{
+        color: '#f8f9fa',
+        fontSize: '20px',
+        fontWeight: 'bold',
+        ...iconStyle
+      }} />
+    </button>
+  );
+
   return (
     <div className="noselect">
       {/* Onboarding Animation */}
@@ -363,12 +389,7 @@ export const PreviewControls = ({
         )}
       </div>
 
-      <div
-        className="absolute left-14 sm:left-[4.5rem] top-[1.44rem] z-50 flex gap-2"
-        ref={lightingRef}
-      >
-
-
+      <div className="absolute left-14 sm:left-[4.5rem] top-[1.44rem] z-50 flex gap-2" ref={lightingRef}>
         {/* Lighting Control Panel */}
         <AnimatePresence>
           {isLightingPanelOpen && (
@@ -377,7 +398,7 @@ export const PreviewControls = ({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.9 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute top-28 left-10 sm:left-0 sm:top-16 
+              className="absolute top-10 left-8 sm:left-0 sm:top-16 
                          bg-[#1d1e1f] sm:bg-gray-900/95 
                          backdrop-blur-xl sm:backdrop-blur-md 
                          border border-white/20 sm:border-gray-600/50 
@@ -623,7 +644,7 @@ export const PreviewControls = ({
           )}
         </AnimatePresence>
       </div>
-      <div className="absolute top-24 right-8 z-50 flex gap-2">
+      <div className="absolute top-6 right-[1rem] z-50 flex gap-2">
         <button
           className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
           onClick={() => setIsPreviewMode(!isPreviewMode)}
@@ -868,48 +889,41 @@ export const PreviewControls = ({
           )}
         </div> */}
 
-        <motion.button
-          whileHover={{ scale: 0.95 }}
-          whileTap={{ scale: 0.95 }}
-          className={`p-2 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm border ${isLightingPanelOpen
-            ? "bg-blue-600/90 border-blue-400 text-white"
-            : "bg-gray-900/80 border-gray-600 text-gray-300 hover:bg-gray-800/90 hover:border-gray-500"
-            }`}
+        <IOSIconButton 
+          icon={FaLightbulb}
           onClick={() => setIsLightingPanelOpen(!isLightingPanelOpen)}
-          title="Lighting Controls"
-        >
-          <motion.div
-            animate={{ rotate: isLightingPanelOpen ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <FaLightbulb
-              size={16}
-              className={lighting ? "text-yellow-300" : ""}
-            />
-          </motion.div>
-        </motion.button>
-        <button
-          type="button"
-          className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
+          style={{
+            backgroundColor: isLightingPanelOpen ? '#3b82f6' : '#2b2f33',
+            ...(lighting && { backgroundColor: '#f59e0b' })
+          }}
+          iconStyle={{
+            color: '#ffffff',
+            ...(lighting && { color: '#ffffff' })
+          }}
+        />
+        <IOSIconButton 
+          icon={FaSave}
           onClick={() => {
             onSaveConfig(config, cables);
-            handleOpenSaveModal(); // This will hide the nav
+            handleOpenSaveModal();
           }}
           title="Save Configuration"
-        >
-          <FaSave size={16} />
-        </button>
+          style={{
+            backgroundColor: '#2b2f33'
+          }}
+        />
 
-        <button
-          className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
+        <IOSIconButton 
+          icon={FaFolderOpen}
           onClick={() => {
             onLoadConfig();
             handleOpenSaveModal();
           }}
           title="Load Configuration"
-        >
-          <FaFolderOpen size={16} />
-        </button>
+          style={{
+            backgroundColor: '#2b2f33'
+          }}
+        />
       </div>
 
       {/* Onboarding CSS Animations */}
