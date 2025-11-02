@@ -164,7 +164,7 @@ export const getDefaultDesigns = (amount) => {
  * @param {string} message - The message to send
  */
 export const sendMessageToPlayCanvas = (message) => {
-  //console.log("Sending message to PlayCanvas iframe:", message);
+  console.log("Sending message to PlayCanvas iframe:", message);
   const iframe = document.getElementById("playcanvas-app");
   if (iframe && iframe.contentWindow) {
     iframe.contentWindow.postMessage(message, "*");
@@ -203,7 +203,7 @@ export const sendMessagesForDesign = (designName, idOrIds) => {
     if (assignment.systemType === "bar") {
       sendMessageToPlayCanvas("barextra");
     }else{
-      sendMessageToPlayCanvas("Nobars");
+      // sendMessageToPlayCanvas("Nobars");
     }
     sendMessageToPlayCanvas(`cable_${id}`);
     sendMessageToPlayCanvas(
