@@ -203,7 +203,7 @@ export const sendMessagesForDesign = (designName, idOrIds) => {
     if (assignment.systemType === "bar") {
       sendMessageToPlayCanvas("barextra");
     }else{
-      sendMessageToPlayCanvas("Nobars");
+      // sendMessageToPlayCanvas("Nobars");
     }
     sendMessageToPlayCanvas(`cable_${id}`);
     sendMessageToPlayCanvas(
