@@ -528,7 +528,7 @@ const ConfiguratorLayout = () => {
           sendMessageToPlayCanvas("allmodelsloaded");
           // sendMessagesForDesign("fina", 0);
           // Send lighting messages with delays
-          sendMessageToPlayCanvas(`guidedtourstarted`);
+          // sendMessageToPlayCanvas(`guidedtourstarted`);
         }
 
         // If we have a configuration from URL, load it now
