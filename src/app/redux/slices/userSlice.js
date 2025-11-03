@@ -146,9 +146,8 @@ export const fetchUserByToken = createAsyncThunk(
       if (!profileResponse.ok) {
         return rejectWithValue('Failed to fetch user profile');
       }
-
+      localStorage.setItem('limiToken', token);
       const userData = await profileResponse.json();
-
       // Save to localStorage
       saveUserToStorage(userData);
 

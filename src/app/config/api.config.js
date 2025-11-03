@@ -7,7 +7,7 @@
 
 // Environment configuration - Change this to switch between environments
 // Can be overridden by NEXT_PUBLIC_API_ENVIRONMENT env variable
-const ENVIRONMENT = process.env.NEXT_PUBLIC_API_ENVIRONMENT || 'dev'; // Options: 'dev' or 'production'
+const ENVIRONMENT = process.env.NEXT_PUBLIC_API_ENVIRONMENT || 'production'; // Options: 'dev' or 'production'
 
 // Base URL configurations for different environments
 const API_BASE_URLS = {
@@ -55,6 +55,7 @@ export const API_CONFIG = {
     // Admin endpoints
     INVESTOR_DETAILS: '/admin/dashboard/investor_details',
     PRODUCTS_WISHLIST: '/admin/products/light-configs/wishlist',
+    LIGHT_CONFIGS: '/admin/products/light-configs',
     SLIDE_MANAGEMENT: '/admin/dashboard/slides',
     PENDANT_SYSTEMS: '/admin/products/pendant-systems',
     
