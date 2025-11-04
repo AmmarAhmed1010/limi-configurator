@@ -28,7 +28,7 @@ export const LightTypeDropdown = ({ config, onLightTypeChange, setActiveStep, se
           // For a width of 80px, height would be 60px to maintain ratio
           const aspectRatio = 1296 / 1726; // height/width
           const width = 80; // Set width to 80px
-          const height = width * aspectRatio; // Calculate height to maintain aspect ratio
+          const height = width * aspectRatio; // Calculate hei to maintain aspect ratio
           
           return (
             <motion.button
