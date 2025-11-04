@@ -819,8 +819,8 @@ const VerticalNavBar = ({
         >
           <ProgressIndicator progress={calculateProgress()} emerald={emerald} />
           <motion.div
-            className="p-3 rounded-full flex flex-col gap-4"
-            style={{ backgroundColor: charlestonGreen }}
+            className="p-3 rounded-full flex flex-col"
+            // style={{ backgroundColor: charlestonGreen }}
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
           >

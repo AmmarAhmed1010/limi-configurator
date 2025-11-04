@@ -169,7 +169,7 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
       onClick={(e) => e.stopPropagation()}
       onTouchStart={(e) => e.stopPropagation()}
     >
-      {!isMobile && <h3 className="text-base font-bold text-white mb-4 font-['Amenti']">Environment</h3>}
+      {!isMobile && <h3 className="text-base font-bold text-black mb-4 font-['Amenti']">Environment</h3>}
 
       {/* Carousel Container */}
       <div className="relative">

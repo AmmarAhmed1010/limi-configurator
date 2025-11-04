@@ -66,7 +66,7 @@ const ConfiguratorLayout = () => {
     initializeBarArray
   } = useBarState();
   // Version constant to track localStorage schema changes
-  const STORAGE_VERSION = "1.4.6";
+  const STORAGE_VERSION = "1.5.0";
 
   // Clear old localStorage data if version doesn't match
   useEffect(() => {
@@ -528,7 +528,7 @@ const ConfiguratorLayout = () => {
           sendMessageToPlayCanvas("allmodelsloaded");
           // sendMessagesForDesign("fina", 0);
           // Send lighting messages with delays
-          sendMessageToPlayCanvas(`guidedtourstarted`);
+          // sendMessageToPlayCanvas(`guidedtourstarted`);
         }
 
         // If we have a configuration from URL, load it now
@@ -556,8 +556,7 @@ const ConfiguratorLayout = () => {
     // Search through each mount object for matching light type
     let matchingMount;
     if (type === "ceiling") {
-      // For ceiling type, find all matching mounts and filter based on baseType
-
+      // For ceiling type, find all matching mounts and filter based on baseTyp
 
       if (config.baseType === "round") {
         const ceilingMounts = mounts.filter((mount) => mount.mountLightType === type);
@@ -592,6 +591,7 @@ const ConfiguratorLayout = () => {
       }
       sendMessageToPlayCanvas(`light_amount:${newAmount}`);
       sendMessageToPlayCanvas(`mount_model:${modelUrl}`);
+      sendMessageToPlayCanvas(`scene:0`);
 
       setConfig((prev) => ({
         ...prev,

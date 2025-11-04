@@ -66,13 +66,12 @@ const BaseColorPanel = ({
     { id: 'black', name: 'Black', hexColor: '#000000' },
     { id: 'gold', name: 'Gold', hexColor: '#D4AF37' },
     { id: 'silver', name: 'Silver', hexColor: '#C0C0C0' },
-    { id: 'midnight-blue', name: 'Midnight Blue', hexColor: '#191970' }
+    { id: 'midnight-blue', name: 'Blue', hexColor: '#191970' }
   ];
 
   const styles = {
     container: {
       padding: '20px',
-      backgroundColor: '#1a1a1a',
       borderRadius: '8px',
       color: 'white',
       width: '100%'
@@ -152,7 +151,7 @@ const BaseColorPanel = ({
       </div> */} 
       {activeTab === 'base' && (
         <>
-          {!isMobile && <h3 style={styles.title}>Base Color</h3>}
+          {!isMobile && <h3 className="text-black" style={styles.title}>Base Color</h3>}
           <div style={styles.colorPalette}>
             {colorOptions.map((color) => (
               <motion.div
@@ -174,7 +173,7 @@ const BaseColorPanel = ({
           </div>
           <div style={styles.colorLabels}>
             {colorOptions.map((color) => (
-              <div key={color.id} style={styles.colorLabel}>
+              <div key={color.id} className="text-black" style={styles.colorLabel}>
                 {color.name}
               </div>
             ))}
@@ -183,7 +182,7 @@ const BaseColorPanel = ({
       )}
       {activeTab === 'connector' && (
         <>
-          {!isMobile && <h3 style={styles.title}>Connector Color</h3>}
+          {!isMobile && <h3 className="text-black" style={styles.title}>Connector Color</h3>}
           <div style={styles.colorPalette}>
             {colorOptions.map((color) => (
               <motion.div
@@ -205,7 +204,7 @@ const BaseColorPanel = ({
           </div>
           <div style={styles.colorLabels}>
             {colorOptions.map((color) => (
-              <div key={color.id} style={styles.colorLabel}>
+              <div key={color.id} className="text-black" style={styles.colorLabel}>
                 {color.name}
               </div>
             ))}

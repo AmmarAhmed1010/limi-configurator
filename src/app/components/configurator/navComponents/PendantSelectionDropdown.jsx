@@ -104,7 +104,7 @@ export const PendantSelectionDropdown = ({
     >
       {/* Desktop title */}
       <div>
-        <h3 className="text-base font-bold text-white mb-3 font-['Amenti']">
+        <h3 className="text-base font-bold text-black mb-3 font-['Amenti']">
           Configure Pendants
         </h3>
       </div>
