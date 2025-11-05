@@ -482,19 +482,17 @@ const ConfiguratorLayout = () => {
             sendMessageToPlayCanvas(`mount_model:${savedConfig.mountUrl}`)
           // sendMessageToPlayCanvas(`light_amount:${savedConfig.lightAmount}`),
 
-          sendMessageToPlayCanvas(
-            `lighting:${savedConfig.lighting ? "on" : "off"}`
-          );
+          // sendMessageToPlayCanvas(
+          //   `lighting:${savedConfig.lighting ? "on" : "off"}`
+          // );
 
-          if (savedConfig.lighting == "on") {
-            sendMessageToPlayCanvas(`brightness:${savedConfig.brightness}`),
-              sendMessageToPlayCanvas(
-                "colorTemperature:" +
-                Math.round(
-                  2700 + (savedConfig.colorTemperature / 100) * (6500 - 2700)
-                )
-              );
-          }
+
+          sendMessageToPlayCanvas(`brightness:31`),
+            sendMessageToPlayCanvas(
+              "colorTemperature:5000 "  
+            );
+         setBrightness(31);
+         setColorTemperature(5000);
           sendMessageToPlayCanvas(`base_color:${savedConfig.baseColor}`);
           savedCables.forEach((cable, index) => {
             const system = systemAssignments.find(
@@ -1032,7 +1030,7 @@ const ConfiguratorLayout = () => {
         });
         if (system.systemType === "bar") {
           // For bar systems, update only the bar attachment state
-         selectedCables.forEach((cableIndex) => {
+          selectedCables.forEach((cableIndex) => {
             // Get current state first
             const currentState = barArray[cableIndex] || {};
             setBarState(cableIndex, {
@@ -1040,8 +1038,8 @@ const ConfiguratorLayout = () => {
               hasBarAttachment: true  // Only update this property
             });
           });
-        }else{
-            selectedCables.forEach((cableIndex) => {
+        } else {
+          selectedCables.forEach((cableIndex) => {
             // Get current state first
             setBarState(cableIndex, {
               hasBarModel: false, // Keep existing or default to false
@@ -1340,13 +1338,13 @@ const ConfiguratorLayout = () => {
               pendants={config.pendants}
               cableMessage={cableMessage}
               brightness={brightness}
-          setBrightness={setBrightness}
-          colorTemperature={colorTemperature}
-          setColorTemperature={setColorTemperature}
-          lighting={lighting}
-          setLighting={setLighting}
-          isLightingPanelOpen={isLightingPanelOpen}
-          setIsLightingPanelOpen={setIsLightingPanelOpen}
+              setBrightness={setBrightness}
+              colorTemperature={colorTemperature}
+              setColorTemperature={setColorTemperature}
+              lighting={lighting}
+              setLighting={setLighting}
+              isLightingPanelOpen={isLightingPanelOpen}
+              setIsLightingPanelOpen={setIsLightingPanelOpen}
               selectedPendants={config.selectedPendants || []}
               setSelectedPendants={(pendantIds) =>
                 handlePendantSelection(pendantIds)

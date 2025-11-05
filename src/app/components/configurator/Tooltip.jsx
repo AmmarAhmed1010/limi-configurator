@@ -32,7 +32,7 @@ export const Tooltip = ({ children, content, position = 'top' }) => {
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className={`absolute ${positionClasses[position]} z-50 px-3 py-2 bg-gray-900/90 backdrop-blur-sm text-white text-xs rounded-md shadow-lg whitespace-nowrap border border-gray-700`}
+          className={`absolute ${positionClasses[position]} z-[9999] px-3 py-2 bg-gray-900/90 backdrop-blur-sm text-white text-xs rounded-md shadow-lg whitespace-nowrap border border-gray-700`}
         >
           {content}
           <div 

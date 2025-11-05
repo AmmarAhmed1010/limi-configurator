@@ -13,7 +13,7 @@ export const Breadcrumb = ({
       
       {path.map((item, index) => (
         <div key={index} className="flex items-center">
-          {index > 0 && <span><FaChevronRight size={12} /></span>}
+          {index > 0 && <span><FaChevronRight size={12} className="text-black" /></span>}
           <motion.button
             onClick={() => onNavigate(item.id)}
             className={`px-1.5 py-0.5 rounded text-[11px] transition-colors duration-150
@@ -25,7 +25,7 @@ export const Breadcrumb = ({
             whileTap={{ scale: 0.95 }}
           >
            {/* <span><FaChevronRight size={12} /></span>  */}
-            {item.name === 'icon-home' ? <FaHome size={13} /> : item.name}
+            {item.name === 'icon-home' ? <FaHome size={13}  /> : item.name}
           </motion.button>
         </div>
       ))}
