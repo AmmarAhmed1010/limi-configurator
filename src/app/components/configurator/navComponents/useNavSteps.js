@@ -6,7 +6,8 @@ import {
   FaList, 
   FaCubes,
   FaPalette,
-  FaGlobe
+  FaGlobe,
+  FaCheck
 } from "react-icons/fa";
 
 export const useNavSteps = (config) => {
@@ -68,6 +69,14 @@ export const useNavSteps = (config) => {
       isActive: config.lightType === 'ceiling' && Boolean(config.baseType), // Active after base type is selected
       isCompleted: Boolean(config.baseColor)
     },
+      { 
+      id: 'lightingControl', 
+      icon: <FaRegLightbulb />, 
+      label: 'Lighting Control',
+      tooltip: 'Adjust lighting settings',
+      isActive: true,
+      isCompleted: false
+    },
     { 
       id: 'lightAmount', 
       icon: <FaRegLightbulb />, // Fallback icon
@@ -77,7 +86,6 @@ export const useNavSteps = (config) => {
       isActive: true, // Always active
       isCompleted: Boolean(config.lightAmount)
     },
-    
     { 
       id: 'pendantSelection', 
       icon: <FaList />, // Keep using icon for this one
@@ -87,7 +95,9 @@ export const useNavSteps = (config) => {
         : 'Configure system options',
       isActive: true, // Always active - fixed to allow switching back
       isCompleted: false
-    }
+    },
+  
+ 
   ];
 
   return { steps };

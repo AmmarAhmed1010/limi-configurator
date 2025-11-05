@@ -7,7 +7,8 @@ import {
   FaObjectGroup,
   FaList,
   FaCubes,
-  FaPalette
+  FaPalette,
+  FaCheck
 } from "react-icons/fa";
 import { FiHome } from "react-icons/fi";
 
@@ -20,7 +21,8 @@ const getStepIcon = (stepId) => {
     lightAmount: FaList,
     pendantSelection: FaRegLightbulb,
     systemType: FaCubes,
-    systemConfiguration: FaObjectGroup
+    finish: FaCheck,
+    systemConfiguration: FaObjectGroup,
   };
 
   const IconComponent = iconMap[stepId] || FiHome;

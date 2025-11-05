@@ -32,6 +32,7 @@ import { SaveConfigurationModal } from './navComponents/SaveConfigurationModal';
 import { useNavSteps } from './navComponents/useNavSteps';
 import { useNavDropdown } from './navComponents/useNavDropdown';
 import { usePendantSelection } from './navComponents/usePendantSelection';
+import { BrightnessSlider } from './navComponents/BrightnessSlider';
 
 import {
   listenForConnectorColorMessages,
@@ -979,10 +980,6 @@ const VerticalNavBar = ({
                             // This matches the original handleConfigTypeSelection function
                             setLocalConfiguringType(type);
 
-                            // if(type == 'pendant' || type == 'system'){
-                            //   setShowConfigurationTypeSelector(false);
-                            // }
-
                             // Update the active step based on the configuration type
                             if (type === "pendant") {
                               setActiveStep("pendantSelection");
@@ -1004,6 +1001,21 @@ const VerticalNavBar = ({
                           }}
                         />
                       )}
+                      
+                    {step?.id === "lightingControl" && openDropdown === step?.id && (
+                      <div className="p-4 rounded-lg shadow-lg">
+                        <h3 className="text-lg font-medium mb-4">Adjust Brightness</h3>
+                        <BrightnessSlider 
+                          initialValue={config.brightness || 50}
+                          onChange={(value) => {
+                            // Update the config with the new brightness value
+                            // You might want to add a proper handler for this
+                            console.log('Brightness changed to:', value);
+                            // Example: onBrightnessChange?.(value);
+                          }}
+                        />
+                      </div>
+                    )}
                   </NavButton>
                 </div>
               ))}
