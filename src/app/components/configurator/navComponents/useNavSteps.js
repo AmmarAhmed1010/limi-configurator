@@ -7,7 +7,8 @@ import {
   FaCubes,
   FaPalette,
   FaGlobe,
-  FaCheck
+  FaCheck,
+  FaInfoCircle
 } from "react-icons/fa";
 
 export const useNavSteps = (config) => {
@@ -35,12 +36,21 @@ export const useNavSteps = (config) => {
   
   // Define navigation steps
   const steps = [
+    {
+      id: 'info',
+      icon: <FaInfoCircle />,
+      label: 'Information',
+      tooltip: 'View product information',
+      isActive: true,
+      isCompleted: false
+    },
+    
     { 
       id: 'lightType', 
       icon: <FaLightbulb />, // Fallback icon
       // image: getLightTypeImage(),
       label: 'Light Type',
-      tooltip: 'Select light type (wall, ceiling, floor)',
+      tooltip: 'Select light type',
       isActive: true, // Always active
       isCompleted: Boolean(config.lightType)
     },
@@ -48,7 +58,7 @@ export const useNavSteps = (config) => {
       id: 'environment', 
       icon: <FaGlobe />, 
       label: 'Environment',
-      tooltip: 'Select environment scene (no scene, interior)',
+      tooltip: 'Select environment scene ',
       isActive: true, // Always active
       isCompleted: Boolean(config.environment)
     },
@@ -57,7 +67,7 @@ export const useNavSteps = (config) => {
       icon: <FaLayerGroup />, // Fallback icon
       // image: getBaseTypeImage(),
       label: 'Base Type',
-      tooltip: 'Select base type (round, rectangular)',
+      tooltip: 'Select base type',
       isActive: config.lightType === 'ceiling', // Only active for ceiling lights
       isCompleted: Boolean(config.baseType)
     },
@@ -65,7 +75,7 @@ export const useNavSteps = (config) => {
       id: 'baseColor', 
       icon: <FaPalette />, 
       label: 'Base Color',
-      tooltip: 'Select base color (black, silver)',
+      tooltip: 'Select base color ',
       isActive: config.lightType === 'ceiling' && Boolean(config.baseType), // Active after base type is selected
       isCompleted: Boolean(config.baseColor)
     },

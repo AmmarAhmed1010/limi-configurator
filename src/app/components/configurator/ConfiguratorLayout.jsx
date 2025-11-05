@@ -1339,7 +1339,14 @@ const ConfiguratorLayout = () => {
               onSystemBaseDesignChange={handleSystemBaseDesignChange}
               pendants={config.pendants}
               cableMessage={cableMessage}
-              setIsLightingPanelOpen={setIsLightingPanelOpen}
+              brightness={brightness}
+          setBrightness={setBrightness}
+          colorTemperature={colorTemperature}
+          setColorTemperature={setColorTemperature}
+          lighting={lighting}
+          setLighting={setLighting}
+          isLightingPanelOpen={isLightingPanelOpen}
+          setIsLightingPanelOpen={setIsLightingPanelOpen}
               selectedPendants={config.selectedPendants || []}
               setSelectedPendants={(pendantIds) =>
                 handlePendantSelection(pendantIds)

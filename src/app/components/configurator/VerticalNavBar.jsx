@@ -33,6 +33,7 @@ import { useNavSteps } from './navComponents/useNavSteps';
 import { useNavDropdown } from './navComponents/useNavDropdown';
 import { usePendantSelection } from './navComponents/usePendantSelection';
 import { BrightnessSlider } from './navComponents/BrightnessSlider';
+import InfoPanel from './navComponents/InfoPanel';
 
 import {
   listenForConnectorColorMessages,
@@ -47,7 +48,14 @@ import {
 const VerticalNavBar = ({
   activeStep,
   setCables,
-
+  brightness,
+  setBrightness,
+  colorTemperature,
+  setColorTemperature,
+  lighting,
+  setLighting,
+  isLightingPanelOpen,
+  setIsLightingPanelOpen,
   setActiveStep,
   showConfigurationTypeSelector,
   setShowConfigurationTypeSelector,
@@ -68,7 +76,6 @@ const VerticalNavBar = ({
   onSystemBaseDesignChange,
   pendants,
   selectedPendants,
-  setIsLightingPanelOpen,
   setSelectedPendants,
   onLocationSelection,
   configuringType,
@@ -188,7 +195,7 @@ const VerticalNavBar = ({
       // Example: open a modal, update config, etc.
       setShowConfigurationTypeSelector(true);
       setActiveStep("pendantSelection");
-     setOpenDropdown("pendantSelection");
+      setOpenDropdown("pendantSelection");
     });
     return cleanup;
   }, [config.selectedPendants]);
@@ -1001,19 +1008,41 @@ const VerticalNavBar = ({
                           }}
                         />
                       )}
-                      
+
+                    {step?.id === "info" && openDropdown === step?.id && (
+                      <InfoPanel 
+                        productInfo={{
+                          model: config.model || "Limi Pro X1",
+                          type: config.lightType || "Not selected",
+                          environment: config.environment || "Not selected",
+                          baseType: config.baseType || "Not selected",
+                          baseColor: config.baseColor || "Not selected",
+                          lightAmount: config.lightAmount ? `${config.lightAmount} lights` : "Not selected"
+                        }}
+                      />
+                    )}
+
                     {step?.id === "lightingControl" && openDropdown === step?.id && (
                       <div className="p-4 rounded-lg shadow-lg">
                         <h3 className="text-lg font-medium mb-4">Adjust Brightness</h3>
-                        <BrightnessSlider 
+                        <BrightnessSlider
+
+                          brightness={brightness}
+                          setBrightness={setBrightness}
+                          temperature={colorTemperature}
+                          setTemperature={setColorTemperature}
                           initialValue={config.brightness || 50}
+
                           onChange={(value) => {
                             // Update the config with the new brightness value
                             // You might want to add a proper handler for this
                             console.log('Brightness changed to:', value);
                             // Example: onBrightnessChange?.(value);
                           }}
+                          sendMessageToPlayCanvas={sendMessageToPlayCanvas}
                         />
+
+
                       </div>
                     )}
                   </NavButton>
@@ -1061,8 +1090,8 @@ const VerticalNavBar = ({
                       setActiveStep(step.id);
                     }}
                     className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 ${mobileActiveStep === step.id && mobileBottomMenuOpen
-                        ? `text-white`
-                        : "text-gray-400 hover:text-white"
+                      ? `text-white`
+                      : "text-gray-400 hover:text-white"
                       }`}
                     style={{
                       backgroundColor:
@@ -1371,8 +1400,8 @@ function GuidedTourOverlay({
             onClick={onPrev}
             disabled={stepIndex === 0}
             className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 flex items-center ${stepIndex === 0
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-emerald-600 hover:bg-emerald-50 hover:shadow-sm"
+              ? "text-gray-400 cursor-not-allowed"
+              : "text-emerald-600 hover:bg-emerald-50 hover:shadow-sm"
               }`}
           >
             <FiChevronLeft size={18} className="mr-1" />

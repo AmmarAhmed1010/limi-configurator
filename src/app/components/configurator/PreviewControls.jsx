@@ -180,19 +180,20 @@ export const PreviewControls = ({
   }, [brightness]);
 
   // --- Add this new useEffect for colorTemperature ---
-  useEffect(() => {
-    if (lighting == true) {
-      if (colorTempDebounceTimeout.current)
-        clearTimeout(colorTempDebounceTimeout.current);
-      colorTempDebounceTimeout.current = setTimeout(() => {
-        sendMessageToPlayCanvas(
-          "colorTemperature:" +
-          Math.round(2700 + (colorTemperature / 100) * (6500 - 2700))
-        );
-      });
-      return () => clearTimeout(colorTempDebounceTimeout.current);
-    }
-  }, [colorTemperature]);
+  // useEffect(() => {
+  //   if (lighting == true) {
+  //     if (colorTempDebounceTimeout.current)
+  //       clearTimeout(colorTempDebounceTimeout.current);
+  //     colorTempDebounceTimeout.current = setTimeout(() => {
+  //       sendMessageToPlayCanvas(
+  //         "colorTemperature:" +
+  //         Math.round(2700 + (colorTemperature / 100) * (6500 - 2700))
+  //       );
+  //       console.log("Color temperature sent to PlayCanvas: " + colorTemperature);
+  //     });
+  //     return () => clearTimeout(colorTempDebounceTimeout.current);
+  //   }
+  // }, [colorTemperature]);
 
   const handleMouseEnter = () => {
     if (!isMobile) {
@@ -298,7 +299,7 @@ export const PreviewControls = ({
         onMouseLeave={handleMouseLeave}
         onTouchStart={handleTouch}
       >
-        <motion.button
+        {/* <motion.button
           whileHover={{ scale: 0.95 }}
           whileTap={{ scale: 0.95 }}
           className={`p-2 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm border bg-gray-700/90 border-gray-600 text-white hover:bg-[#50C878]`}
@@ -306,7 +307,7 @@ export const PreviewControls = ({
           aria-expanded={isHovered}
         >
           <FaInfo size={16} />
-        </motion.button>
+        </motion.button> */}
 
         {/* Lighting Control Button */}
 
@@ -366,7 +367,7 @@ export const PreviewControls = ({
         className="absolute left-14 sm:left-[4.5rem] top-[19%] z-50 flex gap-2"
         ref={lightingRef}
       >
-        <motion.button
+        {/* <motion.button
           whileHover={{ scale: 0.95 }}
           whileTap={{ scale: 0.95 }}
           className={`p-2 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm border ${isLightingPanelOpen
@@ -385,7 +386,7 @@ export const PreviewControls = ({
               className={lighting ? "text-yellow-300" : ""}
             />
           </motion.div>
-        </motion.button>
+        </motion.button> */}
 
         {/* Lighting Control Panel */}
         <AnimatePresence>

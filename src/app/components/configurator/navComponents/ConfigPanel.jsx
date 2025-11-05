@@ -1274,7 +1274,7 @@ useEffect(() => {
 
       <div className="flex justify-center items-center w-full">
         <motion.div
-          className={`fixed h-[150px] sm:absolute bottom-0 sm:bottom-1 -translate-x-1/2 bg-black/95 sm:backdrop-blur-sm border border-gray-700 rounded-t-lg sm:rounded-lg z-40 w-full sm:max-w-[320px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[540px] sm:w-[80vw] md:w-[55vw] lg:w-[40vw] xl:w-[24vw] max-h-[60vh] sm:max-h-[30vh] shadow-lg overflow-hidden ${className}`}
+          className={`fixed h-[150px] sm:absolute bottom-0 sm:bottom-1 -translate-x-1/2 bg-white/60 rounded-t-lg sm:rounded-lg z-40 w-full sm:max-w-[320px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[540px] sm:w-[80vw] md:w-[55vw] lg:w-[40vw] xl:w-[24vw] max-h-[60vh] sm:max-h-[30vh] shadow-lg overflow-hidden ${className}`}
           initial={
             isMobileView ? { y: "100%", opacity: 0 } : { y: 30, opacity: 0 }
           }
@@ -1294,13 +1294,13 @@ useEffect(() => {
                         onNavigate={handleBreadcrumbNavigation}
                       />
                     </div>
-                    <h3 className="ml-4 text-xs sm:text-sm font-medium text-white font-['Amenti'] truncate text-right">
+                    <h3 className="ml-4 text-xs sm:text-sm font-medium text-black font-['Amenti'] truncate text-right">
                       {panelConfig.title}
                     </h3>
                     {panelConfig.showCloseButton && (
                       <button
                         onClick={onClose}
-                        className="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 ml-2"
+                        className="w-6 h-6 rounded-full bg-white flex items-center justify-center ml-2"
                         aria-label="Close panel"
                       >
                         <FaTimes size={10} className="text-gray-300" />
@@ -1311,17 +1311,17 @@ useEffect(() => {
               ) : (
                 <>
                   <div className="flex-1">
-                    <h3 className="text-xs sm:text-sm font-medium text-white font-['Amenti'] truncate">
+                    <h3 className="text-xs sm:text-sm font-medium text-black font-['Amenti'] truncate">
                       {panelConfig.title}
                     </h3>
                   </div>
                   {panelConfig.showCloseButton && (
                     <button
                       onClick={onClose}
-                      className="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 ml-2"
+                      className="w-6 h-6 rounded-full bg-white flex items-center border-[1px] border-black justify-center ml-2"
                       aria-label="Close panel"
                     >
-                      <FaTimes size={10} className="text-gray-300" />
+                      <FaTimes size={10} className="text-black" />
                     </button>
                   )}
                 </>
@@ -1330,7 +1330,7 @@ useEffect(() => {
             {/* Items carousel or cable size segmented control */}
             {configuringType === "cableSize" ? (
               <div className="flex flex-col gap-2 w-full">
-                <label className="text-sm font-semibold text-gray-400 mb-1">
+                <label className="text-sm font-semibold text-black mb-1">
                   Length
                 </label>
                 <div className="flex w-full bg-[#2B2D2F] rounded-full p-1 justify-between">
@@ -1359,7 +1359,7 @@ useEffect(() => {
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
                     <button
                       onClick={() => scrollCarousel("left")}
-                      className="w-7 h-7 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors shadow"
+                      className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center border-[1px] border-black"
                       aria-label="Scroll left"
                     >
                       <FaChevronLeft size={12} />
@@ -1400,7 +1400,7 @@ useEffect(() => {
                         ) : (
                           <div
                             className="w-full h-full flex items-center justify-center"
-                            style={{ backgroundColor: "#2C3539", color: "white" }}
+                            style={{ backgroundColor: "#2C3539", color: "black" }}
                           >
                             <p className="text-base sm:text-lg font-bold">
                               {item.baseNumber}
@@ -1414,7 +1414,7 @@ useEffect(() => {
                         )}
                       </div>
                       <p
-                        className={`text-center text-xs sm:text-[13px] mt-1.5 text-gray-200 font-medium capitalize`}
+                        className={`text-center text-xs sm:text-[13px] mt-1.5 text-black font-medium capitalize`}
                       >
                         {item.name}
                       </p>
@@ -1425,7 +1425,7 @@ useEffect(() => {
                   <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
                     <button
                       onClick={() => scrollCarousel("right")}
-                      className="w-7 h-7 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors shadow"
+                      className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center border-[1px] border-black"
                       aria-label="Scroll right"
                     >
                       <FaChevronRight size={12} />

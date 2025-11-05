@@ -8,13 +8,15 @@ import {
   FaList,
   FaCubes,
   FaPalette,
-  FaCheck
+  FaCheck,
+  FaInfoCircle
 } from "react-icons/fa";
 import { FiHome } from "react-icons/fi";
 
 // Function to get React icon based on step ID
 const getStepIcon = (stepId) => {
   const iconMap = {
+    info: FaInfoCircle,
     lightType: FaLightbulb,
     baseType: FaLayerGroup,
     baseColor: FaPalette,
@@ -107,22 +109,14 @@ export const NavButton = ({
             onClick={handleClick}
             onTouchStart={(e) => e.stopPropagation()}
           >
-            {/* Outer gradient “border” circle */}
-            <span
-              className="
-                absolute inset-0 rounded-full
-                bg-gradient-to-b from-white via-white to-transparent
-                pointer-events-none
-              "
-            />
-
             {/* Inner solid circle */}
             <span
               className="
                 absolute inset-[2px] rounded-full flex items-center justify-center
               "
               style={{
-                backgroundColor: isActive ? '#141414' : '#DCDCDC',
+                backgroundColor: isActive ? '#141414' : 'rgba(255, 255, 255, 0.6)',
+
                 color: isActive ? '#DCDCDC' : '#141414',
               }}
             >
@@ -134,37 +128,34 @@ export const NavButton = ({
 
       {/* Dropdown content */}
       {isOpen && (
-       <div
-  ref={(el) => step.id && (dropdownRefs.current[step.id] = el)}
-  className="
-    absolute max-sm:fixed left-full ml-4 top-0
-    rounded-xl z-[200] overflow-hidden
-    sm:left-full sm:ml-3 sm:top-0
-    max-sm:top-[25vh] max-sm:left-auto max-sm:right-0
-    bg-gradient-to-b from-white via-white to-transparent
-    p-[2px]                /* border thickness */
-  "
-  style={{
-    width: isMobile
-      ? `${containerDimensions.width || screenWidth}px`
-      : "280px",
-    maxWidth: isMobile
-      ? `${containerDimensions.width || screenWidth}px`
-      : "calc(100vw - 2rem)",
-    ...(isMobile && containerDimensions.height > 0 && {
-      top: `360px`,
-    }),
-  }}
-  onClick={(e) => e.stopPropagation()}
-  onTouchStart={(e) => e.stopPropagation()}
->
-  {/* Inner box (actual dropdown) */}
-  <div className="rounded-lg bg-[#DCDCDC] text-[#141414] overflow-hidden">
-    {children}
-  </div>
-</div>
-
+        <div
+          ref={(el) => step.id && (dropdownRefs.current[step.id] = el)}
+          className="
+      absolute max-sm:fixed left-full ml-4 top-0
+      rounded-xl z-[200] overflow-hidden
+      sm:left-full sm:ml-3 sm:top-0
+      max-sm:top-[25vh] max-sm:left-auto max-sm:right-0
+      bg-white/60 text-[#141414]
+    "
+          style={{
+            width: isMobile
+              ? `${containerDimensions.width || screenWidth}px`
+              : "280px",
+            maxWidth: isMobile
+              ? `${containerDimensions.width || screenWidth}px`
+              : "calc(100vw - 2rem)",
+            ...(isMobile && containerDimensions.height > 0 && {
+              top: `360px`,
+            }),
+          }}
+          onClick={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
       )}
+
+
     </div>
   );
 };
