@@ -9,6 +9,7 @@ import { PendantSelectionDropdown } from './PendantSelectionDropdown';
 import { SystemTypeDropdown } from './SystemTypeDropdown';
 import { SystemConfigurationDropdown } from './SystemConfigurationDropdown';
 import MobilePendantConfig from './MobilePendantConfig';
+import LightingControl from './LightingControl';
 
 const MobileBottomMenu = ({
   isOpen,
@@ -34,10 +35,15 @@ const MobileBottomMenu = ({
   setLocalConfiguringType,
   selectedPendants,
   cables,
+
   currentDesign,
   setOpenBase,
   setCurrentDesign,
   carouselRef,
+  brightness,
+  setBrightness,
+  temperature,
+  setTemperature,
   onCableSizeChange,
   scrollCarousel,
   handlePendantLocationClick,
@@ -99,6 +105,7 @@ const MobileBottomMenu = ({
       case 'environment': return 'Environment';
       case 'baseType': return 'Base Type';
       case 'baseColor': return 'Base Color';
+      case 'lightingControl': return 'Lighting Control';
       case 'lightAmount': return 'Light Amount';
       case 'pendantSelection': return 'Pendant Selection';
       case 'systemType': return 'System Type';
@@ -158,6 +165,32 @@ const MobileBottomMenu = ({
             onTourSelection={handleTourSubSelection}
             activeTab="base"
             setActiveTab={() => {}}
+          />
+        );
+
+      case 'lightingControl':
+        return (
+          <LightingControl
+            sendMessageToPlayCanvas={sendMessageToPlayCanvas}
+
+            brightness={config.brightness || 100}
+            colorTemperature={config.colorTemperature || 4000}
+            onBrightnessChange={(value) => {
+              // Handle brightness change
+              if (onEnvironmentChange) {
+                onEnvironmentChange({ ...config, brightness: value });
+              }
+            }}
+            onColorTemperatureChange={(value) => {
+              // Handle color temperature change
+              if (onEnvironmentChange) {
+                onEnvironmentChange({ ...config, colorTemperature: value });
+              }
+            }}
+            setActiveStep={setActiveStep}
+            setOpenDropdown={setOpenDropdown}
+            tourActive={tourState.isActive}
+            onTourSelection={handleTourSubSelection}
           />
         );
       

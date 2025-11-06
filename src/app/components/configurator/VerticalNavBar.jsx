@@ -1131,6 +1131,10 @@ const VerticalNavBar = ({
       {/* Mobile Bottom Menu */}
       <MobileBottomMenu
         isOpen={mobileBottomMenuOpen && isMobile}
+        brightness={brightness}
+        setBrightness={setBrightness}
+        colorTemperature={colorTemperature}
+        setColorTemperature={setColorTemperature}
         activeStep={mobileActiveStep}
         handleChandelierTypeChange={handleChandelierTypeChange}
         setLocalConfiguringType={setLocalConfiguringType}
