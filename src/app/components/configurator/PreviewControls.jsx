@@ -84,20 +84,20 @@ export const PreviewControls = ({
   const [showSwipeAnimation, setShowSwipeAnimation] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
   
-  // Color options from the image
+  // Color options for the color picker
   const colorOptions = [
-    { id: 1, color: '#FFA500', name: 'Orange' },
-    { id: 2, color: '#FF0000', name: 'Red' },
-    { id: 3, color: '#FFC0CB', name: 'Pink' },
-    { id: 4, color: '#FF69B4', name: 'Hot Pink' },
-    { id: 5, color: '#800080', name: 'Purple' },
-    { id: 6, color: '#0000FF', name: 'Blue' },
-    { id: 7, color: '#00FFFF', name: 'Cyan' },
-    { id: 8, color: '#008000', name: 'Green' },
-    { id: 9, color: '#FFFF00', name: 'Yellow' },
-    { id: 10, color: '#000000', name: 'Black' },
-    { id: 11, color: '#808080', name: 'Gray' },
-    { id: 12, color: '#FFFFFF', name: 'White' },
+    { id: 1, color: '#D28681', name: 'Pink' },
+    { id: 2, color: '#F77160', name: 'Yellow' },
+    { id: 3, color: '#74AAB2', name: 'Teal' },
+    { id: 4, color: '#7A7266', name: 'Gun Metal Grey' },
+    { id: 5, color: '#716D66', name: 'Pearl Black' },
+    { id: 6, color: '#955040', name: 'Red' },
+    { id: 7, color: '#60778A', name: 'Blue' },
+    { id: 8, color: '#D1B572', name: 'Brass' },
+    { id: 9, color: '#C1C6C7', name: 'Chrome' },
+    { id: 10, color: '#947567', name: 'Mocha' },
+    { id: 11, color: '#B7ACA1', name: 'Beige' },
+    { id: 12, color: '#C2D8E9', name: 'Light Blue' },
   ];
   
   const handleColorSelect = (color) => {
@@ -257,10 +257,8 @@ export const PreviewControls = ({
     <div className="noselect">
       {/* Vertical Color Picker */}
       {showColorPicker && (
-        <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center space-y-3 p-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 shadow-lg">
-        <div className="p-2 text-white">
-          <FaPalette size={20} />
-        </div>
+        <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center space-y-3 p-2 bg-white/60 backdrop-blur-sm rounded-full border border-white/20 shadow-lg">
+       
         <div className="h-px w-8 bg-white/20 my-1"></div>
         {colorOptions.map((color) => (
           <button

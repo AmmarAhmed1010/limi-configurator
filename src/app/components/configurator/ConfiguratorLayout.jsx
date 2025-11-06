@@ -983,8 +983,7 @@ const ConfiguratorLayout = () => {
 
       // Find the system for this design
       const system = findSystemAssignmentByDesign(design);
-
-      console.log("systemDesignBar", system);
+   
       // Check if the system type is chandelier
       let hasChandelier = false;
       cables.forEach((cable) => {

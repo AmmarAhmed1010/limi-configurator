@@ -1380,7 +1380,7 @@ useEffect(() => {
                   {panelConfig.items.map((item) => (
                     <motion.div
                       key={item.id}
-                      className="flex flex-col items-center flex-shrink-0 px-1 sm:px-2"
+                      className="flex flex-col items-center flex-shrink-0 px-1 sm:px-2 cursor-pointer"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => panelConfig.onItemSelect(item.id)}
