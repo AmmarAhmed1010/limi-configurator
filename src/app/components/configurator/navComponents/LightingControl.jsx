@@ -138,9 +138,9 @@ const LightingControl = ({
   };
 
   return (
-    <div className="p-4 w-full space-y-4">
+    <div className="p-4 w-full bg-white rounded-lg space-y-4">
       {/* Quick presets */}
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <span className="text-xs font-medium text-gray-700">Quick presets</span>
       </div>
       <div className="flex gap-2">
@@ -161,8 +161,8 @@ const LightingControl = ({
           >
             {preset.label}
           </button>
-        ))}
-      </div>
+        ))} 
+      </div> */}
 
       {/* Lumen / brightness control */}
       <div className="space-y-1">
