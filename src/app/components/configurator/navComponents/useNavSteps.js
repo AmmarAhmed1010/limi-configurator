@@ -1,14 +1,14 @@
-import { 
-  FaLightbulb, 
-  FaLayerGroup, 
-  FaRegLightbulb, 
-  FaObjectGroup, 
-  FaList, 
+import {
+  FaLightbulb,
+  FaLayerGroup,
+  FaRegLightbulb,
+  FaObjectGroup,
+  FaList,
   FaCubes,
   FaPalette,
   FaGlobe,
   FaCheck,
-  FaInfoCircle
+  FaInfoCircle,
 } from "react-icons/fa";
 
 export const useNavSteps = (config) => {
@@ -19,95 +19,98 @@ export const useNavSteps = (config) => {
     }
     return null;
   };
-  
+
   const getBaseTypeImage = () => {
     if (config.baseType) {
       return `/images/verticalNavbar/baseType/${config.baseType}.png`;
     }
     return null;
   };
-  
+
   const getLightAmountImage = () => {
     if (config.lightAmount) {
       return `/images/verticalNavbar/lightAmount/${config.lightAmount}.png`;
     }
     return null;
   };
-  
+
   // Define navigation steps
   const steps = [
     {
-      id: 'info',
+      id: "info",
       icon: <FaInfoCircle />,
-      label: 'Information',
-      tooltip: 'View product information',
+      label: "Information",
+      tooltip: "View product information",
       isActive: true,
-      isCompleted: false
+      isCompleted: false,
     },
-    
-    { 
-      id: 'lightType', 
+
+    {
+      id: "lightType",
       icon: <FaLightbulb />, // Fallback icon
       // image: getLightTypeImage(),
-      label: 'Light Type',
-      tooltip: 'Select light type',
+      label: "Light Type",
+      tooltip: "Select light type",
       isActive: true, // Always active
-      isCompleted: Boolean(config.lightType)
+      isCompleted: Boolean(config.lightType),
     },
-    { 
-      id: 'environment', 
-      icon: <FaGlobe />, 
-      label: 'Environment',
-      tooltip: 'Select environment scene ',
+    {
+      id: "lightingControl",
+      icon: <FaRegLightbulb />,
+      label: "Lighting Control",
+      tooltip: "Adjust lighting settings",
+      isActive: true,
+      isCompleted: false,
+    },
+    {
+      id: "environment",
+      icon: <FaGlobe />,
+      label: "Environment",
+      tooltip: "Select environment scene ",
       isActive: true, // Always active
-      isCompleted: Boolean(config.environment)
+      isCompleted: Boolean(config.environment),
     },
-    { 
-      id: 'baseType', 
+    {
+      id: "baseType",
       icon: <FaLayerGroup />, // Fallback icon
       // image: getBaseTypeImage(),
-      label: 'Base Type',
-      tooltip: 'Select base type',
-      isActive: config.lightType === 'ceiling', // Only active for ceiling lights
-      isCompleted: Boolean(config.baseType)
+      label: "Base Type",
+      tooltip: "Select base type",
+      isActive: config.lightType === "ceiling", // Only active for ceiling lights
+      isCompleted: Boolean(config.baseType),
     },
-    { 
-      id: 'baseColor', 
-      icon: <FaPalette />, 
-      label: 'Base Color',
-      tooltip: 'Select base color ',
-      isActive: config.lightType === 'ceiling' && Boolean(config.baseType), // Active after base type is selected
-      isCompleted: Boolean(config.baseColor)
+    {
+      id: "baseColor",
+      icon: <FaPalette />,
+      label: "Base Color",
+      tooltip: "Select base color ",
+      isActive: config.lightType === "ceiling" && Boolean(config.baseType), // Active after base type is selected
+      isCompleted: Boolean(config.baseColor),
     },
-      { 
-      id: 'lightingControl', 
-      icon: <FaRegLightbulb />, 
-      label: 'Lighting Control',
-      tooltip: 'Adjust lighting settings',
-      isActive: true,
-      isCompleted: false
-    },
-    { 
-      id: 'lightAmount', 
+
+    {
+      id: "lightAmount",
       icon: <FaRegLightbulb />, // Fallback icon
       // image: getLightAmountImage(),
-      label: 'Light Amount',
-      tooltip: 'Select number of lights',
+      label: "Light Amount",
+      tooltip: "Select number of lights",
       isActive: true, // Always active
-      isCompleted: Boolean(config.lightAmount)
+      isCompleted: Boolean(config.lightAmount),
     },
-    { 
-      id: 'pendantSelection', 
+    {
+      id: "pendantSelection",
       icon: <FaList />, // Keep using icon for this one
-      label: config.configurationType === 'pendant' ? 'Select Pendants' : 'Select Systems',
-      tooltip: config.configurationType === 'pendant' 
-        ? 'Configure individual pendants' 
-        : 'Configure system options',
+      label:
+        config.configurationType === "pendant"
+          ? "Select Pendants"
+          : "Select Systems",
+      tooltip:
+        config.configurationType === "pendant"
+          ? "Configure individual pendants"
+          : "Configure system options",
       isActive: true, // Always active - fixed to allow switching back
-      isCompleted: false
+      isCompleted: false,
     },
-  
- 
   ];
 
   return { steps };
