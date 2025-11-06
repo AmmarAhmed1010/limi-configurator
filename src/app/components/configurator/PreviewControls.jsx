@@ -15,6 +15,7 @@ import {
   FaHandPaper,
   FaLightbulb,
   FaRoute,
+  FaPalette,
 } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -26,7 +27,11 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { listenForAppReady1 } from "../../util/iframeCableMessageHandler";
 import { systemAssignments } from "./pendantSystemData";
-import { listenForOffconfigMessages, listenForLoadingMessages, listenForLoadingOffMountMessages } from "../../util/iframeCableMessageHandler";
+import {
+  listenForOffconfigMessages,
+  listenForLoadingMessages,
+  listenForLoadingOffMountMessages,
+} from "../../util/iframeCableMessageHandler";
 import LoadingScreen from "./LoadingScreen";
 import PendantLengthOverlay from "./PendantLengthOverlay";
 
@@ -34,6 +39,9 @@ export const PreviewControls = ({
   isPreviewMode,
   setIsPreviewMode,
   config,
+  handleColorPicker,
+  showColorPicker,
+  setShowColorPicker,
   isLightingPanelOpen,
   setIsLightingPanelOpen,
   cables,
@@ -59,7 +67,10 @@ export const PreviewControls = ({
 }) => {
   // Debug loading screen prop changes
   useEffect(() => {
-    console.log('📱 PreviewControls - showLoadingScreen prop changed:', showLoadingScreen);
+    console.log(
+      "📱 PreviewControls - showLoadingScreen prop changed:",
+      showLoadingScreen
+    );
   }, [showLoadingScreen]);
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -67,9 +78,36 @@ export const PreviewControls = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slidesToShow] = useState(3); // Number of items to show at once
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [showPendantLengthOverlay, setShowPendantLengthOverlay] = useState(false);
+  const [showPendantLengthOverlay, setShowPendantLengthOverlay] =
+    useState(false);
   const [showClickAnimation, setShowClickAnimation] = useState(false);
   const [showSwipeAnimation, setShowSwipeAnimation] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+  
+  // Color options from the image
+  const colorOptions = [
+    { id: 1, color: '#FFA500', name: 'Orange' },
+    { id: 2, color: '#FF0000', name: 'Red' },
+    { id: 3, color: '#FFC0CB', name: 'Pink' },
+    { id: 4, color: '#FF69B4', name: 'Hot Pink' },
+    { id: 5, color: '#800080', name: 'Purple' },
+    { id: 6, color: '#0000FF', name: 'Blue' },
+    { id: 7, color: '#00FFFF', name: 'Cyan' },
+    { id: 8, color: '#008000', name: 'Green' },
+    { id: 9, color: '#FFFF00', name: 'Yellow' },
+    { id: 10, color: '#000000', name: 'Black' },
+    { id: 11, color: '#808080', name: 'Gray' },
+    { id: 12, color: '#FFFFFF', name: 'White' },
+  ];
+  
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    // Call the handleColorPicker prop with the selected color
+    if (handleColorPicker) {
+      handleColorPicker(color.color); // color.color contains the hex value
+    }
+    console.log('Selected color:', color);
+  };
   const brightnessDebounceTimeout = useRef();
   const colorTempDebounceTimeout = useRef();
   const prevLightingPanelWasOpenRef = useRef(false);
@@ -135,7 +173,9 @@ export const PreviewControls = ({
   // Listen for loadingOffMount message to hide loading screen
   useEffect(() => {
     const cleanup = listenForLoadingOffMountMessages((data, event) => {
-      console.log('🔚 PreviewControls - Received loadingOffMount event, hiding loading screen');
+      console.log(
+        "🔚 PreviewControls - Received loadingOffMount event, hiding loading screen"
+      );
       if (setShowLoadingScreen) {
         setShowLoadingScreen(false);
       }
@@ -215,6 +255,24 @@ export const PreviewControls = ({
 
   return (
     <div className="noselect">
+      {/* Vertical Color Picker */}
+      {showColorPicker && (
+        <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center space-y-3 p-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 shadow-lg">
+        <div className="p-2 text-white">
+          <FaPalette size={20} />
+        </div>
+        <div className="h-px w-8 bg-white/20 my-1"></div>
+        {colorOptions.map((color) => (
+          <button
+            key={color.id}
+            className={`w-8 h-8 rounded-full border-2 transition-transform duration-200 hover:scale-110 ${selectedColor?.id === color.id ? 'ring-2 ring-white ring-offset-2' : 'border-transparent'}`}
+            style={{ backgroundColor: color.color }}
+            onClick={() => handleColorSelect(color)}
+            title={color.name}
+          />
+        ))}
+      </div>
+      )}
       {/* Onboarding Animation */}
       {showOnboarding && (
         <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center">
@@ -409,8 +467,9 @@ export const PreviewControls = ({
               <div className="flex items-center justify-between mb-2 sm:mb-5">
                 <div className="flex items-center gap-1 sm:gap-2">
                   <FaLightbulb
-                    className={`${lighting ? "text-yellow-400" : "text-gray-400"
-                      } transition-colors text-sm sm:text-base`}
+                    className={`${
+                      lighting ? "text-yellow-400" : "text-gray-400"
+                    } transition-colors text-sm sm:text-base`}
                     size={16}
                   />
                   <h3 className="text-white font-semibold text-sm sm:text-lg">
@@ -447,18 +506,21 @@ export const PreviewControls = ({
                         }
                       }
                     }}
-                    className={`sm:hidden relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none ${lighting ? "bg-emerald-500" : "bg-gray-600"
-                      }`}
+                    className={`sm:hidden relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none ${
+                      lighting ? "bg-emerald-500" : "bg-gray-600"
+                    }`}
                   >
                     <span
-                      className={`${lighting ? "translate-x-6" : "translate-x-0.5"
-                        } inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-in-out`}
+                      className={`${
+                        lighting ? "translate-x-6" : "translate-x-0.5"
+                      } inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-in-out`}
                     />
                   </button>
 
                   <div
-                    className={`hidden sm:block w-2 h-2 rounded-full ${lighting ? "bg-green-400" : "bg-red-400"
-                      } animate-pulse`}
+                    className={`hidden sm:block w-2 h-2 rounded-full ${
+                      lighting ? "bg-green-400" : "bg-red-400"
+                    } animate-pulse`}
                   ></div>
                 </div>
               </div>
@@ -468,10 +530,11 @@ export const PreviewControls = ({
                 <div className="flex items-center gap-2">
                   <span className="text-gray-200 font-medium">Power</span>
                   <span
-                    className={`text-xs px-2 py-1 rounded-full ${lighting
+                    className={`text-xs px-2 py-1 rounded-full ${
+                      lighting
                         ? "bg-green-500/20 text-green-400"
                         : "bg-red-500/20 text-red-400"
-                      } transition-colors duration-300`}
+                    } transition-colors duration-300`}
                   >
                     {lighting ? "ON" : "OFF"}
                   </span>
@@ -503,12 +566,14 @@ export const PreviewControls = ({
                       }
                     }
                   }}
-                  className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300 focus:outline-none ${lighting ? "bg-emerald-500" : "bg-gray-600"
-                    }`}
+                  className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300 focus:outline-none ${
+                    lighting ? "bg-emerald-500" : "bg-gray-600"
+                  }`}
                 >
                   <span
-                    className={`${lighting ? "translate-x-8" : "translate-x-1"
-                      } inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-in-out`}
+                    className={`${
+                      lighting ? "translate-x-8" : "translate-x-1"
+                    } inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-in-out`}
                   />
                 </button>
               </div>
@@ -602,8 +667,7 @@ export const PreviewControls = ({
                     Quick Presets
                   </label>
                   <div className="flex gap-2">
-                    
-                        <motion.button
+                    <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => {
@@ -625,7 +689,7 @@ export const PreviewControls = ({
                     >
                       Natural
                     </motion.button>
-                   <motion.button
+                    <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => {
@@ -723,6 +787,7 @@ export const PreviewControls = ({
                     <span className="text-xs font-normal text-white">
                       ({favorites.length}{" "}
                       {favorites.length === 1 ? "item" : "items"})
+                      
                     </span>
                   )}
                 </h3>
@@ -989,14 +1054,17 @@ export const PreviewControls = ({
       <LoadingScreen isVisible={showLoadingScreen} />
 
       {/* Pendant Length Overlay */}
-      <PendantLengthOverlay 
-        isVisible={showPendantLengthOverlay} 
-        onClose={() => setShowPendantLengthOverlay(false)} 
+      <PendantLengthOverlay
+        isVisible={showPendantLengthOverlay}
+        onClose={() => setShowPendantLengthOverlay(false)}
       />
 
       {/* Click Animation GIF */}
       {showClickAnimation && (
-        <div className="fixed inset-0 z-50 flex justify-center pointer-events-none" style={{ alignItems: 'flex-start', paddingTop: '46vh' }}>
+        <div
+          className="fixed inset-0 z-50 flex justify-center pointer-events-none"
+          style={{ alignItems: "flex-start", paddingTop: "46vh" }}
+        >
           <div className="relative">
             <Image
               src="/svg/click.gif"
@@ -1005,7 +1073,7 @@ export const PreviewControls = ({
               height={200}
               className="animate-pulse"
               style={{
-                animation: 'clickAnimation 5s ease-in-out forwards'
+                animation: "clickAnimation 5s ease-in-out forwards",
               }}
             />
           </div>
@@ -1014,7 +1082,10 @@ export const PreviewControls = ({
 
       {/* Swipe Animation GIF */}
       {showSwipeAnimation && (
-        <div className="fixed inset-0 z-50 flex justify-center pointer-events-none" style={{ alignItems: 'flex-start', paddingTop: '46vh' }}>
+        <div
+          className="fixed inset-0 z-50 flex justify-center pointer-events-none"
+          style={{ alignItems: "flex-start", paddingTop: "46vh" }}
+        >
           <div className="relative">
             <Image
               src="/svg/Swipe.gif"
@@ -1023,7 +1094,7 @@ export const PreviewControls = ({
               height={200}
               className="animate-pulse"
               style={{
-                animation: 'swipeAnimation 5s ease-in-out forwards'
+                animation: "swipeAnimation 5s ease-in-out forwards",
               }}
             />
           </div>

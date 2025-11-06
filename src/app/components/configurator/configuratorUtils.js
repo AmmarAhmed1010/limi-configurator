@@ -156,6 +156,18 @@ export const getDefaultDesigns = (amount) => {
 };
 
 // ============================================================================
+// COLOR PICKER UTILITIES
+// ============================================================================
+
+/**
+ * Handle color selection for ball shade
+ * @param {string} color - The selected color value
+ */
+export const handleColorPicker = (color) => {
+  sendMessageToPlayCanvas(`ballShade_${color}`);
+};
+
+// ============================================================================
 // PLAYCANVAS MESSAGING UTILITIES
 // ============================================================================
 

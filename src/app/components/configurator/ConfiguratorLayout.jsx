@@ -53,6 +53,7 @@ import {
   filterSelectedPendants,
   updateContainerDimensions,
   useSystemAssignments,
+  handleColorPicker,
 } from "./configuratorUtils";
 
 const ConfiguratorLayout = () => {
@@ -129,6 +130,7 @@ const ConfiguratorLayout = () => {
   const [showPendantLoadingScreen, setShowPendantLoadingScreen] =
     useState(false);
   const [showLoadingScreen, setShowLoadingScreen] = useState(false);
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   // Debug loading screen state changes
   useEffect(() => {
@@ -1276,6 +1278,9 @@ const ConfiguratorLayout = () => {
       {!isLoading && (
         <PreviewControls
           isPreviewMode={isPreviewMode}
+          handleColorPicker={handleColorPicker}
+          showColorPicker={showColorPicker}
+          setShowColorPicker={setShowColorPicker}
           setIsPreviewMode={setIsPreviewMode}
           config={config}
           cables={cables}
@@ -1317,6 +1322,8 @@ const ConfiguratorLayout = () => {
               containerDimensions={containerDimensions}
               handleChandelierTypeChange={handleChandelierTypeChange}
               activeStep={activeStep}
+              showColorPicker={showColorPicker}
+              setShowColorPicker={setShowColorPicker}
               setActiveStep={setActiveStep}
               config={config}
               cables={cables}

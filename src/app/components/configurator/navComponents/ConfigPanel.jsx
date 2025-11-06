@@ -31,6 +31,8 @@ import {
 import { useBarState } from "../../../hooks/useBarState";
 export const ConfigPanel = ({
   configuringType,
+  showColorPicker,
+  setShowColorPicker,
   configuringSystemType,
   breadcrumbPath,
   showConfigurationTypeSelector,
@@ -893,8 +895,12 @@ useEffect(() => {
           },
         ];
         config.onItemSelect = (systemType) => {
-          // Fire specific messages for each system type
-
+          // Show color picker if ball system is selected
+          if (systemType === "ball") {
+            setShowColorPicker(true);
+          } else {
+            setShowColorPicker(false);
+          }
 
           if (systemType === "bar") {
             // Initialize the bar array with the number of selected pendants

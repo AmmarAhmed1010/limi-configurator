@@ -47,6 +47,8 @@ import {
 //adsaldasldja
 const VerticalNavBar = ({
   activeStep,
+  showColorPicker,
+  setShowColorPicker,
   setCables,
   brightness,
   setBrightness,
@@ -1188,6 +1190,8 @@ const VerticalNavBar = ({
           selectedPendants.length > 0 &&
           !isMobile && (
             <ConfigPanel
+            showColorPicker={showColorPicker}
+            setShowColorPicker={setShowColorPicker}
               configuringType={localConfiguringType}
               configuringSystemType={configuringSystemType}
               breadcrumbPath={breadcrumbPath}
