@@ -97,7 +97,7 @@ export const NavButton = ({
             className={`
               relative w-12 h-12 rounded-full overflow-hidden
               flex items-center justify-center text-base
-              transition-colors transition-shadow duration-200
+              transition-colors  duration-200
               ${step.disabled ? 'opacity-50 cursor-not-allowed' : 'opacity-100'}
               ${isCompleted ? 'ring-2 ring-emerald-500' : ''}
             `}

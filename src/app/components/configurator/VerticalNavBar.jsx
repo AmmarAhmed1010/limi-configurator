@@ -1055,25 +1055,47 @@ const VerticalNavBar = ({
       {/* Mobile vertical nav */}
       {showVerticalNav && isMobile && (
         <div
-          className="fixed right-4 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
+          className="fixed left-4 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >
           <ProgressIndicator progress={calculateProgress()} emerald={emerald} />
           <motion.div
             className="p-2 rounded-full flex flex-col gap-3"
-            style={{ backgroundColor: charlestonGreen }}
+            // style={{ backgroundColor:  }}
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
           >
             {steps
-              .filter((step) => {
+             .filter((step) => {
                 if (
                   (step.id === "baseType" || step.id === "baseColor") &&
                   config.lightType !== "ceiling"
                 ) {
                   return false;
                 }
+                //hide info button for ceiling light types
+                if (
+                  step.id === "info" &&
+                  (config.lightType === "ceiling" || config.lightType === "wall" || config.lightType === "floor")
+                ) {
+                  return false;
+                }
+                // Hide environment button for wall and floor light types
+                if (
+                  step.id === "environment" &&
+                  (config.lightType === "wall" || config.lightType === "floor")
+                ) {
+                  return false;
+                }
+                // Hide environment button for wall and floor light types
+                if (
+                  step.id === "lightAmount" &&
+                  (config.lightType === "wall" || config.lightType === "floor")
+                ) {
+                  return false;
+                }
+
                 return true;
               })
               .map((step, index) => (
@@ -1091,11 +1113,11 @@ const VerticalNavBar = ({
                     }}
                     className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 ${mobileActiveStep === step.id && mobileBottomMenuOpen
                       ? `text-white`
-                      : "text-gray-400 hover:text-white"
+                      : "text-black"
                       }`}
                     style={{
                       backgroundColor:
-                        mobileActiveStep === step.id && mobileBottomMenuOpen ? emerald : "transparent",
+                        mobileActiveStep === step.id && mobileBottomMenuOpen ? '#141414' : 'rgba(255, 255, 255, 0.6)',
                     }}
                   >
                     {getNavIcon(step.id)}

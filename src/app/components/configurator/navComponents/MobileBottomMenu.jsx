@@ -254,19 +254,19 @@ const MobileBottomMenu = ({
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="fixed bottom-0 left-0 right-0 bg-[#1a1a1a] z-[9998] h-30 rounded-t-2xl border-t border-gray-700"
+        className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF9E] z-[9998] h-30 rounded-t-2xl "
       >
       {/* Header - only show for non-pendant selection steps */}
       {activeStep !== 'pendantSelection' && (
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
+        <div className="flex items-center justify-between pt-4 px-8">
           <div className="flex-1">
-            <h3 className="text-white font-medium text-lg">
+            <h3 className="text-black font-medium text-lg">
               {getTitle()}
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-black transition-colors"
           >
             ✕
           </button>
