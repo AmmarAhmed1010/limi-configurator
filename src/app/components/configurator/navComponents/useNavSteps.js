@@ -10,8 +10,11 @@ import {
   FaCheck,
   FaInfoCircle,
 } from "react-icons/fa";
+
+
 import { TbBrightnessFilled } from "react-icons/tb";
 import { IoMdSettings } from "react-icons/io";
+import { FiHome } from "react-icons/fi";
 
 export const useNavSteps = (config) => {
   // Get dynamic image paths based on selected configuration
@@ -66,7 +69,7 @@ export const useNavSteps = (config) => {
     },
     {
       id: "environment",
-      icon: <FaGlobe />,
+      icon: <FiHome />,
       label: "Environment",
       tooltip: "Select environment scene ",
       isActive: true, // Always active

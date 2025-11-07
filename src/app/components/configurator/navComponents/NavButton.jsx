@@ -12,6 +12,7 @@ import {
   FaInfoCircle,
 
 } from "react-icons/fa";
+import React from 'react';
 import { FiHome } from "react-icons/fi";
 import { IoMdSettings } from "react-icons/io";
 import { TbBrightnessFilled } from "react-icons/tb";
@@ -124,7 +125,9 @@ export const NavButton = ({
                 color: isActive ? '#DCDCDC' : '#141414',
               }}
             >
-              {getStepIcon(step.id)}
+              {/* {getStepIcon(step.id)}
+               */}
+               {React.cloneElement(step.icon, { size: 20 })}
             </span>
           </button>
         </div>

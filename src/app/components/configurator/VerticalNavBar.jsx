@@ -16,6 +16,7 @@ import {
   
   FaGlobe,
 } from 'react-icons/fa';
+import React from 'react';
 import { FiHome } from "react-icons/fi";
 
 import { IoMdSettings } from "react-icons/io";
@@ -1129,7 +1130,8 @@ const VerticalNavBar = ({
                         mobileActiveStep === step.id && mobileBottomMenuOpen ? '#141414' : 'rgba(255, 255, 255, 0.6)',
                     }}
                   >
-                    {getNavIcon(step.id)}
+                    {/* {getNavIcon(step.id)} */}
+                    {React.cloneElement(step.icon, { size: 20 })}
                   </button>
                 </div>
               ))}
