@@ -10,6 +10,8 @@ import {
   FaCheck,
   FaInfoCircle,
 } from "react-icons/fa";
+import { TbBrightnessFilled } from "react-icons/tb";
+import { IoMdSettings } from "react-icons/io";
 
 export const useNavSteps = (config) => {
   // Get dynamic image paths based on selected configuration
@@ -56,7 +58,7 @@ export const useNavSteps = (config) => {
     },
     {
       id: "lightingControl",
-      icon: <FaRegLightbulb />,
+      icon: <TbBrightnessFilled />,
       label: "Lighting Control",
       tooltip: "Adjust lighting settings",
       isActive: true,
@@ -99,7 +101,7 @@ export const useNavSteps = (config) => {
     },
     {
       id: "pendantSelection",
-      icon: <FaList />, // Keep using icon for this one
+      icon: <IoMdSettings />,
       label:
         config.configurationType === "pendant"
           ? "Select Pendants"

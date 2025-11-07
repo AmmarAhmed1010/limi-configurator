@@ -13,8 +13,13 @@ import {
   FaList,
   FaCubes,
   FaPalette,
-  FaGlobe
+  
+  FaGlobe,
 } from 'react-icons/fa';
+import { FiHome } from "react-icons/fi";
+
+import { IoMdSettings } from "react-icons/io";
+import { TbBrightnessFilled } from "react-icons/tb";
 import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { NavButton } from './navComponents/NavButton';
 import { LightTypeDropdown } from './navComponents/LightTypeDropdown';
@@ -218,6 +223,7 @@ const VerticalNavBar = ({
       setActiveStep(null);
       setIsLightingPanelOpen(false);
       setCableMessage("");
+      setShowColorPicker(false);
 
       // Reset breadcrumb and navigation states
       onBreadcrumbNavigation("home");
@@ -761,13 +767,14 @@ const VerticalNavBar = ({
   const getNavIcon = (stepId) => {
     const iconMap = {
       lightType: <FaLightbulb />,
-      environment: <FaGlobe />,
+      environment: <FiHome />,
       baseType: <FaLayerGroup />,
       baseColor: <FaPalette />,
       lightAmount: <FaList />,
-      pendantSelection: <FaRegLightbulb />,
+      pendantSelection: <IoMdSettings/>,
       systemType: <FaCubes />,
-      systemConfiguration: <FaObjectGroup />
+      systemConfiguration: <FaObjectGroup />,
+      lightingControl: <TbBrightnessFilled />,
     };
     return iconMap[stepId] || <FaList />;
   };

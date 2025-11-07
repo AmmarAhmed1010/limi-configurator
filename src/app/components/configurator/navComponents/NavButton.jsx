@@ -9,9 +9,12 @@ import {
   FaCubes,
   FaPalette,
   FaCheck,
-  FaInfoCircle
+  FaInfoCircle,
+
 } from "react-icons/fa";
 import { FiHome } from "react-icons/fi";
+import { IoMdSettings } from "react-icons/io";
+import { TbBrightnessFilled } from "react-icons/tb";
 
 // Function to get React icon based on step ID
 const getStepIcon = (stepId) => {
@@ -21,10 +24,11 @@ const getStepIcon = (stepId) => {
     baseType: FaLayerGroup,
     baseColor: FaPalette,
     lightAmount: FaList,
-    pendantSelection: FaRegLightbulb,
+    pendantSelection: IoMdSettings,
     systemType: FaCubes,
     finish: FaCheck,
     systemConfiguration: FaObjectGroup,
+    lightingControl: TbBrightnessFilled,
   };
 
   const IconComponent = iconMap[stepId] || FiHome;
