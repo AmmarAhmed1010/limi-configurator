@@ -257,19 +257,20 @@ export const PreviewControls = ({
     <div className="noselect">
       {/* Vertical Color Picker */}
       {showColorPicker && (
-        <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center space-y-3 p-2 bg-white/60 backdrop-blur-sm rounded-full border border-white/20 shadow-lg">
-       
-        <div className="h-px w-8 bg-white/20 my-1"></div>
-        {colorOptions.map((color) => (
-          <button
-            key={color.id}
-            className={`w-8 h-8 rounded-full border-2 transition-transform duration-200 hover:scale-110 ${selectedColor?.id === color.id ? 'ring-2 ring-white ring-offset-2' : 'border-transparent'}`}
-            style={{ backgroundColor: color.color }}
-            onClick={() => handleColorSelect(color)}
-            title={color.name}
-          />
-        ))}
-      </div>
+        <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
+          <h3 className="text-sm font-medium text-black mb-3 ">Select Color</h3>
+          <div className="grid grid-cols-3 gap-3">
+            {colorOptions.map((color) => (
+              <button
+                key={color.id}
+                className={`w-14 h-14 rounded-full border-2 transition-transform duration-200 hover:scale-110 ${selectedColor?.id === color.id ? 'ring-2 ring-blue-500 ring-offset-2' : 'border-gray-200'}`}
+                style={{ backgroundColor: color.color }}
+                onClick={() => handleColorSelect(color)}
+                title={color.name}
+              />
+            ))}
+          </div>
+        </div>
       )}
       {/* Onboarding Animation */}
       {showOnboarding && (
