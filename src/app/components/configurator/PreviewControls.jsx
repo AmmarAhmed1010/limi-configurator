@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import {
   FaEye,
   FaSave,
@@ -16,7 +15,10 @@ import {
   FaLightbulb,
   FaRoute,
   FaPalette,
+  FaHome,
 } from "react-icons/fa";
+import Link from "next/link";
+import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import {
   removeFromFavoritesAndSync,
@@ -255,6 +257,31 @@ export const PreviewControls = ({
 
   return (
     <div className="noselect">
+      {/* Header Overlay */}
+      <header
+        className="fixed top-0 left-0 right-0 z-[1000] flex items-center justify-center bg-[#232B2B] px-8 py-4 animate-fadeIn"
+      >
+        <Link
+          href="/"
+          className="flex items-center no-underline"
+        >
+          <Image
+            src="/images/svgLogos/__Icon_Wordmark_White.svg"
+            alt="LIMI Logo"
+            width={200}
+            height={80}
+            className="filter-none"
+            priority
+          />
+        </Link>
+
+        <Link
+          href="https://limiai.co"
+          className="absolute right-8 flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+        >
+          <FaHome className="h-6 w-6" />
+        </Link>
+      </header>
       {/* Vertical Color Picker */}
       {showColorPicker && (
         <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
@@ -1142,6 +1169,19 @@ export const PreviewControls = ({
             opacity: 0;
             transform: scale(0.8) translateX(20px);
           }
+        }
+        @keyframes fadeInDown {
+          0% {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeInDown {
+          animation: fadeInDown 0.5s ease-out forwards;
         }
       `}</style>
     </div>
