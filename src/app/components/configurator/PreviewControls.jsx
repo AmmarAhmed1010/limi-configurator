@@ -258,53 +258,57 @@ export const PreviewControls = ({
   return (
     <div className="noselect">
       {/* Header Overlay */}
-      <header
-        className="fixed top-0 left-0 right-0 z-[1000] flex items-center justify-between bg-[#232B2B] px-8 py-4 animate-fadeIn"
-      >
-        <Link
-          href="/"
-          className="flex items-center no-underline"
-        >
-          <Image
-            src="/images/svgLogos/__Icon_Wordmark_White.svg"
-            alt="LIMI Logo"
-            width={200}
-            height={80}
-            className="filter-none"
-            priority
-          />
-        </Link>
+      <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-4 animate-fadeIn">
+        <div className="relative flex items-center w-full">
+          {/* Logo - Centered */}
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <Link href="/" className="flex items-center no-underline">
+              <Image
+                src="/images/svgLogos/__Icon_Wordmark_White.svg"
+                alt="LIMI Logo"
+                width={200}
+                height={80}
+                className="filter-none"
+                priority
+              />
+            </Link>
+          </div>
+          
+          {/* Navigation Buttons - Right Aligned */}
+          <div className="ml-auto pr-8">
+            <div className="flex items-center space-x-2">
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+            onClick={() => {
+              onSaveConfig(config, cables);
+              handleOpenSaveModal();
+            }}
+            title="Save Configuration"
+          >
+            <FaSave className="h-6 w-6" />
+          </button>
 
-        <div className="flex items-center space-x-4">
-            <button
-          type="button"
-          className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
-          onClick={() => {
-            onSaveConfig(config, cables);
-            handleOpenSaveModal(); // This will hide the nav
-          }}
-          title="Save Configuration"
-        >
-          <FaSave size={16} />
-        </button>
+          <button
+            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+            onClick={() => {
+              onLoadConfig();
+              handleOpenSaveModal();
+            }}
+            title="Load Configuration"
+          >
+            <FaFolderOpen className="h-6 w-6" />
+          </button>
 
-        <button
-          className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
-          onClick={() => {
-            onLoadConfig();
-            handleOpenSaveModal();
-          }}
-          title="Load Configuration"
-        >
-          <FaFolderOpen size={16} />
-        </button>
           <Link
             href="https://limiai.co"
             className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
             title="Home"
           >
-            <FaHome className="h-6 w-6" />
-          </Link>
+              <FaHome className="h-6 w-6" />
+            </Link>
+            </div>
+          </div>
         </div>
       </header>
       {/* Vertical Color Picker */}

@@ -397,7 +397,7 @@ export default function PortalLogin({ onLogin }) {
 
   return (
     <div className="">
-      <PortalCTA onSignInClick={handleSignInClick}  />
+      {/* <PortalCTA onSignInClick={handleSignInClick}  /> */}
       <div className="max-w-4xl mt-10 mx-auto">
         <div  ref={loginSectionRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left side - Login/Signup form */}
@@ -719,7 +719,7 @@ export default function PortalLogin({ onLogin }) {
                       <button
                         type="submit"
                         disabled={loginStatus === "loading"}
-                        className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-white text-black py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {loginStatus === "loading" ? (
                           <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
