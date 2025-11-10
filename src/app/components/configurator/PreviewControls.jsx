@@ -259,7 +259,7 @@ export const PreviewControls = ({
     <div className="noselect">
       {/* Header Overlay */}
       <header
-        className="fixed top-0 left-0 right-0 z-[1000] flex items-center justify-center bg-[#232B2B] px-8 py-4 animate-fadeIn"
+        className="fixed top-0 left-0 right-0 z-[1000] flex items-center justify-between bg-[#232B2B] px-8 py-4 animate-fadeIn"
       >
         <Link
           href="/"
@@ -275,12 +275,37 @@ export const PreviewControls = ({
           />
         </Link>
 
-        <Link
-          href="https://limiai.co"
-          className="absolute right-8 flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+        <div className="flex items-center space-x-4">
+            <button
+          type="button"
+          className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
+          onClick={() => {
+            onSaveConfig(config, cables);
+            handleOpenSaveModal(); // This will hide the nav
+          }}
+          title="Save Configuration"
         >
-          <FaHome className="h-6 w-6" />
-        </Link>
+          <FaSave size={16} />
+        </button>
+
+        <button
+          className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
+          onClick={() => {
+            onLoadConfig();
+            handleOpenSaveModal();
+          }}
+          title="Load Configuration"
+        >
+          <FaFolderOpen size={16} />
+        </button>
+          <Link
+            href="https://limiai.co"
+            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+            title="Home"
+          >
+            <FaHome className="h-6 w-6" />
+          </Link>
+        </div>
       </header>
       {/* Vertical Color Picker */}
       {showColorPicker && (
