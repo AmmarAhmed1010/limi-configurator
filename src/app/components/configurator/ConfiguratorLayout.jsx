@@ -18,6 +18,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ConfigurationSummary from "../lightConfigurator/ConfigurationSummary";
 import { fetchUserByToken } from "../../../app/redux/slices/userSlice.js";
 import { useBarState } from '../../hooks/useBarState';
+import { buildApi1Url } from '../../config/api.config';
 import {
   chandelierAssignments,
   getSystemAssignments,
