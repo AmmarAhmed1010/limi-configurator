@@ -897,7 +897,7 @@ useEffect(() => {
         config.onItemSelect = (systemType) => {
           // Show color picker if ball system is selected
           if (systemType === "ball") {
-            setShowColorPicker(true);
+            // setShowColorPicker(true);
           } else {
             setShowColorPicker(false);
           }

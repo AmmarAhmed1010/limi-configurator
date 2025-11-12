@@ -277,7 +277,7 @@ export const PreviewControls = ({
           {/* Navigation Buttons - Right Aligned */}
           <div className="ml-auto pr-8">
             <div className="flex items-center space-x-2">
-          <button
+          {/* <button
             type="button"
             className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
             onClick={() => {
@@ -287,9 +287,9 @@ export const PreviewControls = ({
             title="Save Configuration"
           >
             <FaSave className="h-6 w-6" />
-          </button>
+          </button> */}
 
-          <button
+          {/* <button
             className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
             onClick={() => {
               onLoadConfig();
@@ -298,7 +298,7 @@ export const PreviewControls = ({
             title="Load Configuration"
           >
             <FaFolderOpen className="h-6 w-6" />
-          </button>
+          </button> */}
 
           <Link
             href="https://limiai.co"
