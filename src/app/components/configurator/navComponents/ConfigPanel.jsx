@@ -102,7 +102,6 @@ export const ConfigPanel = ({
   } = useBarState();
 // Add this useEffect right after the useBarState hook
 useEffect(() => {
-  console.log('barArray updated:', barArray);
 }, [barArray]); // This will run every time barArray changes
 
   // Function to turn off pendant loading
