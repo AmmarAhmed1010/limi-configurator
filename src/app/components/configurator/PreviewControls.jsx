@@ -262,7 +262,12 @@ export const PreviewControls = ({
         <div className="relative flex items-center w-full">
           {/* Logo - Centered */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            <Link href="/" className="flex items-center no-underline">
+            <Link
+              href="https://limiai.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center no-underline"
+            >
               <Image
                 src="/images/svgLogos/__Icon_Wordmark_White.svg"
                 alt="LIMI Logo"
@@ -302,6 +307,8 @@ export const PreviewControls = ({
 
           <Link
             href="https://limiai.co"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
             title="Home"
           >
