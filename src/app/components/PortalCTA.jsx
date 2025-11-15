@@ -159,7 +159,7 @@ const PortalCTA = ({ onSignInClick }) => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-20 bg-white  overflow-hidden w-full"
+      className="relative h-screen flex items-center justify-center bg-white overflow-hidden w-full"
     >
       {/* Background with gradient overlay */}
       <div className="absolute inset-0 bg-[#2B2D2F]">
@@ -194,6 +194,7 @@ const PortalCTA = ({ onSignInClick }) => {
           <div ref={buttonRef} className="flex flex-col sm:flex-row  items-center justify-center gap-4 mb-8">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
             <button
+            id='sign-in'
             onClick={(e) => {
               e.preventDefault();
               if (onSignInClick) {
@@ -209,7 +210,7 @@ const PortalCTA = ({ onSignInClick }) => {
             
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
 
-              <button
+              {/* <button
                 onClick={(e) => {
                   e.preventDefault();
                   if (onSignInClick) {
@@ -220,7 +221,7 @@ const PortalCTA = ({ onSignInClick }) => {
               >
                 Create Account
                 <FaArrowRight />
-              </button>
+              </button> */}
             </motion.div>
           </div>
           
@@ -229,113 +230,8 @@ const PortalCTA = ({ onSignInClick }) => {
             <span>Secure, encrypted connection. Your data is always protected.</span>
           </div>
         </div>
+  
         
-        {/* Portal features grid */}
-        <div 
-          ref={featuresRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
-        >
-          {portalFeatures.map((feature, index) => (
-            <motion.div 
-              key={index}
-              className="feature-item bg-[#1e2022] rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:translate-y-[-5px]"
-              whileHover={{ y: -5 }}
-            >
-              <div className="mb-4 flex justify-center">
-                {feature.icon}
-              </div>
-              <h3 className="text-xl font-semibold text-white text-center mb-3">{feature.title}</h3>
-              <p className="text-gray-400 text-center text-sm">{feature.description}</p>
-            </motion.div>
-          ))}
-        </div>
-        
-        {/* Testimonials */}
-        {/* <div 
-          ref={testimonialsRef}
-          className="max-w-4xl mx-auto bg-[#1e2022] rounded-xl overflow-hidden shadow-2xl"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-12">
-            <div className="md:col-span-8 p-8 md:p-10">
-              <div className="mb-6">
-                <FaQuoteLeft className="text-[#50C878] opacity-30 text-4xl" />
-              </div>
-              
-              <div className="min-h-[160px]">
-                {testimonials.map((testimonial, index) => (
-                  <motion.div 
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ 
-                      opacity: activeTestimonial === index ? 1 : 0,
-                      x: activeTestimonial === index ? 0 : 20,
-                      position: activeTestimonial === index ? 'relative' : 'absolute'
-                    }}
-                    transition={{ duration: 0.5 }}
-                    className={activeTestimonial === index ? 'block' : 'hidden'}
-                  >
-                    <p className="text-white text-lg italic mb-6">{testimonial.quote}</p>
-                    <div className="flex items-center">
-                      <div className="mr-4">
-                        <div className="w-12 h-12 rounded-full overflow-hidden">
-                          <Image 
-                            src={testimonial.avatar} 
-                            alt={testimonial.name}
-                            width={48}
-                            height={48}
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <h4 className="text-[#50C878] font-medium">{testimonial.name}</h4>
-                        <p className="text-gray-400 text-sm">{testimonial.role}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-              
-              <div className="mt-8 flex justify-between items-center">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar 
-                      key={i} 
-                      className={`${i < testimonials[activeTestimonial].rating ? 'text-[#50C878]' : 'text-gray-600'} mr-1`} 
-                    />
-                  ))}
-                </div>
-                
-                <div className="flex space-x-2">
-                  {testimonials.map((_, index) => (
-                    <button 
-                      key={index}
-                      onClick={() => setActiveTestimonial(index)}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${activeTestimonial === index ? 'bg-[#50C878] w-4' : 'bg-gray-600'}`}
-                      aria-label={`View testimonial ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            <div className="md:col-span-4 bg-[#3a3d42] p-8 flex flex-col justify-center">
-              <h3 className="text-xl font-bold text-white mb-4">Join Our Community</h3>
-              <p className="text-gray-300 text-sm mb-6">Create your account today and experience the full benefits of the LIMI Customer Portal.</p>
-              
-              <Link href="/signup">
-                <motion.span 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 bg-[#50C878] hover:bg-[#3da861] text-white font-medium rounded-md transition-colors duration-300 text-center"
-                >
-                  Get Started
-                  <FaArrowRight className="text-sm" />
-                </motion.span>
-              </Link>
-            </div>
-          </div>
-        </div> */}
       </div>
     </section>
   );

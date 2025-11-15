@@ -184,7 +184,8 @@ export default function SavedConfigurations({ isARView = false }) {
 
   // View in configurator
   const viewInConfigurator = (configId) => {
-    router.push(`/configurator?configId=${configId}`);
+    // router.push(`/configurator?configId=${configId}`);
+    console.log("configId",configId);
   };
 
   // Filter and sort configurations

@@ -18,6 +18,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ConfigurationSummary from "../lightConfigurator/ConfigurationSummary";
 import { fetchUserByToken } from "../../../app/redux/slices/userSlice.js";
 import { useBarState } from '../../hooks/useBarState';
+import { buildApi1Url } from '../../../app/config/api.config';
 import {
   chandelierAssignments,
   getSystemAssignments,
@@ -528,7 +529,7 @@ const ConfiguratorLayout = () => {
           sendMessageToPlayCanvas("allmodelsloaded");
           // sendMessagesForDesign("fina", 0);
           // Send lighting messages with delays
-          sendMessageToPlayCanvas(`guidedtourstarted`);
+          // sendMessageToPlayCanvas(`guidedtourstarted`);
         }
 
         // If we have a configuration from URL, load it now
@@ -1032,7 +1033,7 @@ const ConfiguratorLayout = () => {
         });
         if (system.systemType === "bar") {
           // For bar systems, update only the bar attachment state
-         selectedCables.forEach((cableIndex) => {
+          selectedCables.forEach((cableIndex) => {
             // Get current state first
             const currentState = barArray[cableIndex] || {};
             setBarState(cableIndex, {
@@ -1040,8 +1041,8 @@ const ConfiguratorLayout = () => {
               hasBarAttachment: true  // Only update this property
             });
           });
-        }else{
-            selectedCables.forEach((cableIndex) => {
+        } else {
+          selectedCables.forEach((cableIndex) => {
             // Get current state first
             setBarState(cableIndex, {
               hasBarModel: false, // Keep existing or default to false
@@ -1125,7 +1126,7 @@ const ConfiguratorLayout = () => {
     try {
       // Get dashboardToken from localStorage
       const dashboardToken = localStorage.getItem("limiToken");
-
+      console.log("dashboardToken", dashboardToken);
       // Take screenshot of the configurator area
       const configuratorElement = document.getElementById("playcanvas-app");
 

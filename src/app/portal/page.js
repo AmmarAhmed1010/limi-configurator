@@ -31,21 +31,18 @@ export default function CustomerPortal() {
   if (loading) {
     return (
       <main className="bg-[#292929] text-white min-h-screen">
-        <Header />
         <div className="pt-[120px] pb-16 flex justify-center items-center min-h-[50vh]">
           <div className="animate-pulse text-2xl text-[#54BB74]">Loading...</div>
         </div>
-        <Footer />
       </main>
     );
   }
   
   return (
     <main className="bg-[#292929] text-white min-h-screen">
-      <Header />
       
-      <div className="pt-[120px] pb-16">
-        <div className="container mx-auto px-4">
+      <div className="">
+        <div className="">
           {!isLoggedIn ? (
             <PortalLogin onLogin={handleLogin} />
           ) : (
@@ -55,8 +52,6 @@ export default function CustomerPortal() {
           )}
         </div>
       </div>
-      
-      <Footer />
     </main>
   );
 }

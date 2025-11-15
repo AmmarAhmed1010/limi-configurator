@@ -55,6 +55,7 @@ export const API_CONFIG = {
     // Admin endpoints
     INVESTOR_DETAILS: '/admin/dashboard/investor_details',
     PRODUCTS_WISHLIST: '/admin/products/light-configs/wishlist',
+    LIGHT_CONFIGS: '/admin/products/light-configs',
     SLIDE_MANAGEMENT: '/admin/dashboard/slides',
     PENDANT_SYSTEMS: '/admin/products/pendant-systems',
     
