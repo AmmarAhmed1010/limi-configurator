@@ -96,6 +96,7 @@ export default function SavedConfigurations({ isARView = false }) {
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedConfig, setSelectedConfig] = useState(null);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Token-based auto-login for AR view
   useEffect(() => {
@@ -231,6 +232,34 @@ export default function SavedConfigurations({ isARView = false }) {
   const toggleSortOrder = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
+  
+  const handleNext = () => {
+    if (filteredConfigurations.length === 0) return;
+    setCurrentIndex((prev) =>
+      prev + 1 >= filteredConfigurations.length ? 0 : prev + 1
+    );
+  };
+
+  const handlePrev = () => {
+    if (filteredConfigurations.length === 0) return;
+    setCurrentIndex((prev) =>
+      prev - 1 < 0 ? filteredConfigurations.length - 1 : prev - 1
+    );
+  };
+
+  const handleDotClick = (index) => {
+    setCurrentIndex(index);
+  };
+
+  useEffect(() => {
+    if (filteredConfigurations.length === 0) {
+      setCurrentIndex(0);
+      return;
+    }
+    if (currentIndex >= filteredConfigurations.length) {
+      setCurrentIndex(0);
+    }
+  }, [filteredConfigurations.length, currentIndex]);
   // View configuration details
   const viewConfigDetails = (config) => {
     setSelectedConfig(config);
@@ -341,81 +370,127 @@ export default function SavedConfigurations({ isARView = false }) {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredConfigurations.map((config) => (
-            <motion.div
-              key={config._id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-[#292929] rounded-lg overflow-hidden"
-            >
-              <div className="flex items-center h-[200px] w-full justify-center py-2 bg-[#292929] border-b border-gray-200">
-                <Image
-                  src={
-                    // buildApi1Url(config.thumbnail?.url) ||
-                    `/images/homepage-products/${
-                      Math.floor(Math.random() * 7) + 1
-                    }-mobile.jpg`
-                  }
-                  alt={config.name || "Configuration"}
-                  height={1000}
-                  width={1000}
-                  className="w-full h-full object-cover"
-                  priority
-                />
-              </div>
-
-              <div className="p-4 ">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-white mb-1">
-                    {config.name || "Unnamed Configuration"}
-                  </h3>
-                  <span>{formatDate(config.createdAt)}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm text-gray-400 mb-4">
-                  <div></div>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {!isARView && (
-                    <button
-                      onClick={() => viewConfigDetails(config)}
-                      className="flex-1 flex items-center justify-center gap-1 bg-[#54BB74] text-white px-3 py-2 rounded hover:bg-[#48a064] transition-colors"
-                    >
-                      <FaEye />
-                      <span className="text-sm">View</span>
-                    </button>
-                  )}
-                  
-                  <button
-                    id="open_id"
-                    onClick={() => viewInConfigurator(config._id)}
-                    className="flex-1 flex items-center justify-center gap-1 bg-[#292929] border border-[#54BB74] text-[#54BB74] px-3 py-2 rounded hover:bg-[#54BB74] hover:text-white transition-colors"
+        <div className="w-full max-w-4xl mx-auto">
+          <div className="relative">
+            <div className="overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              >
+                {filteredConfigurations.map((config) => (
+                  <motion.div
+                    key={config._id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full flex-shrink-0 flex justify-center px-4"
                   >
-                    <FaEdit />
-                    <span id={config._id} className="text-sm">
-                      Open
-                    </span>
-                  </button>
+                    <div className="bg-[#24262B] rounded-2xl overflow-hidden shadow-lg max-w-sm w-full">
+                      <div className="flex items-center h-[220px] w-full justify-center bg-[#292929] border-b border-gray-200">
+                        <Image
+                          src={
+                            // buildApi1Url(config.thumbnail?.url) ||
+                            `/images/homepage-products/${
+                              Math.floor(Math.random() * 7) + 1
+                            }-mobile.jpg`
+                          }
+                          alt={config.name || "Configuration"}
+                          height={1000}
+                          width={1000}
+                          className="w-full h-full object-cover"
+                          priority
+                        />
+                      </div>
 
-                  {!isARView && (
-                    <button
-                      onClick={() => deleteConfiguration(config._id)}
-                      className="flex items-center justify-center gap-1 bg-[#292929] border border-gray-700 text-white px-3 py-2 rounded hover:bg-red-600 hover:border-red-600 transition-colors"
-                      disabled={isDeleting}
-                    >
-                      {isDeleting ? (
-                        <FaSpinner className="animate-spin" />
-                      ) : (
-                        <FaTrash />
-                      )}
-                    </button>
-                  )}
-                </div>
+                      <div className="p-4">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-white mb-1">
+                            {config.name || "Unnamed Configuration"}
+                          </h3>
+                        </div>
+                        <div className="flex justify-between items-center text-sm text-gray-400 mb-4">
+                          <div></div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {!isARView && (
+                            <button
+                              onClick={() => viewConfigDetails(config)}
+                              className="flex-1 flex items-center justify-center gap-1 bg-[#54BB74] text-white px-3 py-2 rounded-full hover:bg-[#48a064] transition-colors"
+                            >
+                              <FaEye />
+                              <span className="text-sm">View</span>
+                            </button>
+                          )}
+
+                          <button
+                            id="open_id"
+                            onClick={() => viewInConfigurator(config._id)}
+                            className="flex-1 flex items-center justify-center gap-1 bg-[#54BA73] text-black px-3 py-2 rounded-full hover:bg-[#54BB74] hover:text-white transition-colors"
+                          >
+                           
+                            <span id={config._id} className="text-lg font-medium">
+                              Experience Now
+                            </span>
+                          </button>
+
+                          {!isARView && (
+                            <button
+                              onClick={() => deleteConfiguration(config._id)}
+                              className="flex items-center justify-center gap-1 bg-transparent border border-gray-700 text-white px-3 py-2 rounded-full hover:bg-red-600 hover:border-red-600 transition-colors"
+                              disabled={isDeleting}
+                            >
+                              {isDeleting ? (
+                                <FaSpinner className="animate-spin" />
+                              ) : (
+                                <FaTrash />
+                              )}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-            </motion.div>
-          ))}
+            </div>
+
+            {filteredConfigurations.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrev}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-10 h-8 w-8 rounded-full bg-black/60 flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+                  aria-label="Previous configuration"
+                >
+                  <FaChevronDown className="rotate-90 text-xs" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-10 h-8 w-8 rounded-full bg-black/60 flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+                  aria-label="Next configuration"
+                >
+                  <FaChevronDown className="-rotate-90 text-xs" />
+                </button>
+              </>
+            )}
+          </div>
+
+          {filteredConfigurations.length > 1 && (
+            <div className="flex justify-center mt-4 gap-2">
+              {filteredConfigurations.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleDotClick(index)}
+                  className={`h-2 w-2 rounded-full transition-all duration-200 ${
+                    index === currentIndex
+                      ? "bg-[#54BB74] w-4"
+                      : "bg-gray-600"
+                  }`}
+                  aria-label={`Go to configuration ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
 

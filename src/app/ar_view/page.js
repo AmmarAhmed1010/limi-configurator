@@ -4,7 +4,7 @@ import SavedConfigurations from "../portal/components/dashboard/SavedConfigurati
 
 export default function ARViewPage() {
   return (
-    <div className="min-h-screen pt-20 bg-[#1a1a1a] p-4">
+    <div className="min-h-screen flex justify-center items-center bg-black">
       <SavedConfigurations isARView={true} />
     </div>
   );
