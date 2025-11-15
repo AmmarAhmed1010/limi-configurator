@@ -175,7 +175,6 @@ body {
   min-height: 100vh;
   font-family: var(--font-poppins), sans-serif;
 }
-
 .cursor-grab-global {
   cursor: grab !important;
 }
@@ -486,6 +485,24 @@ section, div {
     position: relative;
     height: 50vh;
   }
+}
+
+/* Saved configurations Swiper tweaks */
+.saved-config-swiper {
+  padding-bottom: 4rem !important; /* create extra space under the card */
+}
+
+.saved-config-swiper .swiper-pagination {
+  bottom: 0.5rem !important; /* move dots a bit further down */
+}
+
+.saved-config-swiper .swiper-pagination-bullet {
+  background-color: #4b5563 !important;
+  opacity: 1 !important;
+}
+
+.saved-config-swiper .swiper-pagination-bullet-active {
+  background-color: #54BB74 !important;
 }
 
 /* Smooth scrolling for all elements */
