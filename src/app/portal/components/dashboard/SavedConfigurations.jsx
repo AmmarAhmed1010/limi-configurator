@@ -366,7 +366,7 @@ export default function SavedConfigurations({ isARView = false }) {
             className="saved-config-swiper pt-8 pb-16"
           >
             {filteredConfigurations.map((config) => (
-              <SwiperSlide key={config._id} className="flex justify-center !w-auto px-4">
+              <SwiperSlide key={config._id} className="flex justify-center !w-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -415,7 +415,7 @@ export default function SavedConfigurations({ isARView = false }) {
                         onClick={() => viewInConfigurator(config._id)}
                         className="flex-1 flex items-center justify-center gap-1 bg-[#54BA73] text-black px-3 py-2 rounded-full hover:bg-[#54BB74] hover:text-white transition-colors"
                       >
-                        <span id={config._id} className="text-lg font-medium">
+                        <span id={config._id} className="text-base font-medium">
                           Experience Now
                         </span>
                       </button>
