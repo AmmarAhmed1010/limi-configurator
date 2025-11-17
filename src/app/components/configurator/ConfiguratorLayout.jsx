@@ -1205,7 +1205,7 @@ const ConfiguratorLayout = () => {
       setIsLoadingFromUrl(true);
       // Load configuration data but don't apply it yet - wait for app:ready1
       fetch(
-        `https://api1.limitless-lighting.co.uk/admin/products/light-configs/${configId}`
+        `https://dev.api1.limitless-lighting.co.uk/admin/products/light-configs/${configId}`
       )
         .then((response) => response.json())
         .then((data) => {
