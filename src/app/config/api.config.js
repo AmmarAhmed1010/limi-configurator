@@ -7,7 +7,7 @@
 
 // Environment configuration - Change this to switch between environments
 // Can be overridden by NEXT_PUBLIC_API_ENVIRONMENT env variable
-const ENVIRONMENT = process.env.NEXT_PUBLIC_API_ENVIRONMENT || 'dev'; // Options: 'dev' or 'production'
+const ENVIRONMENT = process.env.NEXT_PUBLIC_API_ENVIRONMENT || 'production'; // Options: 'dev' or 'production'
 
 // Base URL configurations for different environments
 const API_BASE_URLS = {
