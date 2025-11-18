@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const LUMEN_LEVELS = [400, 800, 1200, 2000, 3000];
+const LUMEN_LEVELS = [0, 400, 800, 1200, 2000, 3000];
 const TEMP_LEVELS = [2000, 2700, 3000, 3500, 4000, 5000, 6000, 6500, 8000];
 
 const findClosestIndex = (arr, target) => {
@@ -176,9 +176,14 @@ export const BrightnessSlider = ({
           onChange={handleLumenChange}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
         />
-        <div className="flex justify-between text-[10px] text-gray-500 mt-1">
-          {LUMEN_LEVELS.map((lvl) => (
-            <span key={lvl}>{lvl}</span>
+        <div className="flex text-[10px] text-gray-500 mt-1">
+          {LUMEN_LEVELS.map((lvl, idx) => (
+            <span
+              key={lvl}
+              className={`w-0 flex-1 text-center ${idx === 0 ? '-ml-1' : ''}`}
+            >
+              {lvl}
+            </span>
           ))}
         </div>
       </div>

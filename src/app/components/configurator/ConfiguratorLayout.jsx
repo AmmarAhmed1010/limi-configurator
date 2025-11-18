@@ -295,7 +295,7 @@ const ConfiguratorLayout = () => {
   const [showConfigurationTypeSelector, setShowConfigurationTypeSelector] =
     useState(false);
   // Navigation state
-  const [activeStep, setActiveStep] = useState("lightType");
+  const [activeStep, setActiveStep] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const handleCloseSaveModal = () => {
