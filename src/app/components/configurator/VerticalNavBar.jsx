@@ -109,6 +109,8 @@ const VerticalNavBar = ({
   const [activeTab, setActiveTab] = useState("base");
   const [mobileBottomMenuOpen, setMobileBottomMenuOpen] = useState(false);
   const [mobileActiveStep, setMobileActiveStep] = useState(null);
+  const [showCutout, setShowCutOut] = useState(false);
+  
 
   // Tour system state
   const [tourState, setTourState] = useState({
@@ -652,7 +654,7 @@ const VerticalNavBar = ({
   const toggleDropdown = (stepId) => {
     // Auto-close config panel when toggling any dropdown in vertical navbar
     if (localConfiguringType) {
-      setLocalConfiguringType(null);
+      // setLocalConfiguringType(null);
       // Also reset in parent component
       if (onConfigurationTypeChange) {
         onConfigurationTypeChange(null);
@@ -883,6 +885,7 @@ const VerticalNavBar = ({
 
       {/* Mobile vertical nav */}
       {showVerticalNav && isMobile && (
+      
         <div
           className="fixed right-0 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
@@ -895,7 +898,7 @@ const VerticalNavBar = ({
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
             initial={{ x: 0 }}
-            animate={{ x: mobileBottomMenuOpen ? 0 : 60 }}
+            animate={{ x: showCutout ? 0 : 60 }}
             transition={{ duration: 0.2 }}
           >
            
@@ -933,18 +936,19 @@ const VerticalNavBar = ({
                       e.stopPropagation();
                       // Close any existing dropdowns first
                       setOpenDropdown(null);
+                     setMobileBottomMenuOpen(true);
                       // Set mobile active step (but don't toggle menu)
                       setMobileActiveStep(step.id);
                       // Also set the active step for consistency
                       setActiveStep(step.id);
                     }}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 relative ${mobileActiveStep === step.id && mobileBottomMenuOpen
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 relative ${mobileActiveStep === step.id && showCutout
                         ? `text-white`
                         : "text-gray-400 hover:text-white"
                       }`}
                     style={{
                       backgroundColor:
-                        mobileActiveStep === step.id && mobileBottomMenuOpen ? emerald : "transparent",
+                        mobileActiveStep === step.id && showCutout ? emerald : "transparent",
                     }}
                   >
                     {getNavIcon(step.id)}
@@ -968,12 +972,19 @@ const VerticalNavBar = ({
                   } else {
                     sendMessageToPlayCanvas("model_down");
                   }
-                  
-                  setMobileBottomMenuOpen(!mobileBottomMenuOpen);
+                   setShowCutOut(!showCutout);
+
+                   console.log("this",steps)
+                  //  setMobileBottomMenuOpen(!mobileBottomMenuOpen);
+       
+                  // Also close the bottom menu when closing vertical nav
+                  if (mobileBottomMenuOpen) {
+                    setMobileActiveStep(null);
+                  }
                 }}
               >
                 <svg
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${mobileBottomMenuOpen ? "rotate-180" : ""}`}
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${showCutout ? "rotate-180" : ""}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -991,7 +1002,10 @@ const VerticalNavBar = ({
         activeStep={mobileActiveStep}
         handleChandelierTypeChange={handleChandelierTypeChange}
         setLocalConfiguringType={setLocalConfiguringType}
-        onClose={() => setMobileBottomMenuOpen(false)}
+    onClose={() => {
+  setMobileBottomMenuOpen(false);
+  setMobileActiveStep(null);
+}}
         config={config}
         onLightTypeChange={onLightTypeChange}
         onEnvironmentChange={onEnvironmentChange}
