@@ -645,13 +645,13 @@ export const PreviewControls = ({
         </AnimatePresence>
       </div>
       <div className="absolute top-6 right-[1rem] z-50 flex gap-2">
-        <button
+        {/* <button
           className="p-2 rounded-full bg-gray-800 text-gray-300 hover:opacity-90 transition-all"
           onClick={() => setIsPreviewMode(!isPreviewMode)}
           title={isPreviewMode ? "Exit Preview Mode" : "Enter Preview Mode"}
         >
           <FaEye size={16} />
-        </button>
+        </button> */}
 
         {/* Tour Guide */}
         {/* <motion.button
@@ -889,7 +889,7 @@ export const PreviewControls = ({
           )}
         </div> */}
 
-        <IOSIconButton 
+        {/* <IOSIconButton 
           icon={FaLightbulb}
           onClick={() => setIsLightingPanelOpen(!isLightingPanelOpen)}
           style={{
@@ -923,7 +923,7 @@ export const PreviewControls = ({
           style={{
             backgroundColor: '#2b2f33'
           }}
-        />
+        /> */}
       </div>
 
       {/* Onboarding CSS Animations */}
