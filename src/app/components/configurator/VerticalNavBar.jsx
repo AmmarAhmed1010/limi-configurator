@@ -813,13 +813,13 @@ const VerticalNavBar = ({
       {/* Desktop vertical nav */}
       {showVerticalNav && !isMobile && (
         <div
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >
           <ProgressIndicator progress={calculateProgress()} emerald={emerald} />
           <motion.div
-            className="p-3 rounded-full flex flex-col gap-4"
+            className="p-3 rounded-l-2xl flex flex-col gap-4"
             style={{ backgroundColor: charlestonGreen }}
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
@@ -849,79 +849,6 @@ const VerticalNavBar = ({
                     isCompleted={isStepCompleted(step.id)}
                     data-tour={step.id}
                   >
-                    {step?.id === "lightType" && openDropdown === step?.id && (
-                      <LightTypeDropdown
-                        config={config}
-                        onLightTypeChange={onLightTypeChange}
-                        setActiveStep={setActiveStep}
-                        setOpenDropdown={setOpenDropdown}
-                        tourActive={tourState.isActive}
-                        onTourSelection={handleTourSubSelection}
-                        setShowLoadingScreen={setShowLoadingScreen}
-                      />
-                    )}
-
-                    {step?.id === "environment" && openDropdown === step?.id && (
-                      <EnvironmentDropdown
-                        config={config}
-                        onEnvironmentChange={onEnvironmentChange}
-                        setActiveStep={setActiveStep}
-                        setOpenDropdown={setOpenDropdown}
-                        tourActive={tourState.isActive}
-                        onTourSelection={handleTourSubSelection}
-                        sendMessageToPlayCanvas={sendMessageToPlayCanvas}
-                      />
-                    )}
-
-                    {step?.id === "baseType" && openDropdown === step?.id && (
-                      <BaseTypeDropdown
-                        config={config}
-                        onBaseTypeChange={onBaseTypeChange}
-                        setActiveStep={setActiveStep}
-                        setOpenDropdown={setOpenDropdown}
-                        tourActive={tourState.isActive}
-                        onTourSelection={handleTourSubSelection}
-                        setShowLoadingScreen={setShowLoadingScreen}
-                      />
-                    )}
-
-                    {step?.id === "baseColor" && openDropdown === step?.id && (
-                      <BaseColorPanel
-                        currentBaseColor={config.baseColor}
-                        onBaseColorChange={onBaseColorChange}
-                        currentConnectorColor={config?.connectorColor}
-                        onConnectorColorChange={onConnectorColorChange}
-                        setActiveTab={handleSetActiveTab}
-                        activeTab={activeTab}
-                        tourActive={tourState.isActive}
-                        onTourSelection={handleTourSubSelection}
-                      />
-                    )}
-
-                    {/* Configuration type dropdown removed */}
-
-                    {step?.id === "systemType" && openDropdown === step?.id && (
-                      <SystemTypeDropdown
-                        config={config}
-                        onSystemTypeChange={onSystemTypeChange}
-                        setActiveStep={setActiveStep}
-                        setOpenDropdown={setOpenDropdown}
-                      />
-                    )}
-
-                    {step?.id === "lightAmount" &&
-                      openDropdown === step?.id && (
-                        <LightAmountDropdown
-                          config={config}
-                          onLightAmountChange={onLightAmountChange}
-                          setActiveStep={setActiveStep}
-                          setOpenDropdown={setOpenDropdown}
-                          tourActive={tourState.isActive}
-                          onTourSelection={handleTourSubSelection}
-                          setShowLoadingScreen={setShowLoadingScreen}
-                        />
-                      )}
-
                     {step?.id === "pendantSelection" &&
                       openDropdown === step?.id && (
                         <PendantSelectionDropdown
@@ -943,44 +870,8 @@ const VerticalNavBar = ({
                           clearSelections={clearSelections}
                           applyDesignToSelected={applyDesignToSelected}
                           applyToAllPendants={applyToAllPendants}
-                          getImageSrc={getImageSrc}
-                          handleSaveConfig={handleSaveConfig}
-                          configuringType={localConfiguringType}
-                          configuringSystemType={configuringSystemType}
-                          breadcrumbPath={breadcrumbPath}
-                          onBreadcrumbNavigation={onBreadcrumbNavigation}
-                          onSystemTypeSelection={onSystemTypeSelection}
-                          selectedLocation={selectedPendants[0]}
-                          onPendantDesignChange={onPendantDesignChange}
-                          onSystemBaseDesignChange={onSystemBaseDesignChange}
-                          sendMessageToPlayCanvas={sendMessageToPlayCanvas}
-                          onSelectConfigurationType={(type) => {
-                            // This matches the original handleConfigTypeSelection function
-                            setLocalConfiguringType(type);
-
-                            // if(type == 'pendant' || type == 'system'){
-                            //   setShowConfigurationTypeSelector(false);
-                            // }
-
-                            // Update the active step based on the configuration type
-                            if (type === "pendant") {
-                              setActiveStep("pendantSelection");
-                            } else if (type === "system") {
-                              setActiveStep("systemType");
-                            }
-
-                            // Call the parent component's handler if it exists
-                            if (onConfigurationTypeChange) {
-                              onConfigurationTypeChange(type);
-                            }
-                          }}
-                          onClose={() => {
-                            setShowConfigurationTypeSelector(false);
-                            // Call parent handler to reset configuration type
-                            if (onConfigurationTypeChange) {
-                              onConfigurationTypeChange(null);
-                            }
-                          }}
+                          onTourSelection={handleTourSubSelection}
+                          setShowLoadingScreen={setShowLoadingScreen}
                         />
                       )}
                   </NavButton>
@@ -993,16 +884,19 @@ const VerticalNavBar = ({
       {/* Mobile vertical nav */}
       {showVerticalNav && isMobile && (
         <div
-          className="fixed right-4 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
+          className="fixed right-0 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >
-          <ProgressIndicator progress={calculateProgress()} emerald={emerald} />
+          {/* Content Container */}
           <motion.div
-            className="p-2 rounded-full flex flex-col gap-3"
+            className="p-3 rounded-l-2xl flex flex-col gap-4"
             style={{ backgroundColor: charlestonGreen }}
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
+            initial={{ x: 0 }}
+            animate={{ x: mobileBottomMenuOpen ? 0 : 60 }}
+            transition={{ duration: 0.2 }}
           >
             {steps
              .filter((step) => {
@@ -1011,6 +905,24 @@ const VerticalNavBar = ({
               })
               .map((step, index) => (
                 <div className="relative" key={step.id}>
+                  {/* Arrow div */}
+                  <div 
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 w-6 h-12 flex items-center justify-center cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMobileBottomMenuOpen(!mobileBottomMenuOpen);
+                    }}
+                  >
+                    <svg
+                      className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${mobileBottomMenuOpen ? "rotate-180" : ""}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                  {/* Button div */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -1018,11 +930,11 @@ const VerticalNavBar = ({
                       setOpenDropdown(null);
                       // Set mobile active step and open bottom menu
                       setMobileActiveStep(step.id);
-                      setMobileBottomMenuOpen(true);
+                      setMobileBottomMenuOpen(!mobileBottomMenuOpen);
                       // Also set the active step for consistency
                       setActiveStep(step.id);
                     }}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 ${mobileActiveStep === step.id && mobileBottomMenuOpen
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 relative ml-8 ${mobileActiveStep === step.id && mobileBottomMenuOpen
                         ? `text-white`
                         : "text-gray-400 hover:text-white"
                       }`}
