@@ -827,29 +827,8 @@ const VerticalNavBar = ({
             {/* Render NavButtons with data-tour-step for guided tour */}
             {steps
               .filter((step) => {
-                if (
-                  (step.id === "baseType" || step.id === "baseColor") &&
-                  config.lightType !== "ceiling"
-                ) {
-                  return false;
-                }
-
-                // Hide environment button for wall and floor light types
-                if (
-                  step.id === "environment" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
-                ) {
-                  return false;
-                }
-                // Hide environment button for wall and floor light types
-                if (
-                  step.id === "lightAmount" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
-                ) {
-                  return false;
-                }
-
-                return true;
+                // Only show pendantSelection step
+                return step.id === "pendantSelection";
               })
               .map((step, index) => (
                 <div className="relative" key={step.id}>
@@ -1027,29 +1006,8 @@ const VerticalNavBar = ({
           >
             {steps
              .filter((step) => {
-                if (
-                  (step.id === "baseType" || step.id === "baseColor") &&
-                  config.lightType !== "ceiling"
-                ) {
-                  return false;
-                }
-
-                // Hide environment button for wall and floor light types
-                if (
-                  step.id === "environment" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
-                ) {
-                  return false;
-                }
-                // Hide environment button for wall and floor light types
-                if (
-                  step.id === "lightAmount" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
-                ) {
-                  return false;
-                }
-
-                return true;
+                // Only show pendantSelection step
+                return step.id === "pendantSelection";
               })
               .map((step, index) => (
                 <div className="relative" key={step.id}>
