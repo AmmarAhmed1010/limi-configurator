@@ -890,7 +890,7 @@ const VerticalNavBar = ({
         >
           {/* Content Container */}
           <motion.div
-            className="p-3 rounded-l-2xl flex flex-col gap-4"
+            className="pr-4 pl-8 py-4 rounded-l-2xl flex flex-col gap-2"
             style={{ backgroundColor: charlestonGreen }}
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
@@ -898,43 +898,47 @@ const VerticalNavBar = ({
             animate={{ x: mobileBottomMenuOpen ? 0 : 60 }}
             transition={{ duration: 0.2 }}
           >
+           
             {steps
-             .filter((step) => {
-                // Only show pendantSelection step
-                return step.id === "pendantSelection";
+              .filter((step) => {
+                if (
+                  (step.id === "baseType" || step.id === "baseColor") &&
+                  config.lightType !== "ceiling"
+                ) {
+                  return false;
+                }
+
+                // Hide environment button for wall and floor light types
+                if (
+                  step.id === "environment" &&
+                  (config.lightType === "wall" || config.lightType === "floor" || config.lightType === "ceiling")
+                ) {
+                  return false;
+                }
+                // Hide environment button for wall and floor light types
+                if (
+                  step.id === "lightAmount" &&
+                  (config.lightType === "wall" || config.lightType === "floor")
+                ) {
+                  return false;
+                }
+
+                return true;
               })
               .map((step, index) => (
                 <div className="relative" key={step.id}>
-                  {/* Arrow div */}
-                  <div 
-                    className="absolute left-0 top-1/2 transform -translate-y-1/2 w-6 h-12 flex items-center justify-center cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setMobileBottomMenuOpen(!mobileBottomMenuOpen);
-                    }}
-                  >
-                    <svg
-                      className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${mobileBottomMenuOpen ? "rotate-180" : ""}`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
                   {/* Button div */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       // Close any existing dropdowns first
                       setOpenDropdown(null);
-                      // Set mobile active step and open bottom menu
+                      // Set mobile active step (but don't toggle menu)
                       setMobileActiveStep(step.id);
-                      setMobileBottomMenuOpen(!mobileBottomMenuOpen);
                       // Also set the active step for consistency
                       setActiveStep(step.id);
                     }}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 relative ml-8 ${mobileActiveStep === step.id && mobileBottomMenuOpen
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 relative ${mobileActiveStep === step.id && mobileBottomMenuOpen
                         ? `text-white`
                         : "text-gray-400 hover:text-white"
                       }`}
@@ -947,6 +951,36 @@ const VerticalNavBar = ({
                   </button>
                 </div>
               ))}
+              
+              {/* Single Arrow button */}
+              <div 
+                className="absolute ml-2 left-0 top-1/2 transform -translate-y-1/2 w-6 h-12 flex items-center justify-center cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Set pendantSelection as active step and open dropdown
+                  // setActiveStep("pendantSelection");
+                  // setOpenDropdown("pendantSelection");
+                  // setMobileActiveStep("pendantSelection");
+                  
+                  // Send message to PlayCanvas
+                  if (!mobileBottomMenuOpen) {
+                    sendMessageToPlayCanvas("model_up");
+                  } else {
+                    sendMessageToPlayCanvas("model_down");
+                  }
+                  
+                  setMobileBottomMenuOpen(!mobileBottomMenuOpen);
+                }}
+              >
+                <svg
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${mobileBottomMenuOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
           </motion.div>
         </div>
       )}
