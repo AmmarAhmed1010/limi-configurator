@@ -225,7 +225,7 @@ export const PreviewControls = ({
         backgroundColor: '#2b2f33',
         border: 'none',
         padding: 0,
-        margin: '0 2px',
+        margin: '0 60px',
         ...style
       }}
     >
@@ -910,6 +910,7 @@ export const PreviewControls = ({
           title="Save Configuration"
           style={{
             backgroundColor: '#2b2f33'
+            
           }}
         />
 
