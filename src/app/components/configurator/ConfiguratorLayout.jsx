@@ -477,6 +477,7 @@ const ConfiguratorLayout = () => {
           //   sendMessageToPlayCanvas(`base_type:round`),
           //   sendMessageToPlayCanvas(`light_amount:1`),
           //   sendMessageToPlayCanvas(`base_color:black`),
+          sendMessageToPlayCanvas('iosbackgroundblack')
           sendMessageToPlayCanvas(`light_type:${savedConfig.lightType}`),
             sendMessageToPlayCanvas(`base_type:${savedConfig.baseType}`),
             sendMessageToPlayCanvas(`light_amount:${savedConfig.lightAmount}`),
