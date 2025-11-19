@@ -967,14 +967,16 @@ const VerticalNavBar = ({
                   // setMobileActiveStep("pendantSelection");
                   
                   // Send message to PlayCanvas
-                  if (!mobileBottomMenuOpen) {
-                    sendMessageToPlayCanvas("model_up");
-                  } else {
-                    sendMessageToPlayCanvas("model_down");
-                  }
-                   setShowCutOut(!showCutout);
+                  // if (!mobileBottomMenuOpen) {
+                  //   sendMessageToPlayCanvas("model_up");
+                  // } else {
+                  //   sendMessageToPlayCanvas("model_down");
+                  // }
+                  const nextShowCutout = !showCutout;
+                  setShowCutOut(nextShowCutout);
+                  sendMessageToPlayCanvas(nextShowCutout ? "model_up" : "model_down");
 
-                   console.log("this",steps)
+                  console.log("this",steps)
                   //  setMobileBottomMenuOpen(!mobileBottomMenuOpen);
        
                   // Also close the bottom menu when closing vertical nav

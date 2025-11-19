@@ -900,7 +900,7 @@ export const PreviewControls = ({
             color: '#ffffff',
             ...(lighting && { color: '#ffffff' })
           }}
-        />
+        /> */}
         <IOSIconButton 
           icon={FaSave}
           onClick={() => {
@@ -913,7 +913,7 @@ export const PreviewControls = ({
           }}
         />
 
-        <IOSIconButton 
+        {/* <IOSIconButton 
           icon={FaFolderOpen}
           onClick={() => {
             onLoadConfig();
@@ -923,7 +923,7 @@ export const PreviewControls = ({
           style={{
             backgroundColor: '#2b2f33'
           }}
-        /> */}
+        />  */}
       </div>
 
       {/* Onboarding CSS Animations */}

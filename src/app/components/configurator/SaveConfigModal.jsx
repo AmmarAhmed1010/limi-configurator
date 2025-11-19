@@ -182,14 +182,18 @@ export const SaveConfigModal = ({
           </button>
           <button
             onClick={() => {
+              id="save_id"
               onClose();
               handleCloseSaveModal();
               onSave(configName, thumbnail, modelId);
+              console.log("modelId", modelId);
             }}
             className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
             disabled={!configName.trim() || loading || fetchingModelId}
           >
-            Save
+            <span id={modelId} className="text-lg">
+              Save
+            </span>
           </button>
 
           {(loading || fetchingModelId) && (
