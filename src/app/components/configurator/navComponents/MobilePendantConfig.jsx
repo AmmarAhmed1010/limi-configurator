@@ -188,6 +188,7 @@ const MobilePendantConfig = ({
         : [selectedPendants[0]];
 
     onPendantDesignChange(pendantsToUpdate, design);
+    console.log("hellooo",design)
   };
 
   // Handle system base design selection
