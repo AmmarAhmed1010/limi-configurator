@@ -287,7 +287,7 @@ const MobileBottomMenu = ({
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF9E] z-[9998] h-30 rounded-t-2xl "
+        className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF9E] backdrop-blur-md z-[9998] h-30 rounded-t-2xl "
       >
       {/* Header - only show for non-pendant selection steps */}
       {activeStep !== 'pendantSelection' && (
