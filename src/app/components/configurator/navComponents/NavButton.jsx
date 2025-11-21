@@ -77,6 +77,7 @@ export const NavButton = ({
 
   const isOpen = openDropdown === step.id;
   const isActive = isOpen || activeStep === step.id;
+  const isLightType = step.id === 'lightType';
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -94,6 +95,9 @@ export const NavButton = ({
 
   return (
     <div key={step.id} className="relative">
+      {isLightType && (
+        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-10 h-1 bg-gray-300" />
+      )}
       {/* One button only – no remounting between states */}
       <Tooltip
         content={isOpen ? '' : (step.tooltip || 'Navigation option')}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaMouse, FaMousePointer, FaMousePointer as FaMouseScroll } from 'react-icons/fa';
+import { FaMouse, FaMousePointer, FaMousePointer as FaMouseScroll, FaDownload } from 'react-icons/fa';
 
 const InfoPanel = () => {
   return (
@@ -33,6 +33,18 @@ const InfoPanel = () => {
           <div>
             <h4 className="font-medium text-gray-800">Zoom</h4>
             <p className="text-sm text-gray-600">Scroll up to zoom in, scroll down to zoom out</p>
+          </div>
+        </div>
+
+        <div className="flex items-start space-x-3">
+          <div className="mt-1">
+            <FaDownload className="text-gray-600" />
+          </div>
+          <div>
+            <h4 className="font-medium text-gray-800">Download Model</h4>
+            <p className="text-sm text-gray-600">
+              Save your configured light in My favourite, access it from My Profile to download model.
+            </p>
           </div>
         </div>
       </div>

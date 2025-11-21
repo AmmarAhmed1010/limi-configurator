@@ -49,26 +49,7 @@ export const useNavSteps = (config) => {
       isActive: true,
       isCompleted: false,
     },
-
-    {
-      id: "lightType",
-      icon: <FaLightbulb />, // Fallback icon
-      // image: getLightTypeImage(),
-      label: "Light Type",
-      tooltip: "Light Type",
-      isActive: true, // Always active
-      isCompleted: Boolean(config.lightType),
-    },
-    {
-      id: "hubType",
-      icon: <FaLightbulb />, // Fallback icon
-      // image: getLightTypeImage(),
-      label: "Hub Type",
-      tooltip: "Hub Type",
-      isActive: config.lightType === "ceiling",
-      isCompleted: Boolean(config.lightType),
-    },
-    {
+ {
       id: "lightingControl",
       icon: <TbBrightnessFilled />,
       label: "Lighting Control",
@@ -84,6 +65,34 @@ export const useNavSteps = (config) => {
       isActive: true, // Always active
       isCompleted: Boolean(config.environment),
     },
+       {
+      id: "lightType",
+      icon: <FaLightbulb />, // Fallback icon
+      // image: getLightTypeImage(),
+      label: "Light Type",
+      tooltip: "Light Type",
+      isActive: true, // Always active
+      isCompleted: Boolean(config.lightType),
+    },
+   
+    {
+      id: "hubType",
+      icon: <FaLightbulb />, // Fallback icon
+      // image: getLightTypeImage(),
+      label: "Hub Type",
+      tooltip: "Hub Type",
+      isActive: config.lightType === "ceiling",
+      isCompleted: Boolean(config.lightType),
+    },
+ 
+       {
+      id: "baseColor",
+      icon: <FaPalette />,
+      label: "Base Color",
+      tooltip: "Colour Setting",
+      isActive: config.lightType === "ceiling" && Boolean(config.baseType), // Active after base type is selected
+      isCompleted: Boolean(config.baseColor),
+    },
     {
       id: "baseType",
       icon: <FaLayerGroup />, // Fallback icon
@@ -93,14 +102,7 @@ export const useNavSteps = (config) => {
       isActive: config.lightType === "ceiling", // Only active for ceiling lights
       isCompleted: Boolean(config.baseType),
     },
-    {
-      id: "baseColor",
-      icon: <FaPalette />,
-      label: "Base Color",
-      tooltip: "Colour Setting",
-      isActive: config.lightType === "ceiling" && Boolean(config.baseType), // Active after base type is selected
-      isCompleted: Boolean(config.baseColor),
-    },
+ 
 
     {
       id: "lightAmount",

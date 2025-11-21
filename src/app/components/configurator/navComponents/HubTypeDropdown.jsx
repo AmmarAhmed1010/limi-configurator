@@ -132,22 +132,22 @@ export const HubTypeDropdown = ({
 
       <div className="space-y-4">
         <div>
-          <div className="flex gap-3">
+           <div className="mt-2 flex items-center">
+            <span className="text-sm font-semibold text-black">Round</span>
+          </div>
+          <div className="mt-2 flex gap-3">
             {[1, 3, 6].map((amount) => (
               <RoundOptionButton key={amount} amount={amount} />
             ))}
           </div>
-          <div className="mt-2 flex items-center">
-            <span className="text-sm font-semibold text-black">Round</span>
-          </div>
         </div>
 
         <div>
-          <div className="mt-4 flex gap-3">
-            <RectOptionButton amount={3} />
-          </div>
           <div className="mt-2 flex items-center">
             <span className="text-sm font-semibold text-black">Rectangular</span>
+          </div>
+          <div className="mt-2 flex gap-3">
+            <RectOptionButton amount={3} />
           </div>
         </div>
       </div>
