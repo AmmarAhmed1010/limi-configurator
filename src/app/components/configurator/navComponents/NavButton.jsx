@@ -42,6 +42,7 @@ export const NavButton = ({
   activeStep,
   openDropdown,
   handleStepClick,
+  setActiveStep,
   toggleDropdown,
   getNavIcon,
   emerald,
@@ -87,6 +88,7 @@ export const NavButton = ({
     } else {
       // open / change step
       handleStepClick(step.id);
+      setActiveStep(null);
     }
   };
 

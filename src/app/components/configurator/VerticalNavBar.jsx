@@ -874,6 +874,7 @@ const VerticalNavBar = ({
                   <NavButton
                     step={step}
                     index={index}
+                    setActiveStep={setActiveStep}
                     activeStep={activeStep}
                     openDropdown={openDropdown}
                     handleStepClick={handleStepClick}
