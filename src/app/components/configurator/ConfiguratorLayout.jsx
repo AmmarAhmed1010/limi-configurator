@@ -707,12 +707,15 @@ const ConfiguratorLayout = () => {
   // Handle system type change
   const handleSystemTypeChange = (system) => {
     // Update the global system type
+    const systemType =
+      typeof system === "string" ? system : system?.systemType;
+
     setConfig((prev) => ({
       ...prev,
-      systemType: system.systemType,
-      design: system.design,
-      designId: system.designId,
+      systemType,
     }));
+
+    setShowColorPicker(systemType === "ball");
 
     // Get the selected cable number(s)
     const selectedCables =
@@ -727,7 +730,13 @@ const ConfiguratorLayout = () => {
 
       // Update system type for each selected cable
       selectedCables.forEach((cableNo) => {
-        cableSystemTypes[cableNo] = system;
+        cableSystemTypes[cableNo] =
+          typeof system === "string"
+            ? {
+                ...(cableSystemTypes[cableNo] || {}),
+                systemType,
+              }
+            : system;
       });
 
       return {
