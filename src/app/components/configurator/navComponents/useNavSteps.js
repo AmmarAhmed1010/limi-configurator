@@ -45,7 +45,7 @@ export const useNavSteps = (config) => {
       id: "info",
       icon: <FaInfoCircle />,
       label: "Information",
-      tooltip: "View product information",
+      tooltip: "Navigation Guide",
       isActive: true,
       isCompleted: false,
     },
@@ -55,7 +55,7 @@ export const useNavSteps = (config) => {
       icon: <FaLightbulb />, // Fallback icon
       // image: getLightTypeImage(),
       label: "Light Type",
-      tooltip: "Select light type",
+      tooltip: "Light Type",
       isActive: true, // Always active
       isCompleted: Boolean(config.lightType),
     },
@@ -63,7 +63,7 @@ export const useNavSteps = (config) => {
       id: "lightingControl",
       icon: <TbBrightnessFilled />,
       label: "Lighting Control",
-      tooltip: "Adjust lighting settings",
+      tooltip: "Ambient Setting",
       isActive: true,
       isCompleted: false,
     },
@@ -71,7 +71,7 @@ export const useNavSteps = (config) => {
       id: "environment",
       icon: <FiHome />,
       label: "Environment",
-      tooltip: "Select environment scene ",
+      tooltip: "Environmental Setting",
       isActive: true, // Always active
       isCompleted: Boolean(config.environment),
     },
@@ -88,7 +88,7 @@ export const useNavSteps = (config) => {
       id: "baseColor",
       icon: <FaPalette />,
       label: "Base Color",
-      tooltip: "Select base color ",
+      tooltip: "Colour Setting",
       isActive: config.lightType === "ceiling" && Boolean(config.baseType), // Active after base type is selected
       isCompleted: Boolean(config.baseColor),
     },
@@ -109,10 +109,7 @@ export const useNavSteps = (config) => {
         config.configurationType === "pendant"
           ? "Select Pendants"
           : "Select Systems",
-      tooltip:
-        config.configurationType === "pendant"
-          ? "Configure individual pendants"
-          : "Configure system options",
+      tooltip: "Configure Pendant",
       isActive: true, // Always active - fixed to allow switching back
       isCompleted: false,
     },

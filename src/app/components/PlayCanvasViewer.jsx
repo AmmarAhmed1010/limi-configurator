@@ -371,8 +371,6 @@ const PlayCanvasViewer = ({
         // src='https://limi-configurator-temp.vercel.app/'
         // src='https://limiliveconfigurator.vercel.app/'
         // src='https://limi-configurator-dev.vercel.app/'
-        // src='https://playcanv.as/e/p/7c2273a2/'
-        // src='https://playcanv.as/e/p/7c2273a2/'
         allow="autoplay; fullscreen; vr"
         className={`w-full h-full min-h-screen transition-opacity duration-500 ${
           appReady ? "opacity-100" : "opacity-0"
