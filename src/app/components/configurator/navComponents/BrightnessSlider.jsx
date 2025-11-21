@@ -164,7 +164,7 @@ export const BrightnessSlider = ({
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-700">Brightness</span>
           <span className="text-sm font-semibold text-gray-900">
-            {LUMEN_LEVELS[lumenIndex]} lm
+            {LUMEN_LEVELS[lumenIndex]} lumen
           </span>
         </div>
         <input
@@ -176,7 +176,7 @@ export const BrightnessSlider = ({
           onChange={handleLumenChange}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
         />
-        <div className="flex text-[10px] text-gray-500 mt-1">
+        {/* <div className="flex text-[10px] text-gray-500 mt-1">
           {LUMEN_LEVELS.map((lvl, idx) => (
             <span
               key={lvl}
@@ -185,7 +185,7 @@ export const BrightnessSlider = ({
               {lvl}
             </span>
           ))}
-        </div>
+        </div> */}
       </div>
 
       {/* Temperature control */}

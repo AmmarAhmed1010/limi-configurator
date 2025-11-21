@@ -261,7 +261,7 @@ export const PreviewControls = ({
       <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-4 animate-fadeIn">
         <div className="relative flex items-center w-full">
           {/* Logo - Left on mobile, centered on desktop */}
-          <div className="pl-4 sm:pl-0 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
+          <div className="pl-4 sm:pl-8">
             <Link
               href="https://limiai.co"
               target="_blank"
@@ -271,9 +271,9 @@ export const PreviewControls = ({
               <Image
                 src="/images/svgLogos/__Icon_Wordmark_White.svg"
                 alt="LIMI Logo"
-                width={200}
-                height={80}
-                className="filter-none w-[140px] h-auto sm:w-[200px]"
+                width={300}
+                height={60}
+                className="filter-none w-[160px] h-auto sm:w-[260px]"
                 priority
               />
             </Link>

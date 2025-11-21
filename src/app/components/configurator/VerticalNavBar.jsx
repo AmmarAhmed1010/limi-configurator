@@ -826,7 +826,7 @@ const VerticalNavBar = ({
       {/* Desktop vertical nav */}
       {showVerticalNav && !isMobile && (
         <div
-          className="absolute left-8 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
+          className="absolute left-8 top-1/2 transform -translate-y-1/2 z-[1100] pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { FaHome, FaBan, FaBuilding, FaUtensils, FaStore, FaGraduationCap, FaHospital, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { getSceneData, onSceneDataRefresh } from '../pendantSystemData';
 import { cloneUniformsGroups } from 'three/src/renderers/shaders/UniformsUtils';
@@ -8,6 +9,7 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
   const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [environments, setEnvironments] = useState([]);
+  const [isEnvLoading, setIsEnvLoading] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -115,6 +117,14 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
 
   const handleEnvironmentSelect = (environment) => {
     console.log("environment", environment)
+
+    // Show local loading overlay for 3 seconds when an environment is selected
+    setIsEnvLoading(true);
+    setTimeout(() => {
+      setIsEnvLoading(false);
+      // Close dropdown after loading completes
+      setOpenDropdown(null);
+    }, 3000);
     // If tour is active, call tour selection handler
     if (tourActive && onTourSelection) {
       onTourSelection('environment', environment.id);
@@ -145,8 +155,6 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
       }
     }
 
-    // Close dropdown
-    setOpenDropdown(null);
   };
 
   const nextSlide = () => {
@@ -164,15 +172,44 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
   };
 
   return (
-    <div
-      className="max-sm:right-0 max-sm:w-full p-4"
-      onClick={(e) => e.stopPropagation()}
-      onTouchStart={(e) => e.stopPropagation()}
-    >
-      {!isMobile && <h3 className="text-base font-bold text-black mb-4 font-['Amenti']">Environment</h3>}
+    <>
+      {isEnvLoading && typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            id="playcanvas-loader"
+            className="fixed left-0 right-0 bottom-0 top-20 flex flex-col items-center justify-center bg-[#2B2D2F] z-[900] overflow-hidden"
+          >
+            <div className="flex flex-col items-center justify-center space-y-16">
+              {/* Logo */}
+              <div className="relative w-32 h-32 flex items-center justify-center">
+                {/* Spinner - Adjusted size */}
+                <div className="absolute inset-0 border-2 border-t-white border-transparent rounded-full animate-spin"></div>
+                {/* Logo with adjusted size and spacing */}
+                <div className="w-16 h-16 flex items-center justify-center">
+                  <img
+                    src="/images/svgLogos/__Logo_Icon_White.svg"
+                    alt="LIMI Logo"
+                    className="w-full h-full object-contain"
+                    style={{
+                      minWidth: "64px",
+                      minHeight: "64px",
+                    }}
+                  />
+                </div>  
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+      <div
+        className="relative max-sm:right-0 max-sm:w-full p-4"
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+      >
+        {!isMobile && <h3 className="text-base font-bold text-black mb-4 font-['Amenti']">Environment</h3>}
 
-      {/* Carousel Container */}
-      <div className="relative">
+        {/* Carousel Container */}
+        <div className="relative">
         {/* Navigation Arrows */}
         {totalPages > 1 && (
           <>
@@ -242,6 +279,7 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };
