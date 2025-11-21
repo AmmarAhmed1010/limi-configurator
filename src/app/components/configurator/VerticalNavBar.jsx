@@ -656,13 +656,8 @@ const VerticalNavBar = ({
     // Always set this step as the active step
     setActiveStep(stepId);
 
-    // Toggle the dropdown for this step
-    setOpenDropdown(openDropdown === stepId ? null : stepId);
-
-    // Close any other dropdowns
-    if (openDropdown && openDropdown !== stepId) {
-      setOpenDropdown(null);
-    }
+    // Toggle the dropdown for this step using the latest state
+    setOpenDropdown((prev) => (prev === stepId ? null : stepId));
   };
 
   // Toggle dropdown for a step - with auto-close config panel

@@ -260,8 +260,8 @@ export const PreviewControls = ({
       {/* Header Overlay */}
       <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-4 animate-fadeIn">
         <div className="relative flex items-center w-full">
-          {/* Logo - Centered */}
-          <div className="absolute left-1/2 transform -translate-x-1/2">
+          {/* Logo - Left on mobile, centered on desktop */}
+          <div className="pl-4 sm:pl-0 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
             <Link
               href="https://limiai.co"
               target="_blank"
@@ -273,14 +273,14 @@ export const PreviewControls = ({
                 alt="LIMI Logo"
                 width={200}
                 height={80}
-                className="filter-none"
+                className="filter-none w-[140px] h-auto sm:w-[200px]"
                 priority
               />
             </Link>
           </div>
           
           {/* Navigation Buttons - Right Aligned */}
-          <div className="ml-auto pr-8">
+          <div className="ml-auto pr-4 sm:pr-8">
             <div className="flex items-center space-x-2">
           <button
             type="button"

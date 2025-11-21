@@ -88,7 +88,6 @@ export const NavButton = ({
     } else {
       // open / change step
       handleStepClick(step.id);
-      setActiveStep(null);
     }
   };
 

@@ -715,7 +715,7 @@ const ConfiguratorLayout = () => {
       systemType,
     }));
 
-    setShowColorPicker(systemType === "ball");
+    setShowColorPicker(false);
 
     // Get the selected cable number(s)
     const selectedCables =
@@ -1003,6 +1003,8 @@ const ConfiguratorLayout = () => {
 
       // Find the system for this design
       const system = findSystemAssignmentByDesign(design);
+
+      setShowColorPicker(system?.systemType === "ball");
 
       // Check if the system type is chandelier
       let hasChandelier = false;

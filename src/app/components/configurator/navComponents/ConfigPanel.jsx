@@ -735,6 +735,8 @@ useEffect(() => {
         });
       }
       config.onItemSelect = (itemId) => {
+        setShowColorPicker(false);
+
         // Reset system type state when selecting system
         if (itemId === "system") {
           setCurrentDesign(null);
@@ -857,7 +859,7 @@ useEffect(() => {
       config.onItemSelect = (itemId) => {
         // Show loading overlay
         setPendantLoading(true);
-
+     
         // Loading will only be turned off when "loadingOff" message is received from iframe
 
         setCurrentDesign(itemId);
@@ -894,12 +896,7 @@ useEffect(() => {
           },
         ];
         config.onItemSelect = (systemType) => {
-          // Show color picker if ball system is selected
-          if (systemType === "ball") {
-            setShowColorPicker(true);
-          } else {
-            setShowColorPicker(false);
-          }
+          setShowColorPicker(false);
 
           if (systemType === "bar") {
             // Initialize the bar array with the number of selected pendants
@@ -1162,6 +1159,10 @@ useEffect(() => {
 
   // Custom breadcrumb navigation handler
   const handleBreadcrumbNavigation = (id) => {
+    if (id !== "ball") {
+      setShowColorPicker(false);
+    }
+
     // Use the navigation state to determine where to go
     if (id === "home") {
       // Reset to configuration type selection (first level)
