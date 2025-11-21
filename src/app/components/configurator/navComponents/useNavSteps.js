@@ -60,6 +60,15 @@ export const useNavSteps = (config) => {
       isCompleted: Boolean(config.lightType),
     },
     {
+      id: "hubType",
+      icon: <FaLightbulb />, // Fallback icon
+      // image: getLightTypeImage(),
+      label: "Hub Type",
+      tooltip: "Hub Type",
+      isActive: config.lightType === "ceiling",
+      isCompleted: Boolean(config.lightType),
+    },
+    {
       id: "lightingControl",
       icon: <TbBrightnessFilled />,
       label: "Lighting Control",

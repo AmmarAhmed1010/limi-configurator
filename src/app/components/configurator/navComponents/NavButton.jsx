@@ -22,6 +22,7 @@ const getStepIcon = (stepId) => {
   const iconMap = {
     info: FaInfoCircle,
     lightType: FaLightbulb,
+    hubType: FaLightbulb,
     baseType: FaLayerGroup,
     baseColor: FaPalette,
     lightAmount: FaList,

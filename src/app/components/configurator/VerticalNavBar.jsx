@@ -27,6 +27,7 @@ import { LightTypeDropdown } from './navComponents/LightTypeDropdown';
 import { EnvironmentDropdown } from './navComponents/EnvironmentDropdown';
 import { BaseTypeDropdown } from './navComponents/BaseTypeDropdown';
 import { LightAmountDropdown } from './navComponents/LightAmountDropdown';
+import HubTypeDropdown from './navComponents/HubTypeDropdown';
 import { PendantSelectionDropdown } from './navComponents/PendantSelectionDropdown';
 import { SystemTypeDropdown } from './navComponents/SystemTypeDropdown';
 import { SystemConfigurationDropdown } from './navComponents/SystemConfigurationDropdown';
@@ -840,23 +841,26 @@ const VerticalNavBar = ({
             {/* Render NavButtons with data-tour-step for guided tour */}
             {steps
               .filter((step) => {
+                // Always hide Base Type and Light Amount here; they are handled via Hub Type
+                if (step.id === "baseType" || step.id === "lightAmount") {
+                  return false;
+                }
+
+                // Base Color only for ceiling light type
                 if (
-                  (step.id === "baseType" || step.id === "baseColor") &&
+                  step.id === "baseColor" &&
                   config.lightType !== "ceiling"
                 ) {
+                  return false;
+                }
+
+                if (step.id === "hubType" && config.lightType !== "ceiling") {
                   return false;
                 }
 
                 // Hide environment button for wall and floor light types
                 if (
                   step.id === "environment" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
-                ) {
-                  return false;
-                }
-                // Hide environment button for wall and floor light types
-                if (
-                  step.id === "lightAmount" &&
                   (config.lightType === "wall" || config.lightType === "floor")
                 ) {
                   return false;
@@ -888,6 +892,19 @@ const VerticalNavBar = ({
                       <LightTypeDropdown
                         config={config}
                         onLightTypeChange={onLightTypeChange}
+                        setActiveStep={setActiveStep}
+                        setOpenDropdown={setOpenDropdown}
+                        tourActive={tourState.isActive}
+                        onTourSelection={handleTourSubSelection}
+                        setShowLoadingScreen={setShowLoadingScreen}
+                      />
+                    )}
+
+                    {step?.id === "hubType" && openDropdown === step?.id && (
+                      <HubTypeDropdown
+                        config={config}
+                        onBaseTypeChange={onBaseTypeChange}
+                        onLightAmountChange={onLightAmountChange}
                         setActiveStep={setActiveStep}
                         setOpenDropdown={setOpenDropdown}
                         tourActive={tourState.isActive}
