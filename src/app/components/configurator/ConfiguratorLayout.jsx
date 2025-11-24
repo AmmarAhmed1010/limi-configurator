@@ -645,6 +645,7 @@ const ConfiguratorLayout = () => {
 
   // Handle light amount change
   const handleLightAmountChange = (amount) => {
+    console.log("amountss", amount);
     // Update the appropriate saved light amount based on current configuration
     if (config.lightType === "ceiling") {
       setLastCeilingLightAmount(amount);
@@ -703,7 +704,67 @@ const ConfiguratorLayout = () => {
       sendMessagesForDesign(design, ids);
     });
   };
+ const handleHubTypeChange = (baseType,amount) => {
+    console.log("amountss", amount);
+    // Update the appropriate saved light amount based on current configuration
+    if (config.lightType === "ceiling") {
+      setLastCeilingLightAmount(amount);
+    }
+    if (config.baseType === "round") {
+      setLastRoundBaseLightAmount(amount);
+    }
 
+    // Use deterministic default pendants and systems for the new amount
+    const newSystems = getDefaultDesigns(amount);
+
+    // Filter selectedPendants to only include valid indices for the new amount
+    const filteredSelectedPendants = filterSelectedPendants(
+      config.selectedPendants,
+      amount
+    );
+
+    setConfig((prev) => ({
+      ...prev,
+      lightAmount: amount,
+      selectedPendants: filteredSelectedPendants, // Update selectedPendants state
+    }));
+    setCables(
+      newSystems.map((system, idx) => ({
+        design: system.design,
+      }))
+    );
+
+    // Send messages to iframe
+    // Get mount data and send mount model if available
+    const mounts = getMountDataSync();
+
+    // First filter by lightType, then by cable number
+    const matchingMount = mounts
+      .filter((mount) => mount.mountBaseType === config.baseType)
+      .find((mount) => {
+        return Number(amount) === Number(mount.mountCableNumber);
+      });
+        sendMessageToPlayCanvas(`light_type:ceiling`);
+    sendMessageToPlayCanvas(`base_type:${baseType}`);
+    sendMessageToPlayCanvas(`light_amount:${amount}`);
+    if (matchingMount && (matchingMount.mountModel || matchingMount.modelUrl)) {
+      const modelUrl = matchingMount.modelUrl || matchingMount.mountModel;
+      sendMessageToPlayCanvas(`mount_model:${modelUrl}`);
+      setConfig((prev) => ({
+        ...prev,
+        mountUrl: modelUrl,
+      }));
+    }
+
+    const designToIds = {};
+    newSystems.forEach((system, idx) => {
+      if (!designToIds[system.design]) designToIds[system.design] = [];
+      designToIds[system.design].push(idx);
+    });
+    Object.entries(designToIds).forEach(([design, ids]) => {
+      sendMessagesForDesign(design, ids);
+    });
+  };
   // Handle system type change
   const handleSystemTypeChange = (system) => {
     // Update the global system type
@@ -1354,7 +1415,8 @@ const ConfiguratorLayout = () => {
               }
               onLightTypeChange={handleLightTypeChange}
               onEnvironmentChange={handleEnvironmentChange}
-              onBaseTypeChange={handleBaseTypeChange}
+              // onBaseTypeChange={handleBaseTypeChange}
+             onBaseTypeChange={handleHubTypeChange}
               onBaseColorChange={handleBaseColorChange}
               onConnectorColorChange={handleConnectorColorChange}
               onConfigurationTypeChange={handleConfigurationTypeChange}

@@ -34,18 +34,11 @@ export const HubTypeDropdown = ({
       onTourSelection('lightAmount', amount);
     }
 
-    // onBaseTypeChange(baseType);
-    // onLightAmountChange(amount);
-
-    if (baseType === 'round') {
-      onBaseTypeChange(baseType);
-   if(amount > 1){
-    onLightAmountChange(amount);
-   }
-    }
-    if (baseType === 'rectangular') {
-      onBaseTypeChange(baseType);
-    }
+  
+    onLightAmountChange(baseType,amount);
+   
+   
+  
     setActiveStep('pendantSelection');
     setOpenDropdown(null);
 
