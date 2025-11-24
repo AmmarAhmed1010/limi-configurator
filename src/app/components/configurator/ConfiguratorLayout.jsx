@@ -644,13 +644,14 @@ const ConfiguratorLayout = () => {
   }, []);
 
   // Handle light amount change
-  const handleLightAmountChange = (amount) => {
-    console.log("amountss", amount);
+  const handleLightAmountChange = (amount, baseTypeOverride) => {
+    const baseType = baseTypeOverride || config.baseType;
+    console.log("amountss", amount, baseType);
     // Update the appropriate saved light amount based on current configuration
     if (config.lightType === "ceiling") {
       setLastCeilingLightAmount(amount);
     }
-    if (config.baseType === "round") {
+    if (baseType === "round") {
       setLastRoundBaseLightAmount(amount);
     }
 
@@ -680,7 +681,7 @@ const ConfiguratorLayout = () => {
 
     // First filter by lightType, then by cable number
     const matchingMount = mounts
-      .filter((mount) => mount.mountBaseType === config.baseType)
+      .filter((mount) => mount.mountBaseType === baseType)
       .find((mount) => {
         return Number(amount) === Number(mount.mountCableNumber);
       });
@@ -1401,6 +1402,7 @@ const ConfiguratorLayout = () => {
           {/* Vertical Navigation Bar */}
           {!isLoading && (
             <VerticalNavBar
+            setConfig={setConfig}
               containerDimensions={containerDimensions}
               handleChandelierTypeChange={handleChandelierTypeChange}
               activeStep={activeStep}
@@ -1415,8 +1417,8 @@ const ConfiguratorLayout = () => {
               }
               onLightTypeChange={handleLightTypeChange}
               onEnvironmentChange={handleEnvironmentChange}
-              // onBaseTypeChange={handleBaseTypeChange}
-             onBaseTypeChange={handleHubTypeChange}
+              onBaseTypeChange={handleBaseTypeChange}
+            //  onBaseTypeChange={handleHubTypeChange}
               onBaseColorChange={handleBaseColorChange}
               onConnectorColorChange={handleConnectorColorChange}
               onConfigurationTypeChange={handleConfigurationTypeChange}

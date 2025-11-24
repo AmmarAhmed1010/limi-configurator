@@ -58,6 +58,7 @@ const VerticalNavBar = ({
   setShowColorPicker,
   setCables,
   brightness,
+  setConfig,
   setBrightness,
   colorTemperature,
   setColorTemperature,
@@ -903,6 +904,8 @@ const VerticalNavBar = ({
                     {step?.id === "hubType" && openDropdown === step?.id && (
                       <HubTypeDropdown
                         config={config}
+                        setConfig={setConfig}
+                        sendMessageToPlayCanvas={sendMessageToPlayCanvas}
                         onBaseTypeChange={onBaseTypeChange}
                         onLightAmountChange={onLightAmountChange}
                         setActiveStep={setActiveStep}

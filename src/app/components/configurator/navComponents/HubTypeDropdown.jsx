@@ -1,9 +1,11 @@
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { sendMessageToPlayCanvas } from "../configuratorUtils";
 
 export const HubTypeDropdown = ({
   config,
+  setConfig,
   onBaseTypeChange,
   onLightAmountChange,
   setActiveStep,
@@ -20,8 +22,8 @@ export const HubTypeDropdown = ({
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const handleSelect = (baseType, amount) => {
@@ -30,16 +32,37 @@ export const HubTypeDropdown = ({
     }
 
     if (tourActive && onTourSelection) {
-      onTourSelection('baseType', baseType);
-      onTourSelection('lightAmount', amount);
+      onTourSelection("baseType", baseType);
+      onTourSelection("lightAmount", amount);
     }
 
-  
-    onLightAmountChange(baseType,amount);
-   
-   
-  
-    setActiveStep('pendantSelection');
+    if (baseType === "round") {
+      if (amount === 1) {
+        onBaseTypeChange(baseType);
+      }
+      if (amount === 3) {
+        setConfig((prev) => ({
+          ...prev,
+          baseType: baseType,
+        }));
+        sendMessageToPlayCanvas(`base_type:${baseType}`);
+        onLightAmountChange(amount, baseType);
+      }
+      if (amount === 6) {
+        setConfig((prev) => ({
+          ...prev,
+          baseType: baseType,
+        }));
+        sendMessageToPlayCanvas(`base_type:${baseType}`);
+        onLightAmountChange(amount, baseType);
+      }
+    } else if (baseType === "rectangular") {
+      if (amount === 3) {
+        onBaseTypeChange(baseType);
+      }
+    }
+
+    setActiveStep("pendantSelection");
     setOpenDropdown(null);
 
     if (setShowLoadingScreen) {
@@ -53,31 +76,33 @@ export const HubTypeDropdown = ({
     <motion.button
       key={`round-${amount}`}
       className={`flex-shrink-0 flex flex-col items-center ${
-        config.baseType === 'round' && config.lightAmount === amount
-          ? 'text-emerald-500'
-          : 'text-gray-300 hover:text-white'
+        config.baseType === "round" && config.lightAmount === amount
+          ? "text-emerald-500"
+          : "text-gray-300 hover:text-white"
       }`}
-      onClick={() => handleSelect('round', amount)}
+      onClick={() => handleSelect("round", amount)}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       <div
         className={`w-16 h-16 rounded-full overflow-hidden relative ${
-          config.baseType === 'round' && config.lightAmount === amount
-            ? 'ring-2 ring-emerald-500'
-            : ''
+          config.baseType === "round" && config.lightAmount === amount
+            ? "ring-2 ring-emerald-500"
+            : ""
         }`}
       >
         <Image
-          src={`/images/configIcons/${config.lightType || 'ceiling'}/${amount}.png`}
-          alt={`${amount} light${amount !== 1 ? 's' : ''}`}
+          src={`/images/configIcons/${
+            config.lightType || "ceiling"
+          }/${amount}.png`}
+          alt={`${amount} light${amount !== 1 ? "s" : ""}`}
           fill
           className="object-cover"
           priority
         />
       </div>
       <span className="text-sm text-black mt-1">
-        {amount} Light{amount !== 1 ? 's' : ''}
+        {amount} Light{amount !== 1 ? "s" : ""}
       </span>
     </motion.button>
   );
@@ -86,31 +111,33 @@ export const HubTypeDropdown = ({
     <motion.button
       key={`rect-${amount}`}
       className={`flex-shrink-0 flex flex-col items-center ${
-        config.baseType === 'rectangular' && config.lightAmount === amount
-          ? 'text-emerald-500'
-          : 'text-gray-300 hover:text-white'
+        config.baseType === "rectangular" && config.lightAmount === amount
+          ? "text-emerald-500"
+          : "text-gray-300 hover:text-white"
       }`}
-      onClick={() => handleSelect('rectangular', amount)}
+      onClick={() => handleSelect("rectangular", amount)}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       <div
         className={`w-16 h-16 rounded-full overflow-hidden relative ${
-          config.baseType === 'rectangular' && config.lightAmount === amount
-            ? 'ring-2 ring-emerald-500'
-            : ''
+          config.baseType === "rectangular" && config.lightAmount === amount
+            ? "ring-2 ring-emerald-500"
+            : ""
         }`}
       >
         <Image
-          src={`/images/configIcons/${config.lightType || 'ceiling'}/${amount}.png`}
-          alt={`${amount} light${amount !== 1 ? 's' : ''}`}
+          src={`/images/configIcons/${
+            config.lightType || "ceiling"
+          }/${amount}.png`}
+          alt={`${amount} light${amount !== 1 ? "s" : ""}`}
           fill
           className="object-cover"
           priority
         />
       </div>
       <span className="text-sm text-black mt-1">
-        {amount} Light{amount !== 1 ? 's' : ''}
+        {amount} Light{amount !== 1 ? "s" : ""}
       </span>
     </motion.button>
   );
@@ -125,7 +152,7 @@ export const HubTypeDropdown = ({
 
       <div className="space-y-4">
         <div>
-           <div className="mt-2 flex items-center">
+          <div className="mt-2 flex items-center">
             <span className="text-sm font-semibold text-black">Round</span>
           </div>
           <div className="mt-2 flex gap-3">
@@ -137,7 +164,9 @@ export const HubTypeDropdown = ({
 
         <div>
           <div className="mt-2 flex items-center">
-            <span className="text-sm font-semibold text-black">Rectangular</span>
+            <span className="text-sm font-semibold text-black">
+              Rectangular
+            </span>
           </div>
           <div className="mt-2 flex gap-3">
             <RectOptionButton amount={3} />
