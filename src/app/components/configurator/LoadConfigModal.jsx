@@ -93,7 +93,7 @@ export const LoadConfigModal = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1100] p-4"
     >
       <motion.div
         initial={{ y: 50, opacity: 0 }}
@@ -127,13 +127,13 @@ export const LoadConfigModal = ({
                   </p>
                   <p className="text-white text-sm break-all">{profileName}</p>
                 </div>
-                <button
+                {/* <button
                   type="button"
                   className="flex items-center gap-1 rounded-md border border-gray-600 px-2 py-1 text-xs text-gray-200 hover:border-emerald-500 hover:text-emerald-400 transition-colors"
                 >
                   <FiEdit2 className="h-3 w-3" />
                   <span>Edit</span>
-                </button>
+                </button> */}
               </div>
 
               <div className="flex items-start justify-between gap-3">
@@ -145,16 +145,16 @@ export const LoadConfigModal = ({
                     {profileEmail || "Not set"}
                   </p>
                 </div>
-                <button
+                {/* <button
                   type="button"
                   className="flex items-center gap-1 rounded-md border border-gray-600 px-2 py-1 text-xs text-gray-200 hover:border-emerald-500 hover:text-emerald-400 transition-colors"
                 >
                   <FiEdit2 className="h-3 w-3" />
                   <span>Edit</span>
-                </button>
+                </button> */}
               </div>
 
-              <div className="flex items-start justify-between gap-3">
+              {/* <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <p className="text-[11px] uppercase tracking-wide text-gray-400">
                     Password
@@ -168,7 +168,7 @@ export const LoadConfigModal = ({
                   <FiEdit2 className="h-3 w-3" />
                   <span>Edit</span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
 
