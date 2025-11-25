@@ -99,22 +99,22 @@ export const LoadConfigModal = ({
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 50, opacity: 0 }}
-        className="bg-gray-900 rounded-lg p-6 md:p-8 w-full max-w-4xl h-[80vh] max-h-[80vh] overflow-y-auto"
+        className="bg-white/80 rounded-lg p-6 md:p-8 w-full max-w-4xl h-[80vh] max-h-[80vh] overflow-y-auto mt-12"
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-white">Profile Settings</h2>
+          <h2 className="text-xl font-semibold text-black">Profile Settings</h2>
           <button 
             onClick={()=>{onClose(); 
               handleCloseSaveModal();
             }}
-            className="text-gray-400 hover:text-white"
+            className="text-emerald-500 hover:text-black"
           >
             <FaTimes size={20} />
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-[1.1fr_2fr] gap-6 mt-4">
-          <div className="bg-gray-800 rounded-lg p-5 flex flex-col items-center gap-5">
+          <div className="bg-white rounded-lg p-5 flex flex-col items-center gap-5">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/20 border border-emerald-400/60 text-emerald-300 text-2xl font-semibold">
               {profileInitial}
             </div>
@@ -122,10 +122,10 @@ export const LoadConfigModal = ({
             <div className="w-full space-y-4 text-sm">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[11px] uppercase tracking-wide text-gray-400">
+                  <p className="text-[11px] uppercase tracking-wide text-black">
                     Name
                   </p>
-                  <p className="text-white text-sm break-all">{profileName}</p>
+                  <p className="text-black text-sm break-all">{profileName}</p>
                 </div>
                 {/* <button
                   type="button"
@@ -138,10 +138,10 @@ export const LoadConfigModal = ({
 
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[11px] uppercase tracking-wide text-gray-400">
+                  <p className="text-[11px] uppercase tracking-wide text-black">
                     Email
                   </p>
-                  <p className="text-gray-300 text-sm break-all">
+                  <p className="text-black text-sm break-all">
                     {profileEmail || "Not set"}
                   </p>
                 </div>
@@ -172,7 +172,7 @@ export const LoadConfigModal = ({
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-4">
+          <div className="bg-white rounded-lg p-4">
             {isLoading ? (
               <div className="flex justify-center items-center py-6">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
@@ -182,7 +182,7 @@ export const LoadConfigModal = ({
                 {error}
                 <button 
                   onClick={onRetry}
-                  className="block mx-auto mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700"
+                  className="block mx-auto mt-4 px-4 py-2 bg-emerald-600 text-black rounded hover:bg-emerald-700"
                 >
                   Try Again
                 </button>
@@ -205,11 +205,7 @@ export const LoadConfigModal = ({
                       return (
                         <div 
                           key={config._id} 
-                          className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${
-                            selectedConfig === config._id 
-                              ? 'border-emerald-500 bg-gray-800' 
-                              : 'border-gray-700 hover:border-gray-500'
-                          }`}
+                          className={`border rounded-lg overflow-hidden cursor-pointer transition-all`}
                           onClick={() => setSelectedConfig(config._id)}
                           onDoubleClick={() => handleLoadConfig(config._id)}
                         >
@@ -225,7 +221,7 @@ export const LoadConfigModal = ({
                             />
                           </div>
                           <div className="p-2">
-                            <h3 className="font-semibold text-white mb-1 line-clamp-1">
+                            <h3 className="font-semibold text-black mb-1 line-clamp-1">
                               {config.name}
                             </h3>
                             <div className="mt-2 flex items-center justify-between gap-2">
@@ -276,13 +272,13 @@ export const LoadConfigModal = ({
                       className={`p-2 rounded-full ${
                         currentPage === 1
                           ? 'text-gray-500 cursor-not-allowed'
-                          : 'text-emerald-500 hover:bg-gray-900'
+                          : 'text-emerald-500 hover:text-white hover:bg-emerald-600'
                       }`}
                     >
                       <FaChevronLeft />
                     </button>
                     
-                    <span className="text-gray-300">
+                    <span className="text-black">
                       Page {currentPage} of {Math.ceil((configurations || []).length / configurationsPerPage)}
                     </span>
                     
@@ -296,8 +292,8 @@ export const LoadConfigModal = ({
                       className={`p-2 rounded-full ${
                         currentPage >= Math.ceil((configurations || []).length / configurationsPerPage)
                           ? 'text-gray-500 cursor-not-allowed'
-                          : 'text-emerald-500 hover:bg-gray-900'
-                      }`}
+                      : 'text-emerald-500 hover:text-white hover:bg-emerald-600'
+                    }`}
                     >
                       <FaChevronRight />
                     </button>
