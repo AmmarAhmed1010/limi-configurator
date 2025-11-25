@@ -2,8 +2,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   FaEye,
-  FaSave,
-  FaFolderOpen,
   FaMousePointer,
   FaMouse,
   FaArrowsAlt,
@@ -15,8 +13,8 @@ import {
   FaLightbulb,
   FaRoute,
   FaPalette,
-  FaHome,
 } from "react-icons/fa";
+import { FiHeart, FiHome, FiUser } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
@@ -66,6 +64,7 @@ export const PreviewControls = ({
   showLoadingScreen,
   setShowLoadingScreen,
   onStartTour, // Add tour callback prop
+  savedConfigurationsCount,
 }) => {
   // Debug loading screen prop changes
   useEffect(() => {
@@ -282,38 +281,45 @@ export const PreviewControls = ({
           {/* Navigation Buttons - Right Aligned */}
           <div className="ml-auto pr-4 sm:pr-8">
             <div className="flex items-center space-x-2">
-          <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
-            onClick={() => {
-              onSaveConfig(config, cables);
-              handleOpenSaveModal();
-            }}
-            title="Save Configuration"
-          >
-            <FaSave className="h-6 w-6" />
-          </button>
+              <button
+                type="button"
+                className="relative flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                onClick={() => {
+                  onSaveConfig(config, cables);
+                  handleOpenSaveModal();
+                }}
+                title="Save Configuration"
+              >
+                <FiHeart className="h-10 w-10" strokeWidth={1} />
+                <span className="absolute bottom-[5px] right-[1px] flex h-4 w-4 items-center justify-center rounded-full bg-white text-black text-[10px] leading-none">
+                  {savedConfigurationsCount && savedConfigurationsCount > 0
+                    ? savedConfigurationsCount
+                    : "+"}
+                </span>
+              </button>
 
-           <button
-            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
-            onClick={() => {
-              onLoadConfig();
-              handleOpenSaveModal();
-            }}
-            title="Load Configuration"
-          >
-            <FaFolderOpen className="h-6 w-6" />
-          </button> 
+              <button
+                className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                onClick={() => {
+                  onLoadConfig();
+                  handleOpenSaveModal();
+                }}
+                title="Load Configuration"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-2 border-white">
+                  <FiUser className="h-6 w-6" strokeWidth={2} />
+                </span>
+              </button>
 
-          <Link
-            href="https://limiai.co"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
-            title="Home"
-          >
-              <FaHome className="h-6 w-6" />
-            </Link>
+              <Link
+                href="https://limiai.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                title="Home"
+              >
+                <FiHome className="h-10 w-10" strokeWidth={1} />
+              </Link>
             </div>
           </div>
         </div>

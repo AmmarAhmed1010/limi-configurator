@@ -130,6 +130,55 @@ const ConfiguratorLayout = () => {
   const [showLoadingScreen, setShowLoadingScreen] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
 
+  const [userConfigurations, setUserConfigurations] = useState([]);
+  const [userConfigurationsLoading, setUserConfigurationsLoading] =
+    useState(false);
+  const [userConfigurationsError, setUserConfigurationsError] =
+    useState(null);
+
+  const fetchUserConfigurations = useCallback(async () => {
+    if (!isLoggedIn || !user?.data?._id) {
+      setUserConfigurations([]);
+      return;
+    }
+
+    setUserConfigurationsLoading(true);
+    setUserConfigurationsError(null);
+
+    try {
+      const response = await fetch(
+        buildApi1Url("/admin/products/users/light-configs"),
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.data._id }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch configurations");
+      }
+
+      const data = await response.json();
+      setUserConfigurations(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching user configurations:", error);
+      setUserConfigurationsError(
+        "Failed to load configurations. Please try again."
+      );
+    } finally {
+      setUserConfigurationsLoading(false);
+    }
+  }, [isLoggedIn, user?.data?._id]);
+
+  useEffect(() => {
+    if (isLoggedIn && user?.data?._id) {
+      fetchUserConfigurations();
+    }
+  }, [isLoggedIn, user?.data?._id, fetchUserConfigurations]);
+
   // Debug loading screen state changes
   useEffect(() => {
     console.log(
@@ -1238,6 +1287,9 @@ const ConfiguratorLayout = () => {
       // Save configuration to Redux store
       dispatch(saveConfiguration(finalConfig));
 
+      // Refresh saved configurations list for header count and modal
+      fetchUserConfigurations();
+
       // Close modal and show success toast
       setIsSaveModalOpen(false);
       toast.success("Configuration saved successfully");
@@ -1388,6 +1440,7 @@ const ConfiguratorLayout = () => {
           setShowPendantLoadingScreen={setShowPendantLoadingScreen}
           showLoadingScreen={showLoadingScreen}
           setShowLoadingScreen={setShowLoadingScreen}
+          savedConfigurationsCount={userConfigurations.length}
           onStartTour={() => {
             if (typeof window !== "undefined" && window.startConfiguratorTour) {
               window.startConfiguratorTour();
@@ -1501,7 +1554,10 @@ const ConfiguratorLayout = () => {
             handleCloseSaveModal={handleCloseSaveModal}
             onClose={() => setIsLoadModalOpen(false)}
             onLoad={handleLoadSpecificConfig}
-            userId={user?.data?._id}
+            configurations={userConfigurations}
+            isLoading={userConfigurationsLoading}
+            error={userConfigurationsError}
+            onRetry={fetchUserConfigurations}
           />
         )}
       </AnimatePresence>

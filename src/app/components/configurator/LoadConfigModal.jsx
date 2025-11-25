@@ -9,12 +9,12 @@ export const LoadConfigModal = ({
   isOpen, 
   onClose, 
   onLoad,
-  userId,
-  handleCloseSaveModal
+  handleCloseSaveModal,
+  configurations,
+  isLoading,
+  error,
+  onRetry,
 }) => {
-  const [configurations, setConfigurations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedConfig, setSelectedConfig] = useState(null);
   
   // Pagination state
@@ -30,37 +30,11 @@ export const LoadConfigModal = ({
   // Stock image for fallback - using a random homepage product image
   const fallbackImage = getRandomFallbackImage();
 
-  // Fetch user configurations when modal opens
   useEffect(() => {
-    if (isOpen && userId) {
-      fetchUserConfigurations();
+    if (isOpen && onRetry) {
+      onRetry();
     }
-  }, [isOpen, userId]);
-
-  const fetchUserConfigurations = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(buildApi1Url('/admin/products/users/light-configs'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userId })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch configurations');
-      }
-      
-      const data = await response.json();
-      setConfigurations(data);
-    } catch (err) {
-      setError('Failed to load configurations. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [isOpen, onRetry]);
 
   const handleLoadConfig = async (configId) => {
     try {
@@ -76,7 +50,7 @@ export const LoadConfigModal = ({
       onLoad(configData);
       onClose();
     } catch (err) {
-      setError('Failed to load the selected configuration. Please try again.');
+      console.error('Failed to load the selected configuration. Please try again.', err);
     }
   };
 
@@ -115,13 +89,13 @@ export const LoadConfigModal = ({
           <div className="text-red-500 py-4 text-center">
             {error}
             <button 
-              onClick={fetchUserConfigurations}
+              onClick={onRetry}
               className="block mx-auto mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700"
             >
               Try Again
             </button>
           </div>
-        ) : configurations.length === 0 ? (
+        ) : (configurations || []).length === 0 ? (
           <div className="text-gray-400 py-4 text-center">
             No saved configurations found.
           </div>
@@ -129,7 +103,7 @@ export const LoadConfigModal = ({
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Get current configurations for pagination */}
-              {configurations
+              {(configurations || [])
                 .slice(
                   (currentPage - 1) * configurationsPerPage,
                   currentPage * configurationsPerPage
@@ -181,7 +155,7 @@ export const LoadConfigModal = ({
             </div>
             
             {/* Pagination controls */}
-            {configurations.length > configurationsPerPage && (
+            {(configurations || []).length > configurationsPerPage && (
               <div className="flex justify-center items-center mt-2 space-x-4">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -196,18 +170,18 @@ export const LoadConfigModal = ({
                 </button>
                 
                 <span className="text-gray-300">
-                  Page {currentPage} of {Math.ceil(configurations.length / configurationsPerPage)}
+                  Page {currentPage} of {Math.ceil((configurations || []).length / configurationsPerPage)}
                 </span>
                 
                 <button
                   onClick={() => 
                     setCurrentPage(prev => 
-                      Math.min(prev + 1, Math.ceil(configurations.length / configurationsPerPage))
+                      Math.min(prev + 1, Math.ceil((configurations || []).length / configurationsPerPage))
                     )
                   }
-                  disabled={currentPage >= Math.ceil(configurations.length / configurationsPerPage)}
+                  disabled={currentPage >= Math.ceil((configurations || []).length / configurationsPerPage)}
                   className={`p-2 rounded-full ${
-                    currentPage >= Math.ceil(configurations.length / configurationsPerPage)
+                    currentPage >= Math.ceil((configurations || []).length / configurationsPerPage)
                       ? 'text-gray-500 cursor-not-allowed'
                       : 'text-emerald-500 hover:bg-gray-800'
                   }`}
@@ -219,7 +193,7 @@ export const LoadConfigModal = ({
           </>
         )}
         
-        {!isLoading && !error && configurations.length > 0 && (
+        {!isLoading && !error && (configurations || []).length > 0 && (
           <div className="mt-2 flex justify-end">
             <button
               onClick={()=>{
