@@ -306,7 +306,7 @@ export const PreviewControls = ({
                 }}
                 title="Load Configuration"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-2 border-white">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white">
                   <FiUser className="h-6 w-6" strokeWidth={2} />
                 </span>
               </button>

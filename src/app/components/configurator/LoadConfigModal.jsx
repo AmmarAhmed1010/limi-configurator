@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { buildApi1Url } from '../../config/api.config';
 import { motion } from 'framer-motion';
 import { FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FiUser, FiMail, FiLock, FiEdit2 } from 'react-icons/fi';
 
 export const LoadConfigModal = ({ 
   isOpen, 
@@ -16,6 +18,11 @@ export const LoadConfigModal = ({
   onRetry,
 }) => {
   const [selectedConfig, setSelectedConfig] = useState(null);
+  const userState = useSelector((state) => state.user);
+  const profileData = userState?.user?.data || {};
+  const profileName = profileData.username || 'Guest User';
+  const profileEmail = profileData.email || profileData.phone || '';
+  const profileInitial = profileName ? profileName.charAt(0).toUpperCase() : 'U';
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,10 +74,10 @@ export const LoadConfigModal = ({
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 50, opacity: 0 }}
-        className="bg-gray-900 rounded-lg p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto"
+        className="bg-gray-900 rounded-lg p-6 md:p-8 w-full max-w-4xl h-[80vh] max-h-[80vh] overflow-y-auto"
       >
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl font-semibold text-white">Load Configuration</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-white">Profile Settings</h2>
           <button 
             onClick={()=>{onClose(); 
               handleCloseSaveModal();
@@ -80,144 +87,201 @@ export const LoadConfigModal = ({
             <FaTimes size={20} />
           </button>
         </div>
-        
-        {isLoading ? (
-          <div className="flex justify-center items-center py-6">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
-          </div>
-        ) : error ? (
-          <div className="text-red-500 py-4 text-center">
-            {error}
-            <button 
-              onClick={onRetry}
-              className="block mx-auto mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700"
-            >
-              Try Again
-            </button>
-          </div>
-        ) : (configurations || []).length === 0 ? (
-          <div className="text-gray-400 py-4 text-center">
-            No saved configurations found.
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Get current configurations for pagination */}
-              {(configurations || [])
-                .slice(
-                  (currentPage - 1) * configurationsPerPage,
-                  currentPage * configurationsPerPage
-                )
-                .map((config) => {
-                  // Get thumbnail URL or use fallback
-                  const thumbnailUrl = config.thumbnail?.url || fallbackImage;
-                  
-                  return (
-                    <div 
-                      key={config._id} 
-                      className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${
-                        selectedConfig === config._id 
-                          ? 'border-emerald-500 bg-gray-800' 
-                          : 'border-gray-700 hover:border-gray-500'
-                      }`}
-                      onClick={() => setSelectedConfig(config._id)}
-                      onDoubleClick={() => handleLoadConfig(config._id)}
-                    >
-                      <div className="relative w-full h-32 bg-gray-800">
-                        <img 
-                          src={thumbnailUrl} 
-                          alt={config.name || 'Configuration thumbnail'}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = fallbackImage;
-                          }}
-                        />
-                      </div>
-                      <div className="p-2">
-                        <h3 className="font-semibold text-white mb-2">{config.name}</h3>
-                        <div className="text-sm text-gray-400">
-                          <p>Light Type: {config.config.light_type}</p>
-                          <p>Light Amount: {config.config.light_amount}</p>
-                          <p>Base Color: {config.config.cable_color}</p>
-                          {/* <p>Cable Length: {config.config.cable_length}</p> */}
-                          {config.config.base_type && (
-                            <p>Base Type: {config.config.base_type}</p>
-                          )}
-                          <p className="mt-2 text-xs text-gray-500">
-                            {new Date(config.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+
+        <div className="grid grid-cols-1 md:grid-cols-[1.1fr_2fr] gap-6 mt-4">
+          <div className="bg-gray-800 rounded-lg p-5 flex flex-col items-center gap-5">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/20 border border-emerald-400/60 text-emerald-300 text-2xl font-semibold">
+              {profileInitial}
             </div>
-            
-            {/* Pagination controls */}
-            {(configurations || []).length > configurationsPerPage && (
-              <div className="flex justify-center items-center mt-2 space-x-4">
+
+            <div className="w-full space-y-4 text-sm">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] uppercase tracking-wide text-gray-400">
+                    Name
+                  </p>
+                  <p className="text-white text-sm break-all">{profileName}</p>
+                </div>
                 <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className={`p-2 rounded-full ${
-                    currentPage === 1
-                      ? 'text-gray-500 cursor-not-allowed'
-                      : 'text-emerald-500 hover:bg-gray-800'
-                  }`}
+                  type="button"
+                  className="flex items-center gap-1 rounded-md border border-gray-600 px-2 py-1 text-xs text-gray-200 hover:border-emerald-500 hover:text-emerald-400 transition-colors"
                 >
-                  <FaChevronLeft />
+                  <FiEdit2 className="h-3 w-3" />
+                  <span>Edit</span>
                 </button>
-                
-                <span className="text-gray-300">
-                  Page {currentPage} of {Math.ceil((configurations || []).length / configurationsPerPage)}
-                </span>
-                
+              </div>
+
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] uppercase tracking-wide text-gray-400">
+                    Email
+                  </p>
+                  <p className="text-gray-300 text-sm break-all">
+                    {profileEmail || "Not set"}
+                  </p>
+                </div>
                 <button
-                  onClick={() => 
-                    setCurrentPage(prev => 
-                      Math.min(prev + 1, Math.ceil((configurations || []).length / configurationsPerPage))
+                  type="button"
+                  className="flex items-center gap-1 rounded-md border border-gray-600 px-2 py-1 text-xs text-gray-200 hover:border-emerald-500 hover:text-emerald-400 transition-colors"
+                >
+                  <FiEdit2 className="h-3 w-3" />
+                  <span>Edit</span>
+                </button>
+              </div>
+
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] uppercase tracking-wide text-gray-400">
+                    Password
+                  </p>
+                  <p className="text-gray-300 text-sm">••••••••••</p>
+                </div>
+                <button
+                  type="button"
+                  className="flex items-center gap-1 rounded-md border border-gray-600 px-2 py-1 text-xs text-gray-200 hover:border-emerald-500 hover:text-emerald-400 transition-colors"
+                >
+                  <FiEdit2 className="h-3 w-3" />
+                  <span>Edit</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg p-4">
+            {isLoading ? (
+              <div className="flex justify-center items-center py-6">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+              </div>
+            ) : error ? (
+              <div className="text-red-500 py-4 text-center">
+                {error}
+                <button 
+                  onClick={onRetry}
+                  className="block mx-auto mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : (configurations || []).length === 0 ? (
+              <div className="text-gray-400 py-4 text-center">
+                No saved configurations found.
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(configurations || [])
+                    .slice(
+                      (currentPage - 1) * configurationsPerPage,
+                      currentPage * configurationsPerPage
                     )
-                  }
-                  disabled={currentPage >= Math.ceil((configurations || []).length / configurationsPerPage)}
-                  className={`p-2 rounded-full ${
-                    currentPage >= Math.ceil((configurations || []).length / configurationsPerPage)
-                      ? 'text-gray-500 cursor-not-allowed'
-                      : 'text-emerald-500 hover:bg-gray-800'
+                    .map((config) => {
+                      const thumbnailUrl = config.thumbnail?.url || fallbackImage;
+
+                      return (
+                        <div 
+                          key={config._id} 
+                          className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${
+                            selectedConfig === config._id 
+                              ? 'border-emerald-500 bg-gray-800' 
+                              : 'border-gray-700 hover:border-gray-500'
+                          }`}
+                          onClick={() => setSelectedConfig(config._id)}
+                          onDoubleClick={() => handleLoadConfig(config._id)}
+                        >
+                          <div className="relative w-full h-28 bg-gray-800">
+                            <img 
+                              src={thumbnailUrl} 
+                              alt={config.name || 'Configuration thumbnail'}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = fallbackImage;
+                              }}
+                            />
+                          </div>
+                          <div className="p-2">
+                            <h3 className="font-semibold text-white mb-1 line-clamp-1">{config.name}</h3>
+                            {/* <div className="text-xs text-gray-400 space-y-0.5">
+                              <p>Light Type: {config.config.light_type}</p>
+                              <p>Light Amount: {config.config.light_amount}</p>
+                              <p>Base Color: {config.config.cable_color}</p>
+                              {config.config.base_type && (
+                                <p>Base Type: {config.config.base_type}</p>
+                              )}
+                              <p className="mt-1 text-[10px] text-gray-500">
+                                {new Date(config.createdAt).toLocaleDateString()}
+                              </p>
+                            </div> */}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+
+                {(configurations || []).length > configurationsPerPage && (
+                  <div className="flex justify-center items-center mt-3 space-x-4 text-xs">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className={`p-2 rounded-full ${
+                        currentPage === 1
+                          ? 'text-gray-500 cursor-not-allowed'
+                          : 'text-emerald-500 hover:bg-gray-900'
+                      }`}
+                    >
+                      <FaChevronLeft />
+                    </button>
+                    
+                    <span className="text-gray-300">
+                      Page {currentPage} of {Math.ceil((configurations || []).length / configurationsPerPage)}
+                    </span>
+                    
+                    <button
+                      onClick={() => 
+                        setCurrentPage(prev => 
+                          Math.min(prev + 1, Math.ceil((configurations || []).length / configurationsPerPage))
+                        )
+                      }
+                      disabled={currentPage >= Math.ceil((configurations || []).length / configurationsPerPage)}
+                      className={`p-2 rounded-full ${
+                        currentPage >= Math.ceil((configurations || []).length / configurationsPerPage)
+                          ? 'text-gray-500 cursor-not-allowed'
+                          : 'text-emerald-500 hover:bg-gray-900'
+                      }`}
+                    >
+                      <FaChevronRight />
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+
+            {!isLoading && !error && (configurations || []).length > 0 && (
+              <div className="mt-4 flex justify-end gap-2">
+                <button
+                  onClick={()=>{
+                    onClose();
+                    handleCloseSaveModal();
+                  }}
+                  className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 text-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => selectedConfig && handleLoadConfig(selectedConfig) && handleCloseSaveModal()}
+                  disabled={!selectedConfig}
+                  className={`px-4 py-2 rounded text-sm ${
+                    selectedConfig 
+                      ? 'bg-emerald-600 text-white hover:bg-emerald-700' 
+                      : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                   }`}
                 >
-                  <FaChevronRight />
+                  Load
                 </button>
               </div>
             )}
-          </>
-        )}
-        
-        {!isLoading && !error && (configurations || []).length > 0 && (
-          <div className="mt-2 flex justify-end">
-            <button
-              onClick={()=>{
-                onClose();
-                handleCloseSaveModal();
-              }}
-              className="px-4 py-2 mr-2 bg-gray-700 text-white rounded hover:bg-gray-600"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => selectedConfig && handleLoadConfig(selectedConfig) && handleCloseSaveModal()}
-           
-              disabled={!selectedConfig}
-              className={`px-4 py-2 rounded ${
-                selectedConfig 
-                  ? 'bg-emerald-600 text-white hover:bg-emerald-700' 
-                  : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              Load
-            </button>
           </div>
-        )}
+        </div>
       </motion.div>
     </motion.div>
   );
