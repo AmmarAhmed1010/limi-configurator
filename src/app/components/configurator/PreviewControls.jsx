@@ -283,31 +283,33 @@ export const PreviewControls = ({
             <div className="flex items-center space-x-2">
               <button
                 type="button"
-                className="relative flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                className="relative flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
                 onClick={() => {
                   onSaveConfig(config, cables);
                   handleOpenSaveModal();
                 }}
                 title="Save Configuration"
               >
-                <FiHeart className="h-10 w-10" strokeWidth={1} />
-                <span className="absolute bottom-[5px] right-[1px] flex h-4 w-4 items-center justify-center rounded-full bg-white text-black text-[10px] leading-none">
-                  {savedConfigurationsCount && savedConfigurationsCount > 0
-                    ? savedConfigurationsCount
-                    : "+"}
+                <FiHeart className="h-9 w-9" strokeWidth={1} />
+                <span className="absolute bottom-[7px] right-[5px] flex h-4 w-4 items-center justify-center rounded-full bg-white text-black text-[9px] leading-none">
+                  {savedConfigurationsCount && savedConfigurationsCount > 0 ? (
+                    savedConfigurationsCount
+                  ) : (
+                    <span className="text-[11px] leading-none">+</span>
+                  )}
                 </span>
               </button>
 
               <button
-                className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                className="flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
                 onClick={() => {
                   onLoadConfig();
                   handleOpenSaveModal();
                 }}
                 title="Load Configuration"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white">
-                  <FiUser className="h-6 w-6" strokeWidth={2} />
+                <span className="flex h-11 w-11 items-center justify-center ">
+                  <FiUser className="h-9 w-9" strokeWidth={1.3} />
                 </span>
               </button>
 
@@ -315,10 +317,10 @@ export const PreviewControls = ({
                 href="https://limiai.co"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                className="flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
                 title="Home"
               >
-                <FiHome className="h-10 w-10" strokeWidth={1} />
+                <FiHome className="h-9 w-9" strokeWidth={1} />
               </Link>
             </div>
           </div>

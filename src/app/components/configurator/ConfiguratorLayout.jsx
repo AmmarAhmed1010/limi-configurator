@@ -64,7 +64,7 @@ const ConfiguratorLayout = () => {
   const searchParams = useSearchParams();
   const { barArray, setBarState, initializeBarArray } = useBarState();
   // Version constant to track localStorage schema changes
-  const STORAGE_VERSION = "1.5.0";
+  const STORAGE_VERSION = "1.6.0";
 
   // Clear old localStorage data if version doesn't match
   useEffect(() => {
