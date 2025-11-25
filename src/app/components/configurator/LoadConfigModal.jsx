@@ -61,6 +61,31 @@ export const LoadConfigModal = ({
     }
   };
 
+  const handleDeleteConfig = async (configId) => {
+    try {
+      const response = await fetch(
+        buildApi1Url(`/admin/products/light-configs/${configId}`),
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to delete configuration');
+      }
+
+      if (selectedConfig === configId) {
+        setSelectedConfig(null);
+      }
+
+      if (onRetry) {
+        onRetry();
+      }
+    } catch (err) {
+      console.error('Failed to delete the selected configuration. Please try again.', err);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -200,7 +225,32 @@ export const LoadConfigModal = ({
                             />
                           </div>
                           <div className="p-2">
-                            <h3 className="font-semibold text-white mb-1 line-clamp-1">{config.name}</h3>
+                            <h3 className="font-semibold text-white mb-1 line-clamp-1">
+                              {config.name}
+                            </h3>
+                            <div className="mt-2 flex items-center justify-between gap-2">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleLoadConfig(config._id);
+                                  handleCloseSaveModal();
+                                }}
+                                className="flex-1 px-2 py-1 rounded bg-emerald-600 text-white text-xs hover:bg-emerald-700"
+                              >
+                                Load
+                              </button>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteConfig(config._id);
+                                }}
+                                className="px-2 py-1 rounded bg-red-600/80 text-white text-xs hover:bg-red-700"
+                              >
+                                Delete
+                              </button>
+                            </div>
                             {/* <div className="text-xs text-gray-400 space-y-0.5">
                               <p>Light Type: {config.config.light_type}</p>
                               <p>Light Amount: {config.config.light_amount}</p>
@@ -254,31 +304,6 @@ export const LoadConfigModal = ({
                   </div>
                 )}
               </>
-            )}
-
-            {!isLoading && !error && (configurations || []).length > 0 && (
-              <div className="mt-4 flex justify-end gap-2">
-                <button
-                  onClick={()=>{
-                    onClose();
-                    handleCloseSaveModal();
-                  }}
-                  className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 text-sm"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => selectedConfig && handleLoadConfig(selectedConfig) && handleCloseSaveModal()}
-                  disabled={!selectedConfig}
-                  className={`px-4 py-2 rounded text-sm ${
-                    selectedConfig 
-                      ? 'bg-emerald-600 text-white hover:bg-emerald-700' 
-                      : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                  }`}
-                >
-                  Load
-                </button>
-              </div>
             )}
           </div>
         </div>
