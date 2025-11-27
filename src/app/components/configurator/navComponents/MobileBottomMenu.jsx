@@ -4,6 +4,7 @@ import { LightTypeDropdown } from './LightTypeDropdown';
 import { EnvironmentDropdown } from './EnvironmentDropdown';
 import { BaseTypeDropdown } from './BaseTypeDropdown';
 import  BaseColorPanel  from './BaseColorPanel';
+import HubTypeDropdown from './HubTypeDropdown';
 import { LightAmountDropdown } from './LightAmountDropdown';
 import { PendantSelectionDropdown } from './PendantSelectionDropdown';
 import { SystemTypeDropdown } from './SystemTypeDropdown';
@@ -18,6 +19,7 @@ const MobileBottomMenu = ({
   onClose,
   // Props for different components
   config,
+  setConfig,
   onLightTypeChange,
   onEnvironmentChange,
   onBaseTypeChange,
@@ -107,6 +109,7 @@ const MobileBottomMenu = ({
       case 'baseColor': return 'Base Color';
       case 'lightingControl': return 'Lighting Control';
       case 'lightAmount': return 'Light Amount';
+      case 'hubType': return 'Hub Type';
       case 'pendantSelection': return 'Pendant Selection';
       case 'systemType': return 'System Type';
       case 'systemConfiguration': return 'System Configuration';
@@ -153,6 +156,20 @@ const MobileBottomMenu = ({
           />
         );
       
+      case 'hubType':
+        return (
+          <HubTypeDropdown
+            config={config}
+            setConfig={setConfig}
+            onBaseTypeChange={onBaseTypeChange}
+            onLightAmountChange={onLightAmountChange}
+            setActiveStep={setActiveStep}
+            setOpenDropdown={setOpenDropdown}
+            tourActive={tourState.isActive}
+            onTourSelection={handleTourSubSelection}
+          />
+        );
+
       case 'baseColor':
         return (
           <BaseColorPanel

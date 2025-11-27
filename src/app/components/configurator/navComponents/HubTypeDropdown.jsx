@@ -15,6 +15,7 @@ export const HubTypeDropdown = ({
   setShowLoadingScreen,
 }) => {
   const [isMobile, setIsMobile] = useState(false);
+  const [activeTab, setActiveTab] = useState("round");
 
   useEffect(() => {
     const checkMobile = () => {
@@ -145,34 +146,103 @@ export const HubTypeDropdown = ({
   return (
     <div className="p-4">
       {!isMobile && (
-        <h3 className="text-base font-bold text-black mb-3 font-['Amenti']">
-          Hub Type
-        </h3>
+        <>
+          <h3 className="text-base font-bold text-black mb-3 font-['Amenti']">
+            Hub Type
+          </h3>
+
+          <div className="space-y-4">
+            <div>
+              <div className="mt-2 flex items-center">
+                <span className="text-sm font-semibold text-black">Round</span>
+              </div>
+              <div className="mt-2 flex gap-3">
+                {[1, 3, 6].map((amount) => (
+                  <RoundOptionButton key={amount} amount={amount} />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="mt-2 flex items-center">
+                <span className="text-sm font-semibold text-black">
+                  Rectangular
+                </span>
+              </div>
+              <div className="mt-2 flex gap-3">
+                <RectOptionButton amount={3} />
+              </div>
+            </div>
+          </div>
+        </>
       )}
 
-      <div className="space-y-4">
-        <div>
-          <div className="mt-2 flex items-center">
-            <span className="text-sm font-semibold text-black">Round</span>
-          </div>
-          <div className="mt-2 flex gap-3">
-            {[1, 3, 6].map((amount) => (
-              <RoundOptionButton key={amount} amount={amount} />
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <div className="mt-2 flex items-center">
-            <span className="text-sm font-semibold text-black">
+      {isMobile && (
+        <>
+          <div className="flex mb-4 border-b border-gray-300">
+            <button
+              type="button"
+              className={`flex-1 py-2 text-sm font-semibold ${
+                activeTab === "round"
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("round")}
+            >
+              Round
+            </button>
+            <button
+              type="button"
+              className={`flex-1 py-2 text-sm font-semibold ${
+                activeTab === "rectangular"
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("rectangular")}
+            >
               Rectangular
-            </span>
+            </button>
           </div>
-          <div className="mt-2 flex gap-3">
-            <RectOptionButton amount={3} />
-          </div>
-        </div>
-      </div>
+
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+          >
+            {activeTab === "round" && (
+              <div className="space-y-4">
+                <div>
+                  <div className="mt-2 flex items-center">
+                    <span className="text-sm font-semibold text-black">Round</span>
+                  </div>
+                  <div className="mt-2 flex gap-3">
+                    {[1, 3, 6].map((amount) => (
+                      <RoundOptionButton key={amount} amount={amount} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "rectangular" && (
+              <div className="space-y-4">
+                <div>
+                  <div className="mt-2 flex items-center">
+                    <span className="text-sm font-semibold text-black">
+                      Rectangular
+                    </span>
+                  </div>
+                  <div className="mt-2 flex gap-3">
+                    <RectOptionButton amount={3} />
+                  </div>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
     </div>
   );
 };

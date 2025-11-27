@@ -1117,7 +1117,13 @@ const VerticalNavBar = ({
                 // Hide environment button for wall and floor light types
                 if (
                   step.id === "lightAmount" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
+                  (config.lightType === "wall" || config.lightType === "floor" || config.lightType === "ceiling")
+                ) {
+                  return false;
+                }
+                 if (
+                  step.id === "baseType" &&
+                  (config.lightType === "wall" || config.lightType === "floor" || config.lightType === "ceiling")
                 ) {
                   return false;
                 }
@@ -1167,6 +1173,7 @@ const VerticalNavBar = ({
         setLocalConfiguringType={setLocalConfiguringType}
         onClose={() => setMobileBottomMenuOpen(false)}
         config={config}
+        setConfig={setConfig}
         onLightTypeChange={onLightTypeChange}
         onEnvironmentChange={onEnvironmentChange}
         onBaseTypeChange={onBaseTypeChange}
