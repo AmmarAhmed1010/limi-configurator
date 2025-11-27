@@ -40,7 +40,15 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
           ...sceneData.map((scene, index) => ({
             id: scene._id || scene.sceneName?.toLowerCase().replace(/\s+/g, '_'),
             label: scene.sceneName,
-            icon: scene.sceneIcon ? <img src={scene.sceneIcon} alt={scene.sceneName} className="w-5 h-5" /> : getIconForSceneType('interior'),
+            icon: scene.sceneIcon
+              ? (
+                  <img
+                    src={scene.sceneIcon}
+                    alt={scene.sceneName}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                )
+              : getIconForSceneType('interior'),
             description: scene.sceneName || 'Scene',
             sceneValue: index + 1,
             sceneUrl: scene.sceneModel,
@@ -82,7 +90,15 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
         ...newSceneData.map((scene, index) => ({
           id: scene._id || scene.sceneName?.toLowerCase().replace(/\s+/g, '_'),
           label: scene.sceneName,
-          icon: scene.sceneIcon ? <img src={scene.sceneIcon} alt={scene.sceneName} className="w-5 h-5" /> : getIconForSceneType('interior'),
+          icon: scene.sceneIcon
+            ? (
+                <img
+                  src={scene.sceneIcon}
+                  alt={scene.sceneName}
+                  className="w-full h-full object-cover rounded-full"
+                />
+              )
+            : getIconForSceneType('interior'),
           description: scene.sceneName || 'Scene',
           sceneValue: index + 1,
           sceneUrl: scene.sceneModel,
@@ -229,7 +245,7 @@ export const EnvironmentDropdown = ({ config, onEnvironmentChange, setActiveStep
         )}
 
         {/* Carousel Content */}
-        <div className="overflow-hidden">
+        <div className="overflow-hidden px-8">
           <div
             className={`grid ${isMobile ? 'grid-cols-3' : 'grid-cols-4'} gap-4`}
 
