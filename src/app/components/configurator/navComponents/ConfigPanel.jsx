@@ -736,7 +736,6 @@ useEffect(() => {
       }
       config.onItemSelect = (itemId) => {
         setShowColorPicker(false);
-
         // Reset system type state when selecting system
         if (itemId === "system") {
           setCurrentDesign(null);
@@ -1159,9 +1158,9 @@ useEffect(() => {
 
   // Custom breadcrumb navigation handler
   const handleBreadcrumbNavigation = (id) => {
-    if (id !== "ball") {
-      setShowColorPicker(false);
-    }
+    // if (id !== "ball") {
+    //   setShowColorPicker(false);
+    // }
 
     // Use the navigation state to determine where to go
     if (id === "home") {

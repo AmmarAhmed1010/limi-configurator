@@ -4,6 +4,7 @@ export function listenForCableMessages(callback) {
     if (typeof event.data === "string" && event.data.startsWith("cable_")) {
       callback(event.data, event);
     }
+    console.log("cableeeee")
   }
   window.addEventListener("message", handleMessage);
   // Return cleanup

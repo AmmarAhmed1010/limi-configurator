@@ -189,7 +189,7 @@ const ConfiguratorLayout = () => {
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  useEffect(() => {}, [barArray]);
+  useEffect(() => { }, [barArray]);
   // Use system assignments hook for optimized data access
   const {
     systemAssignments: hookSystemAssignments,
@@ -280,19 +280,45 @@ const ConfiguratorLayout = () => {
     handleCableSizeChange(size, selectedCables, cables, setCables);
   };
 
+
+  useEffect(() => {
+    console.log("showColorPicker", showColorPicker);
+  }, [showColorPicker,setShowColorPicker]);
   // Handler for selected cable messages
   useEffect(() => {
     const cleanup = listenForSelectedCableMessages((message) => {
       const uniqueOrdered = processSelectedCableMessage(message);
+      console.log("uniqueOrdered", uniqueOrdered);
 
       // Save to state
       setConfig((prev) => ({
         ...prev,
         selectedPendants: uniqueOrdered,
       }));
+
+      if (uniqueOrdered.length === 1) {
+        console.log("uniqueOrderedsssssssssss", uniqueOrdered);
+        console.log("cables", cables);
+        const index = uniqueOrdered[0];          // e.g. 5
+        const cable = cables[index];             // e.g. { design: 'piko' }
+
+        if (cable) {
+          console.log("selected index:", index);
+          console.log("selected design:", cable.design);
+           const system = findSystemAssignmentByDesign(cable.design);
+           console.log("system", system);
+           if(system.systemType === "ball"){
+            console.log("ball")
+            setShowColorPicker(true);
+            console.log("showColorPicker", showColorPicker);
+           }
+        } else {
+          console.log("No cable found at index:", index);
+        }
+      }
     });
     return cleanup;
-  }, []);
+  }, [cables, showColorPicker]);
 
   // Handler for shade selection
   const handleShadeSelectLocal = (
@@ -427,7 +453,7 @@ const ConfiguratorLayout = () => {
       }
 
       const { config } = configData;
-      
+
       // Normalize property names (handle both camelCase and snake_case)
       const lightType = (config.lightType || config.light_type || '').toLowerCase();
       const baseType = (config.baseType || config.base_type || 'round').toLowerCase();
@@ -754,7 +780,7 @@ const ConfiguratorLayout = () => {
       sendMessagesForDesign(design, ids);
     });
   };
- const handleHubTypeChange = (baseType,amount) => {
+  const handleHubTypeChange = (baseType, amount) => {
     console.log("amountss", amount);
     // Update the appropriate saved light amount based on current configuration
     if (config.lightType === "ceiling") {
@@ -794,7 +820,7 @@ const ConfiguratorLayout = () => {
       .find((mount) => {
         return Number(amount) === Number(mount.mountCableNumber);
       });
-        sendMessageToPlayCanvas(`light_type:ceiling`);
+    sendMessageToPlayCanvas(`light_type:ceiling`);
     sendMessageToPlayCanvas(`base_type:${baseType}`);
     sendMessageToPlayCanvas(`light_amount:${amount}`);
     if (matchingMount && (matchingMount.mountModel || matchingMount.modelUrl)) {
@@ -844,9 +870,9 @@ const ConfiguratorLayout = () => {
         cableSystemTypes[cableNo] =
           typeof system === "string"
             ? {
-                ...(cableSystemTypes[cableNo] || {}),
-                systemType,
-              }
+              ...(cableSystemTypes[cableNo] || {}),
+              systemType,
+            }
             : system;
       });
 
@@ -977,7 +1003,7 @@ const ConfiguratorLayout = () => {
     return () => clearTimeout(timer);
   }, [handlePendantDesignChange]);
 
-  useEffect(() => {}, [showPendantLoadingScreen]);
+  useEffect(() => { }, [showPendantLoadingScreen]);
   // Handle base type change
   const handleBaseTypeChange = useCallback((baseType) => {
     // Update config state
@@ -1115,7 +1141,7 @@ const ConfiguratorLayout = () => {
       // Find the system for this design
       const system = findSystemAssignmentByDesign(design);
 
-      setShowColorPicker(system?.systemType === "ball");
+      // setShowColorPicker(system?.systemType === "ball");
 
       // Check if the system type is chandelier
       let hasChandelier = false;
@@ -1455,7 +1481,7 @@ const ConfiguratorLayout = () => {
           {/* Vertical Navigation Bar */}
           {!isLoading && (
             <VerticalNavBar
-            setConfig={setConfig}
+              setConfig={setConfig}
               containerDimensions={containerDimensions}
               handleChandelierTypeChange={handleChandelierTypeChange}
               activeStep={activeStep}
@@ -1471,7 +1497,7 @@ const ConfiguratorLayout = () => {
               onLightTypeChange={handleLightTypeChange}
               onEnvironmentChange={handleEnvironmentChange}
               onBaseTypeChange={handleBaseTypeChange}
-            //  onBaseTypeChange={handleHubTypeChange}
+              //  onBaseTypeChange={handleHubTypeChange}
               onBaseColorChange={handleBaseColorChange}
               onConnectorColorChange={handleConnectorColorChange}
               onConfigurationTypeChange={handleConfigurationTypeChange}
