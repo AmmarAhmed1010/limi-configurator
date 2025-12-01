@@ -77,7 +77,13 @@ export const useNavSteps = (config) => {
    
     {
       id: "hubType",
-      icon: <FaLightbulb />, // Fallback icon
+      icon: (
+        <img
+          src="/svg/base.svg"
+          alt="Hub Type"
+          className="w-5 h-5"
+        />
+      ),
       // image: getLightTypeImage(),
       label: "Hub Type",
       tooltip: "Hub Type",

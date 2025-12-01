@@ -131,9 +131,15 @@ export const NavButton = ({
                 color: isActive ? '#DCDCDC' : '#141414',
               }}
             >
-              {/* {getStepIcon(step.id)}
-               */}
-               {React.cloneElement(step.icon, { size: 20 })}
+              {step.id === 'hubType' ? (
+                <img
+                  src={isActive ? '/svg/base-dark.svg' : '/svg/base-light.svg'}
+                  alt="Hub Type"
+                  className="w-5 h-5"
+                />
+              ) : (
+                React.cloneElement(step.icon, { size: 20 })
+              )}
             </span>
           </button>
         </div>
