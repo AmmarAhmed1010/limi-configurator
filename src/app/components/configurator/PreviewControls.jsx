@@ -889,7 +889,7 @@ export const PreviewControls = ({
           )}
         </div> */}
 
-        <IOSIconButton 
+        {/* <IOSIconButton 
           icon={FaLightbulb}
           onClick={() => setIsLightingPanelOpen(!isLightingPanelOpen)}
           style={{
@@ -900,7 +900,7 @@ export const PreviewControls = ({
             color: '#ffffff',
             ...(lighting && { color: '#ffffff' })
           }}
-        />
+        /> */}
         <IOSIconButton 
           icon={FaSave}
           onClick={() => {

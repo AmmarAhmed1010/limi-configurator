@@ -13,14 +13,21 @@ import {
   FaList,
   FaCubes,
   FaPalette,
-  FaGlobe
+  
+  FaGlobe,
 } from 'react-icons/fa';
+import React from 'react';
+import { FiHome } from "react-icons/fi";
+
+import { IoMdSettings } from "react-icons/io";
+import { TbBrightnessFilled } from "react-icons/tb";
 import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { NavButton } from './navComponents/NavButton';
 import { LightTypeDropdown } from './navComponents/LightTypeDropdown';
 import { EnvironmentDropdown } from './navComponents/EnvironmentDropdown';
 import { BaseTypeDropdown } from './navComponents/BaseTypeDropdown';
 import { LightAmountDropdown } from './navComponents/LightAmountDropdown';
+import HubTypeDropdown from './navComponents/HubTypeDropdown';
 import { PendantSelectionDropdown } from './navComponents/PendantSelectionDropdown';
 import { SystemTypeDropdown } from './navComponents/SystemTypeDropdown';
 import { SystemConfigurationDropdown } from './navComponents/SystemConfigurationDropdown';
@@ -32,6 +39,8 @@ import { SaveConfigurationModal } from './navComponents/SaveConfigurationModal';
 import { useNavSteps } from './navComponents/useNavSteps';
 import { useNavDropdown } from './navComponents/useNavDropdown';
 import { usePendantSelection } from './navComponents/usePendantSelection';
+import { BrightnessSlider } from './navComponents/BrightnessSlider';
+import InfoPanel from './navComponents/InfoPanel';
 
 import {
   listenForConnectorColorMessages,
@@ -45,8 +54,18 @@ import {
 //adsaldasldja
 const VerticalNavBar = ({
   activeStep,
+  showColorPicker,
+  setShowColorPicker,
   setCables,
-
+  brightness,
+  setConfig,
+  setBrightness,
+  colorTemperature,
+  setColorTemperature,
+  lighting,
+  setLighting,
+  isLightingPanelOpen,
+  setIsLightingPanelOpen,
   setActiveStep,
   showConfigurationTypeSelector,
   setShowConfigurationTypeSelector,
@@ -67,7 +86,6 @@ const VerticalNavBar = ({
   onSystemBaseDesignChange,
   pendants,
   selectedPendants,
-  setIsLightingPanelOpen,
   setSelectedPendants,
   onLocationSelection,
   configuringType,
@@ -187,7 +205,7 @@ const VerticalNavBar = ({
       // Example: open a modal, update config, etc.
       setShowConfigurationTypeSelector(true);
       setActiveStep("pendantSelection");
-     setOpenDropdown("pendantSelection");
+      setOpenDropdown("pendantSelection");
     });
     return cleanup;
   }, [config.selectedPendants]);
@@ -208,6 +226,7 @@ const VerticalNavBar = ({
       setActiveStep(null);
       setIsLightingPanelOpen(false);
       setCableMessage("");
+      setShowColorPicker(false);
 
       // Reset breadcrumb and navigation states
       onBreadcrumbNavigation("home");
@@ -639,13 +658,8 @@ const VerticalNavBar = ({
     // Always set this step as the active step
     setActiveStep(stepId);
 
-    // Toggle the dropdown for this step
-    setOpenDropdown(openDropdown === stepId ? null : stepId);
-
-    // Close any other dropdowns
-    if (openDropdown && openDropdown !== stepId) {
-      setOpenDropdown(null);
-    }
+    // Toggle the dropdown for this step using the latest state
+    setOpenDropdown((prev) => (prev === stepId ? null : stepId));
   };
 
   // Toggle dropdown for a step - with auto-close config panel
@@ -751,13 +765,14 @@ const VerticalNavBar = ({
   const getNavIcon = (stepId) => {
     const iconMap = {
       lightType: <FaLightbulb />,
-      environment: <FaGlobe />,
+      environment: <FiHome />,
       baseType: <FaLayerGroup />,
       baseColor: <FaPalette />,
       lightAmount: <FaList />,
-      pendantSelection: <FaRegLightbulb />,
+      pendantSelection: <IoMdSettings/>,
       systemType: <FaCubes />,
-      systemConfiguration: <FaObjectGroup />
+      systemConfiguration: <FaObjectGroup />,
+      lightingControl: <TbBrightnessFilled />,
     };
     return iconMap[stepId] || <FaList />;
   };
@@ -813,37 +828,40 @@ const VerticalNavBar = ({
       {/* Desktop vertical nav */}
       {showVerticalNav && !isMobile && (
         <div
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
+          className="absolute left-8 top-1/2 transform -translate-y-1/2 z-[1100] pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >
           <ProgressIndicator progress={calculateProgress()} emerald={emerald} />
           <motion.div
-            className="p-3 rounded-full flex flex-col gap-4"
-            style={{ backgroundColor: charlestonGreen }}
+            className="p-3 rounded-full flex flex-col"
+            // style={{ backgroundColor: charlestonGreen }}
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
           >
             {/* Render NavButtons with data-tour-step for guided tour */}
             {steps
               .filter((step) => {
+                // Always hide Base Type and Light Amount here; they are handled via Hub Type
+                if (step.id === "baseType" || step.id === "lightAmount") {
+                  return false;
+                }
+
+                // Base Color only for ceiling light type
                 if (
-                  (step.id === "baseType" || step.id === "baseColor") &&
+                  step.id === "baseColor" &&
                   config.lightType !== "ceiling"
                 ) {
+                  return false;
+                }
+
+                if (step.id === "hubType" && config.lightType !== "ceiling") {
                   return false;
                 }
 
                 // Hide environment button for wall and floor light types
                 if (
                   step.id === "environment" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
-                ) {
-                  return false;
-                }
-                // Hide environment button for wall and floor light types
-                if (
-                  step.id === "lightAmount" &&
                   (config.lightType === "wall" || config.lightType === "floor")
                 ) {
                   return false;
@@ -856,6 +874,7 @@ const VerticalNavBar = ({
                   <NavButton
                     step={step}
                     index={index}
+                    setActiveStep={setActiveStep}
                     activeStep={activeStep}
                     openDropdown={openDropdown}
                     handleStepClick={handleStepClick}
@@ -874,6 +893,21 @@ const VerticalNavBar = ({
                       <LightTypeDropdown
                         config={config}
                         onLightTypeChange={onLightTypeChange}
+                        setActiveStep={setActiveStep}
+                        setOpenDropdown={setOpenDropdown}
+                        tourActive={tourState.isActive}
+                        onTourSelection={handleTourSubSelection}
+                        setShowLoadingScreen={setShowLoadingScreen}
+                      />
+                    )}
+
+                    {step?.id === "hubType" && openDropdown === step?.id && (
+                      <HubTypeDropdown
+                        config={config}
+                        setConfig={setConfig}
+                        sendMessageToPlayCanvas={sendMessageToPlayCanvas}
+                        onBaseTypeChange={onBaseTypeChange}
+                        onLightAmountChange={onLightAmountChange}
                         setActiveStep={setActiveStep}
                         setOpenDropdown={setOpenDropdown}
                         tourActive={tourState.isActive}
@@ -979,10 +1013,6 @@ const VerticalNavBar = ({
                             // This matches the original handleConfigTypeSelection function
                             setLocalConfiguringType(type);
 
-                            // if(type == 'pendant' || type == 'system'){
-                            //   setShowConfigurationTypeSelector(false);
-                            // }
-
                             // Update the active step based on the configuration type
                             if (type === "pendant") {
                               setActiveStep("pendantSelection");
@@ -1004,6 +1034,43 @@ const VerticalNavBar = ({
                           }}
                         />
                       )}
+
+                    {step?.id === "info" && openDropdown === step?.id && (
+                      <InfoPanel 
+                        productInfo={{
+                          model: config.model || "Limi Pro X1",
+                          type: config.lightType || "Not selected",
+                          environment: config.environment || "Not selected",
+                          baseType: config.baseType || "Not selected",
+                          baseColor: config.baseColor || "Not selected",
+                          lightAmount: config.lightAmount ? `${config.lightAmount} lights` : "Not selected"
+                        }}
+                      />
+                    )}
+
+                    {step?.id === "lightingControl" && openDropdown === step?.id && (
+                      <div className="p-4 rounded-lg shadow-lg">
+                        <h3 className="text-lg font-medium mb-4">Adjust Brightness</h3>
+                        <BrightnessSlider
+
+                          brightness={brightness}
+                          setBrightness={setBrightness}
+                          temperature={colorTemperature}
+                          setTemperature={setColorTemperature}
+                          initialValue={config.brightness || 50}
+
+                          onChange={(value) => {
+                            // Update the config with the new brightness value
+                            // You might want to add a proper handler for this
+                            console.log('Brightness changed to:', value);
+                            // Example: onBrightnessChange?.(value);
+                          }}
+                          sendMessageToPlayCanvas={sendMessageToPlayCanvas}
+                        />
+
+
+                      </div>
+                    )}
                   </NavButton>
                 </div>
               ))}
@@ -1014,14 +1081,14 @@ const VerticalNavBar = ({
       {/* Mobile vertical nav */}
       {showVerticalNav && isMobile && (
         <div
-          className="fixed right-4 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
+          className="fixed left-4 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >
           <ProgressIndicator progress={calculateProgress()} emerald={emerald} />
           <motion.div
             className="p-2 rounded-full flex flex-col gap-3"
-            style={{ backgroundColor: charlestonGreen }}
+            // style={{ backgroundColor:  }}
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
           >
@@ -1033,7 +1100,13 @@ const VerticalNavBar = ({
                 ) {
                   return false;
                 }
-
+                //hide info button for ceiling light types
+                if (
+                  step.id === "info" &&
+                  (config.lightType === "ceiling" || config.lightType === "wall" || config.lightType === "floor")
+                ) {
+                  return false;
+                }
                 // Hide environment button for wall and floor light types
                 if (
                   step.id === "environment" &&
@@ -1044,7 +1117,13 @@ const VerticalNavBar = ({
                 // Hide environment button for wall and floor light types
                 if (
                   step.id === "lightAmount" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
+                  (config.lightType === "wall" || config.lightType === "floor" || config.lightType === "ceiling")
+                ) {
+                  return false;
+                }
+                 if (
+                  step.id === "baseType" &&
+                  (config.lightType === "wall" || config.lightType === "floor" || config.lightType === "ceiling")
                 ) {
                   return false;
                 }
@@ -1065,15 +1144,16 @@ const VerticalNavBar = ({
                       setActiveStep(step.id);
                     }}
                     className={`w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-200 ${mobileActiveStep === step.id && mobileBottomMenuOpen
-                        ? `text-white`
-                        : "text-gray-400 hover:text-white"
+                      ? `text-white`
+                      : "text-black"
                       }`}
                     style={{
                       backgroundColor:
-                        mobileActiveStep === step.id && mobileBottomMenuOpen ? emerald : "transparent",
+                        mobileActiveStep === step.id && mobileBottomMenuOpen ? '#141414' : 'rgba(255, 255, 255, 0.6)',
                     }}
                   >
-                    {getNavIcon(step.id)}
+                    {/* {getNavIcon(step.id)} */}
+                    {React.cloneElement(step.icon, { size: 20 })}
                   </button>
                 </div>
               ))}
@@ -1084,11 +1164,16 @@ const VerticalNavBar = ({
       {/* Mobile Bottom Menu */}
       <MobileBottomMenu
         isOpen={mobileBottomMenuOpen && isMobile}
+        brightness={brightness}
+        setBrightness={setBrightness}
+        colorTemperature={colorTemperature}
+        setColorTemperature={setColorTemperature}
         activeStep={mobileActiveStep}
         handleChandelierTypeChange={handleChandelierTypeChange}
         setLocalConfiguringType={setLocalConfiguringType}
         onClose={() => setMobileBottomMenuOpen(false)}
         config={config}
+        setConfig={setConfig}
         onLightTypeChange={onLightTypeChange}
         onEnvironmentChange={onEnvironmentChange}
         onBaseTypeChange={onBaseTypeChange}
@@ -1137,6 +1222,8 @@ const VerticalNavBar = ({
           selectedPendants.length > 0 &&
           !isMobile && (
             <ConfigPanel
+            showColorPicker={showColorPicker}
+            setShowColorPicker={setShowColorPicker}
               configuringType={localConfiguringType}
               configuringSystemType={configuringSystemType}
               breadcrumbPath={breadcrumbPath}
@@ -1375,8 +1462,8 @@ function GuidedTourOverlay({
             onClick={onPrev}
             disabled={stepIndex === 0}
             className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 flex items-center ${stepIndex === 0
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-emerald-600 hover:bg-emerald-50 hover:shadow-sm"
+              ? "text-gray-400 cursor-not-allowed"
+              : "text-emerald-600 hover:bg-emerald-50 hover:shadow-sm"
               }`}
           >
             <FiChevronLeft size={18} className="mr-1" />

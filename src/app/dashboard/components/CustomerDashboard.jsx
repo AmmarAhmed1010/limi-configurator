@@ -74,7 +74,7 @@ export default function CustomerDashboard({ token }) {
   const [companies, setCompanies] = useState([]);
   const [staffNames, setStaffNames] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
-  const [activeTab, setActiveTab] = useState("limitless-ai");
+  const [activeTab, setActiveTab] = useState("addPendant");
   const [queries, setQueries] = useState([]);
   const [isLoadingQueries, setIsLoadingQueries] = useState(false);
   const [queryError, setQueryError] = useState("");
@@ -1436,72 +1436,72 @@ export default function CustomerDashboard({ token }) {
     <div>
       {/* Dashboard Navigation */}
       <div className="bg-[#292929] p-4 flex flex-wrap gap-2">
-        <DashboardNavButton
+        {/* <DashboardNavButton
           icon={<FaUsers />}
           label="Customers"
           active={activeTab === "customers"}
           onClick={() => setActiveTab("customers")}
-        />
-        <DashboardNavButton
+        /> */}
+        {/* <DashboardNavButton
           icon={<FaChartLine />}
           label="Limitless AI"
           active={activeTab === "limitless-ai"}
           onClick={() => setActiveTab("limitless-ai")}
-        />
-        <DashboardNavButton
+        /> */}
+        {/* <DashboardNavButton
           icon={<FaGlobe />}
           label="Visitor Tracking"
           active={activeTab === "tracking"}
           onClick={() => setActiveTab("tracking")}
-        />
-        <DashboardNavButton
+        /> */}
+        {/* <DashboardNavButton
           icon={<FaMobileAlt />}
           label="Mobile Users"
           active={activeTab === "mobile"}
           onClick={() => setActiveTab("mobile")}
-        />
-        <DashboardNavButton
-          icon={<FaBox />}
-          label="Product Management"
-          active={activeTab === "productManagement"}
-          onClick={() => setActiveTab("productManagement")}
-        />
-        <DashboardNavButton
+        /> */}
+          {/* <DashboardNavButton
+            icon={<FaBox />}
+            label="Product Management"
+            active={activeTab === "productManagement"}
+            onClick={() => setActiveTab("productManagement")}
+          /> */}
+        {/* <DashboardNavButton
           icon={<FaSlideshare />}
           label="Slideshow"
           active={activeTab === "slideshow"}
           onClick={() => setActiveTab("slideshow")}
-        />
-        <DashboardNavButton
+        /> */}
+        {/* <DashboardNavButton
           icon={<FaEnvelope />}
           label="Contact Queries"
           active={activeTab === "query"}
           onClick={() => setActiveTab("query")}
-        />
+        /> */}
         <DashboardNavButton
           icon={<FaBox />}
           label="Add Pendant"
           active={activeTab === "addPendant"}
           onClick={() => setActiveTab("addPendant")}
         />
-        <DashboardNavButton
+        {/* <DashboardNavButton
           icon={<FaEnvelope />}
           label="Distributor Queries"
           active={activeTab === "distributorQuery"}
           onClick={() => setActiveTab("distributorQuery")}
-        />
-        <DashboardNavButton
+        /> */}
+        {/* <DashboardNavButton
           icon={<FaUserPlus />}
           label="Registrations"
           active={activeTab === "registrations"}
           onClick={() => setActiveTab("registrations")}
-        />
-        <DashboardNavButton
+        /> */}
+        {/* <DashboardNavButton
           icon={<FaBoxOpen />}
           label="Marketing"
           active={activeTab === "marketing"}
           onClick={() => setActiveTab("marketing")}
-        />
+        /> */}
       </div>
 
       {activeTab === "addPendant" && (

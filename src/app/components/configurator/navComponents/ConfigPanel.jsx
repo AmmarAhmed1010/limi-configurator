@@ -31,6 +31,8 @@ import {
 import { useBarState } from "../../../hooks/useBarState";
 export const ConfigPanel = ({
   configuringType,
+  showColorPicker,
+  setShowColorPicker,
   configuringSystemType,
   breadcrumbPath,
   showConfigurationTypeSelector,
@@ -100,7 +102,6 @@ export const ConfigPanel = ({
   } = useBarState();
 // Add this useEffect right after the useBarState hook
 useEffect(() => {
-  console.log('barArray updated:', barArray);
 }, [barArray]); // This will run every time barArray changes
 
   // Function to turn off pendant loading
@@ -734,6 +735,7 @@ useEffect(() => {
         });
       }
       config.onItemSelect = (itemId) => {
+        setShowColorPicker(false);
         // Reset system type state when selecting system
         if (itemId === "system") {
           setCurrentDesign(null);
@@ -856,7 +858,7 @@ useEffect(() => {
       config.onItemSelect = (itemId) => {
         // Show loading overlay
         setPendantLoading(true);
-
+     
         // Loading will only be turned off when "loadingOff" message is received from iframe
 
         setCurrentDesign(itemId);
@@ -893,8 +895,7 @@ useEffect(() => {
           },
         ];
         config.onItemSelect = (systemType) => {
-          // Fire specific messages for each system type
-
+          setShowColorPicker(false);
 
           if (systemType === "bar") {
             // Initialize the bar array with the number of selected pendants
@@ -936,7 +937,7 @@ useEffect(() => {
           config.title = "Add On";
           config.showBreadcrumb = true;
 
-          // Get bar assignments and filter out "Luga" design
+          // Get bar assignments and filter out "Luga" des
           const systemTypeBases = (barAssignments || []).filter(
             (base) => base.design !== "luga"
           );
@@ -1157,6 +1158,10 @@ useEffect(() => {
 
   // Custom breadcrumb navigation handler
   const handleBreadcrumbNavigation = (id) => {
+    // if (id !== "ball") {
+    //   setShowColorPicker(false);
+    // }
+
     // Use the navigation state to determine where to go
     if (id === "home") {
       // Reset to configuration type selection (first level)
@@ -1257,24 +1262,35 @@ useEffect(() => {
     <>
       {/* Full-Screen Loading Overlay for Pendant Selection */}
       {pendantLoading && (
-        <motion.div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex flex-col items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+       <div
+          id="playcanvas-loader"
+          className="absolute inset-0 flex flex-col items-center justify-center bg-[#2B2D2F] z-10 overflow-hidden"
         >
-          <div className="flex flex-col items-center space-y-4">
-            {/* Spinning loader */}
-            <div className="w-12 h-12 border-3 border-gray-600 border-t-emerald-500 rounded-full animate-spin"></div>
-            <p className="text-white text-lg font-medium font-['Amenti']">Loading pendant...</p>
+          <div className="flex flex-col items-center justify-center space-y-16">
+            {/* Logo */}
+            <div className="relative w-32 h-32 flex items-center justify-center">
+              {/* Spinner - Adjusted size */}
+              <div className="absolute inset-0 border-2 border-t-white border-transparent rounded-full animate-spin"></div>
+              {/* Logo with adjusted size and spacing */}
+              <div className="w-16 h-16 flex items-center justify-center">
+                <img
+                  src="/images/svgLogos/__Logo_Icon_White.svg"
+                  alt="LIMI Logo"
+                  className="w-full h-full object-contain"
+                  style={{
+                    minWidth: "64px",
+                    minHeight: "64px",
+                  }}
+                />
+              </div>  
+            </div>
           </div>
-        </motion.div>
+        </div>
       )}
 
       <div className="flex justify-center items-center w-full">
         <motion.div
-          className={`fixed h-[150px] sm:absolute bottom-0 sm:bottom-1 -translate-x-1/2 bg-black/95 sm:backdrop-blur-sm border border-gray-700 rounded-t-lg sm:rounded-lg z-40 w-full sm:max-w-[320px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[540px] sm:w-[80vw] md:w-[55vw] lg:w-[40vw] xl:w-[24vw] max-h-[60vh] sm:max-h-[30vh] shadow-lg overflow-hidden ${className}`}
+          className={`fixed h-[150px] sm:absolute bottom-0 sm:bottom-1 -translate-x-1/2 bg-white/60 rounded-t-lg sm:rounded-lg z-40 w-full sm:max-w-[320px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[540px] sm:w-[80vw] md:w-[55vw] lg:w-[40vw] xl:w-[24vw] max-h-[60vh] sm:max-h-[30vh] shadow-lg overflow-hidden ${className}`}
           initial={
             isMobileView ? { y: "100%", opacity: 0 } : { y: 30, opacity: 0 }
           }
@@ -1294,13 +1310,13 @@ useEffect(() => {
                         onNavigate={handleBreadcrumbNavigation}
                       />
                     </div>
-                    <h3 className="ml-4 text-xs sm:text-sm font-medium text-white font-['Amenti'] truncate text-right">
+                    <h3 className="ml-4 text-xs sm:text-sm font-medium text-black font-['Amenti'] truncate text-right">
                       {panelConfig.title}
                     </h3>
                     {panelConfig.showCloseButton && (
                       <button
                         onClick={onClose}
-                        className="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 ml-2"
+                        className="w-6 h-6 rounded-full bg-white flex items-center justify-center ml-2"
                         aria-label="Close panel"
                       >
                         <FaTimes size={10} className="text-gray-300" />
@@ -1311,17 +1327,17 @@ useEffect(() => {
               ) : (
                 <>
                   <div className="flex-1">
-                    <h3 className="text-xs sm:text-sm font-medium text-white font-['Amenti'] truncate">
+                    <h3 className="text-xs sm:text-sm font-medium text-black font-['Amenti'] truncate">
                       {panelConfig.title}
                     </h3>
                   </div>
                   {panelConfig.showCloseButton && (
                     <button
                       onClick={onClose}
-                      className="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 ml-2"
+                      className="w-6 h-6 rounded-full bg-white flex items-center border-[1px] border-black justify-center ml-2"
                       aria-label="Close panel"
                     >
-                      <FaTimes size={10} className="text-gray-300" />
+                      <FaTimes size={10} className="text-black" />
                     </button>
                   )}
                 </>
@@ -1330,7 +1346,7 @@ useEffect(() => {
             {/* Items carousel or cable size segmented control */}
             {configuringType === "cableSize" ? (
               <div className="flex flex-col gap-2 w-full">
-                <label className="text-sm font-semibold text-gray-400 mb-1">
+                <label className="text-sm font-semibold text-black mb-1">
                   Length
                 </label>
                 <div className="flex w-full bg-[#2B2D2F] rounded-full p-1 justify-between">
@@ -1359,7 +1375,7 @@ useEffect(() => {
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
                     <button
                       onClick={() => scrollCarousel("left")}
-                      className="w-7 h-7 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors shadow"
+                      className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center border-[1px] border-black"
                       aria-label="Scroll left"
                     >
                       <FaChevronLeft size={12} />
@@ -1374,7 +1390,7 @@ useEffect(() => {
                   {panelConfig.items.map((item) => (
                     <motion.div
                       key={item.id}
-                      className="flex flex-col items-center flex-shrink-0 px-1 sm:px-2"
+                      className="flex flex-col items-center flex-shrink-0 px-1 sm:px-2 cursor-pointer"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => panelConfig.onItemSelect(item.id)}
@@ -1400,7 +1416,7 @@ useEffect(() => {
                         ) : (
                           <div
                             className="w-full h-full flex items-center justify-center"
-                            style={{ backgroundColor: "#2C3539", color: "white" }}
+                            style={{ backgroundColor: "#2C3539", color: "black" }}
                           >
                             <p className="text-base sm:text-lg font-bold">
                               {item.baseNumber}
@@ -1414,7 +1430,7 @@ useEffect(() => {
                         )}
                       </div>
                       <p
-                        className={`text-center text-xs sm:text-[13px] mt-1.5 text-gray-200 font-medium capitalize`}
+                        className={`text-center text-xs sm:text-[13px] mt-1.5 text-black font-medium capitalize`}
                       >
                         {item.name}
                       </p>
@@ -1425,7 +1441,7 @@ useEffect(() => {
                   <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
                     <button
                       onClick={() => scrollCarousel("right")}
-                      className="w-7 h-7 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors shadow"
+                      className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center border-[1px] border-black"
                       aria-label="Scroll right"
                     >
                       <FaChevronRight size={12} />

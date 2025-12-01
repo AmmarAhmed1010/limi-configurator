@@ -303,7 +303,7 @@ const MobilePendantConfig = ({
         </div>
 
         {/* Selection controls */}
-        <div className="flex gap-2 mt-4">
+        {/* <div className="flex gap-2 mt-4">
           <button
             onClick={() => {
               selectAllPendants();
@@ -318,7 +318,7 @@ const MobilePendantConfig = ({
           >
             Clear All
           </button>
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -341,9 +341,7 @@ const MobilePendantConfig = ({
 
       return (
         <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="text-white text-sm">Configuration Type</div>
-          </div>
+         
           <div
             className={`flex justify-center ${
               showChandelier ? "gap-4" : "gap-6"
@@ -358,7 +356,7 @@ const MobilePendantConfig = ({
                 alt="Pendant"
                 className="w-14 h-14"
               />
-              <div className="text-white text-xs font-medium mt-1">Pendant</div>
+              <div className="text-black text-xs font-medium mt-1">Pendant</div>
             </button>
 
             <button
@@ -370,7 +368,7 @@ const MobilePendantConfig = ({
                 alt="System"
                 className="w-14 h-14"
               />
-              <div className="text-white text-xs font-medium mt-1">System</div>
+              <div className="text-black text-xs font-medium mt-1">System</div>
             </button>
 
             {showChandelier && (
@@ -383,7 +381,7 @@ const MobilePendantConfig = ({
                   alt="Chandelier"
                   className="w-14 h-14"
                 />
-                <div className="text-white text-xs font-medium mt-1">
+                <div className="text-black text-xs font-medium mt-1">
                   Chandelier
                 </div>
               </button>
@@ -398,7 +396,7 @@ const MobilePendantConfig = ({
       return (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <div className="text-white text-sm">Pendant Designs</div>
+            <div className="text-black text-sm">Pendant Designs</div>
             <button
               onClick={() => setLocalConfiguringType(null)}
               className="text-emerald-400 text-sm hover:text-emerald-300"
@@ -435,7 +433,7 @@ const MobilePendantConfig = ({
                 <button
                   key={pendant.design}
                   onClick={() => handlePendantDesignSelection(pendant.design)}
-                  className="flex-shrink-0 w-18 transition-all duration-200 text-center text-gray-300 hover:text-white"
+                  className="flex-shrink-0 w-18 transition-all duration-200 text-center text-black"
                 >
                   <div className="relative">
                     {pendant.media?.image?.url && (
@@ -471,7 +469,7 @@ const MobilePendantConfig = ({
         return (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="text-white text-sm">System Type</div>
+              <div className="text-black text-sm">System Type</div>
               <button
                 onClick={() => setLocalConfiguringType(null)}
                 className="text-emerald-400 text-sm hover:text-emerald-300"
@@ -483,38 +481,38 @@ const MobilePendantConfig = ({
             <div className="flex justify-center gap-3">
               <button
                 onClick={() => handleSystemTypeSelection("bar")}
-                className="flex flex-col w-16 transition-all duration-200 justify-center items-center text-gray-300 hover:text-white"
+                className="flex flex-col w-16 transition-all duration-200 justify-center items-center text-black"
               >
                 <img
                   src="./images/configOptions/bar.png"
                   alt="Bar"
                   className="w-14 h-14"
                 />
-                <div className="text-white text-xs font-medium mt-1">Bar</div>
+                <div className="text-black text-xs font-medium mt-1">Bar</div>
               </button>
 
               <button
                 onClick={() => handleSystemTypeSelection("ball")}
-                className="flex flex-col w-16 transition-all duration-200 justify-center items-center text-gray-300 hover:text-white"
+                className="flex flex-col w-16 transition-all duration-200 justify-center items-center text-black"
               >
                 <img
                   src="./images/configOptions/ball.png"
                   alt="Ball"
                   className="w-14 h-14"
                 />
-                <div className="text-white text-xs font-medium mt-1">Ball</div>
+                <div className="text-black text-xs font-medium mt-1">Ball</div>
               </button>
 
               <button
                 onClick={() => handleSystemTypeSelection("universal")}
-                className="flex flex-col w-16 transition-all duration-200 justify-center items-center text-gray-300 hover:text-white"
+                className="flex flex-col w-16 transition-all duration-200 justify-center items-center text-black"
               >
                 <img
                   src="./images/configOptions/universal.png"
                   alt="Universal"
                   className="w-14 h-14"
                 />
-                <div className="text-white text-xs font-medium mt-1">
+                <div className="text-black text-xs font-medium mt-1">
                   Universal
                 </div>
               </button>
@@ -535,7 +533,7 @@ const MobilePendantConfig = ({
         return (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="text-white text-sm">
+              <div className="text-black text-sm">
                 {configuringSystemType.charAt(0).toUpperCase() +
                   configuringSystemType.slice(1)}{" "}
                 Designs
@@ -578,7 +576,7 @@ const MobilePendantConfig = ({
                     onClick={() =>
                       handleSystemBaseDesignSelection(design.design)
                     }
-                    className="flex-shrink-0 w-18 transition-all duration-200 text-center text-gray-300 hover:text-white"
+                    className="flex-shrink-0 w-18 transition-all duration-200 text-center text-black"
                   >
                     <div className="relative">
                       {design.media?.image?.url && (
@@ -624,7 +622,7 @@ const MobilePendantConfig = ({
       return (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <div className="text-white text-sm">Chandelier Designs</div>
+            <div className="text-black text-sm">Chandelier Designs</div>
             <button
               onClick={() => setLocalConfiguringType(null)}
               className="text-emerald-400 text-sm hover:text-emerald-300"
@@ -661,7 +659,7 @@ const MobilePendantConfig = ({
                 <button
                   key={design.design}
                   onClick={() => handleChandelierDesignSelection(design.design)}
-                  className="flex-shrink-0 w-18 transition-all duration-200 text-center text-gray-300 hover:text-white"
+                  className="flex-shrink-0 w-18 transition-all duration-200 text-center text-black"
                 >
                   <div className="relative">
                     {design.media?.image?.url && (
@@ -700,7 +698,7 @@ const MobilePendantConfig = ({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-white transition-colors p-3"
+          className="text-black p-3"
         >
           ✕
         </button>
@@ -710,11 +708,11 @@ const MobilePendantConfig = ({
           <button
             onClick={() => setActiveTab("selection")}
             className={`
-              flex-1 py-3 px-4 text-sm font-medium transition-colors
+              flex-1 py-4 px-4 text-sm font-medium transition-colors
               ${
                 activeTab === "selection"
                   ? "text-emerald-400 border-b-2 border-emerald-400"
-                  : "text-gray-400 hover:text-white"
+                  : "text-black"
               }
             `}
           >
@@ -723,11 +721,11 @@ const MobilePendantConfig = ({
           <button
             onClick={() => setActiveTab("design")}
             className={`
-              flex-1 py-3 px-4 text-sm font-medium transition-colors
+              flex-1 py-4 px-4 text-sm font-medium transition-colors
               ${
                 activeTab === "design"
                   ? "text-emerald-400 border-b-2 border-emerald-400"
-                  : "text-gray-400 hover:text-white"
+                  : "text-black"
               }
             `}
           >

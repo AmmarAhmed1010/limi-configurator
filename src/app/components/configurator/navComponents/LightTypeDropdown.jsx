@@ -17,23 +17,23 @@ export const LightTypeDropdown = ({ config, onLightTypeChange, setActiveStep, se
 
   return (
     <div 
-      className=" max-sm:left-0 max-sm:w-full p-4"
+      className=" max-sm:left-0 max-sm:right-0 max-sm:w-full p-4"
       onClick={(e) => e.stopPropagation()}
       onTouchStart={(e) => e.stopPropagation()}
     >
-      {!isMobile && <h3 className="text-base font-bold text-white mb-3 font-['Amenti']">Light Type</h3>}
+      {!isMobile && <h3 className="text-base font-bold text-black mb-3 font-['Amenti']">Light Type</h3>}
       <div className="flex space-x-3">
         {['wall', 'ceiling', 'floor'].map((type) => {
           // Calculate aspect ratio: original is 1726x1296
           // For a width of 80px, height would be 60px to maintain ratio
           const aspectRatio = 1296 / 1726; // height/width
           const width = 80; // Set width to 80px
-          const height = width * aspectRatio; // Calculate height to maintain aspect ratio
+          const height = width * aspectRatio; // Calculate hei to maintain aspect ratio
           
           return (
             <motion.button
               key={type}
-              className={`rounded-lg overflow-hidden ${config.lightType === type ? 'ring-2 ring-emerald-500 ring-offset-1 ring-offset-gray-800' : 'hover:ring-1 hover:ring-gray-400'}`}
+              className={`rounded-lg overflow-hidden ${config.lightType === type ? 'ring-2 ring-white ring-offset-1 ring-offset-white' : ''}`}
               onClick={() => {
                 console.log('🎯 LightTypeDropdown - Button clicked for type:', type);
                 
@@ -75,7 +75,7 @@ export const LightTypeDropdown = ({ config, onLightTypeChange, setActiveStep, se
                   priority
                 />
               </div>
-              <div className={`text-center py-1 text-xs ${config.lightType === type ? 'bg-emerald-600 text-white' : 'bg-gray-700 text-gray-300'}`}>
+              <div className={`text-center py-1 text-xs ${config.lightType === type ? 'bg-emerald-500 text-white' : 'bg-white text-black'}`}>
                 {type.charAt(0).toUpperCase() + type.slice(1)}
               </div>
             </motion.button>

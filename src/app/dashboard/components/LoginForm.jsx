@@ -35,7 +35,7 @@ export default function LoginForm({ onLogin }) {
         setError('Invalid username or password');
       }
       setIsLoading(false);
-    }, 1000); // Simulate API delay
+    }, 1000); // Simulate API d
   };
 
   return (

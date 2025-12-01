@@ -29,7 +29,7 @@ export const BaseTypeDropdown = ({ config, onBaseTypeChange, setActiveStep, setO
 
   return (
     <div className="p-4">
-      {!isMobile && <h3 className="text-base font-bold text-white mb-3 font-['Amenti']">Base Type</h3>}
+      {!isMobile && <h3 className="text-base font-bold text-black mb-3 font-['Amenti']">Base Type</h3>}
       <div className="flex space-x-3">
         {['round', 'rectangular'].map((type) => (
           <motion.button
@@ -67,7 +67,7 @@ export const BaseTypeDropdown = ({ config, onBaseTypeChange, setActiveStep, setO
                 priority
               />
             </div>
-            <span className="text-xs">{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+            <span className="text-sm text-black">{type.charAt(0).toUpperCase() + type.slice(1)}</span>
           </motion.button>
         ))}
       </div>

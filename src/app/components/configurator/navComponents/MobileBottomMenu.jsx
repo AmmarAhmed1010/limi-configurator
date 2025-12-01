@@ -4,11 +4,13 @@ import { LightTypeDropdown } from './LightTypeDropdown';
 import { EnvironmentDropdown } from './EnvironmentDropdown';
 import { BaseTypeDropdown } from './BaseTypeDropdown';
 import  BaseColorPanel  from './BaseColorPanel';
+import HubTypeDropdown from './HubTypeDropdown';
 import { LightAmountDropdown } from './LightAmountDropdown';
 import { PendantSelectionDropdown } from './PendantSelectionDropdown';
 import { SystemTypeDropdown } from './SystemTypeDropdown';
 import { SystemConfigurationDropdown } from './SystemConfigurationDropdown';
 import MobilePendantConfig from './MobilePendantConfig';
+import LightingControl from './LightingControl';
 
 const MobileBottomMenu = ({
   isOpen,
@@ -17,6 +19,7 @@ const MobileBottomMenu = ({
   onClose,
   // Props for different components
   config,
+  setConfig,
   onLightTypeChange,
   onEnvironmentChange,
   onBaseTypeChange,
@@ -34,10 +37,15 @@ const MobileBottomMenu = ({
   setLocalConfiguringType,
   selectedPendants,
   cables,
+
   currentDesign,
   setOpenBase,
   setCurrentDesign,
   carouselRef,
+  brightness,
+  setBrightness,
+  temperature,
+  setTemperature,
   onCableSizeChange,
   scrollCarousel,
   handlePendantLocationClick,
@@ -99,7 +107,9 @@ const MobileBottomMenu = ({
       case 'environment': return 'Environment';
       case 'baseType': return 'Base Type';
       case 'baseColor': return 'Base Color';
+      case 'lightingControl': return 'Lighting Control';
       case 'lightAmount': return 'Light Amount';
+      case 'hubType': return 'Hub Type';
       case 'pendantSelection': return 'Pendant Selection';
       case 'systemType': return 'System Type';
       case 'systemConfiguration': return 'System Configuration';
@@ -146,6 +156,20 @@ const MobileBottomMenu = ({
           />
         );
       
+      case 'hubType':
+        return (
+          <HubTypeDropdown
+            config={config}
+            setConfig={setConfig}
+            onBaseTypeChange={onBaseTypeChange}
+            onLightAmountChange={onLightAmountChange}
+            setActiveStep={setActiveStep}
+            setOpenDropdown={setOpenDropdown}
+            tourActive={tourState.isActive}
+            onTourSelection={handleTourSubSelection}
+          />
+        );
+
       case 'baseColor':
         return (
           <BaseColorPanel
@@ -158,6 +182,32 @@ const MobileBottomMenu = ({
             onTourSelection={handleTourSubSelection}
             activeTab="base"
             setActiveTab={() => {}}
+          />
+        );
+
+      case 'lightingControl':
+        return (
+          <LightingControl
+            sendMessageToPlayCanvas={sendMessageToPlayCanvas}
+
+            brightness={config.brightness || 100}
+            colorTemperature={config.colorTemperature || 4000}
+            onBrightnessChange={(value) => {
+              // Handle brightness change
+              if (onEnvironmentChange) {
+                onEnvironmentChange({ ...config, brightness: value });
+              }
+            }}
+            onColorTemperatureChange={(value) => {
+              // Handle color temperature change
+              if (onEnvironmentChange) {
+                onEnvironmentChange({ ...config, colorTemperature: value });
+              }
+            }}
+            setActiveStep={setActiveStep}
+            setOpenDropdown={setOpenDropdown}
+            tourActive={tourState.isActive}
+            onTourSelection={handleTourSubSelection}
           />
         );
       
@@ -254,19 +304,19 @@ const MobileBottomMenu = ({
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="fixed bottom-0 left-0 right-0 bg-[#1a1a1a] z-[9998] h-30 rounded-t-2xl border-t border-gray-700"
+        className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF9E] backdrop-blur-md z-[9998] h-30 rounded-t-2xl "
       >
       {/* Header - only show for non-pendant selection steps */}
       {activeStep !== 'pendantSelection' && (
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
+        <div className="flex items-center justify-between pt-4 px-8">
           <div className="flex-1">
-            <h3 className="text-white font-medium text-lg">
+            <h3 className="text-black font-medium text-lg">
               {getTitle()}
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-black transition-colors"
           >
             ✕
           </button>

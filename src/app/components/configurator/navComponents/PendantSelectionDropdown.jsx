@@ -104,7 +104,7 @@ export const PendantSelectionDropdown = ({
     >
       {/* Desktop title */}
       <div>
-        <h3 className="text-base font-bold text-white mb-3 font-['Amenti']">
+        <h3 className="text-base font-bold text-black mb-3 font-['Amenti']">
           Configure Pendants
         </h3>
       </div>
@@ -135,7 +135,7 @@ export const PendantSelectionDropdown = ({
         <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
           <button
             onClick={() => scrollCarousel("left")}
-            className="w-8 h-8 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors"
+            className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center  border-2 border-black"
           >
             <FaChevronLeft size={14} />
           </button>
@@ -224,7 +224,7 @@ export const PendantSelectionDropdown = ({
         <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
           <button
             onClick={() => scrollCarousel("right")}
-            className="w-8 h-8 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors"
+            className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center border-2 border-black"
           >
             <FaChevronRight size={14} />
           </button>

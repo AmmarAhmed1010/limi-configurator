@@ -104,13 +104,13 @@ export const LightAmountDropdown = ({
           priority
         />
       </div>
-      <span className="text-xs mt-1">{amount} Light{amount !== 1 ? 's' : ''}</span>
+      <span className="text-sm text-black mt-1">{amount} Light{amount !== 1 ? 's' : ''}</span>
     </motion.button>
   );
 
   return (
     <div className="p-4">
-      {!isMobile && <h3 className="text-base font-bold text-white mb-3 font-['Amenti']">Light Amount</h3>}
+      {!isMobile && <h3 className="text-base font-bold text-black mb-3 font-['Amenti']">Light Amount</h3>}
       
       {/* Light amount options */}
       <div className="relative">

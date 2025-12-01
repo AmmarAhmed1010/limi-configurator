@@ -1,31 +1,40 @@
-import { motion, AnimatePresence } from 'framer-motion';
 import { Tooltip } from '../Tooltip';
 import { useState, useEffect } from 'react';
-import { 
-  FaLightbulb, 
-  FaLayerGroup, 
-  FaRegLightbulb, 
-  FaObjectGroup, 
-  FaList, 
+import {
+  FaLightbulb,
+  FaLayerGroup,
+  FaRegLightbulb,
+  FaObjectGroup,
+  FaList,
   FaCubes,
-  FaPalette 
+  FaPalette,
+  FaCheck,
+  FaInfoCircle,
+
 } from "react-icons/fa";
+import React from 'react';
 import { FiHome } from "react-icons/fi";
+import { IoMdSettings } from "react-icons/io";
+import { TbBrightnessFilled } from "react-icons/tb";
 
 // Function to get React icon based on step ID
 const getStepIcon = (stepId) => {
   const iconMap = {
+    info: FaInfoCircle,
     lightType: FaLightbulb,
+    hubType: FaLightbulb,
     baseType: FaLayerGroup,
     baseColor: FaPalette,
     lightAmount: FaList,
-    pendantSelection: FaRegLightbulb,
+    pendantSelection: IoMdSettings,
     systemType: FaCubes,
-    systemConfiguration: FaObjectGroup
+    finish: FaCheck,
+    systemConfiguration: FaObjectGroup,
+    lightingControl: TbBrightnessFilled,
   };
-  
+
   const IconComponent = iconMap[stepId] || FiHome;
-  return <IconComponent size={24} />;
+  return <IconComponent size={20} />;
 };
 
 export const NavButton = ({
@@ -34,8 +43,9 @@ export const NavButton = ({
   activeStep,
   openDropdown,
   handleStepClick,
+  setActiveStep,
   toggleDropdown,
-  getNavIcon, // Extract this prop to prevent it from being passed to DOM
+  getNavIcon,
   emerald,
   charlestonGreen,
   textColor,
@@ -44,106 +54,119 @@ export const NavButton = ({
   isGuided = false,
   isCompleted = false,
   children,
-  // Remove ...rest to prevent function props from being passed to DOM elements
 }) => {
-  // State to track if we're on mobile and screen dimensions
   const [isMobile, setIsMobile] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
-  
-  // Effect to check screen size and update on resize
+
   useEffect(() => {
-    // Check if window is defined (client-side)
     if (typeof window !== 'undefined') {
-      // Initial check
       setIsMobile(window.innerWidth < 640);
       setScreenWidth(window.innerWidth);
-      
-      // Function to update on resize
+
       const handleResize = () => {
         setIsMobile(window.innerWidth < 640);
         setScreenWidth(window.innerWidth);
       };
-      
-      // Add event listener
+
       window.addEventListener('resize', handleResize);
-      
-      // Clean up
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
+      return () => window.removeEventListener('resize', handleResize);
     }
   }, []);
-  
-  // Guard against undefined or null step
+
   if (!step) return null;
-  
+
+  const isOpen = openDropdown === step.id;
+  const isActive = isOpen || activeStep === step.id;
+  const isLightType = step.id === 'lightType';
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+
+    if (step.disabled) return;
+
+    if (isOpen) {
+      // close dropdown
+      toggleDropdown(step.id);
+    } else {
+      // open / change step
+      handleStepClick(step.id);
+    }
+  };
+
   return (
-    <div key={step?.id} className="relative">
-      {/* Tooltip only shows when dropdown is closed */}
-      {openDropdown !== step?.id && (
-        <Tooltip content={step?.tooltip || 'Navigation option'} position="left" className="">
-          <div className="relative group">
-            <motion.button
-              className={`relative w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-300 ${activeStep === step?.id ? 'shadow-lg' : 'opacity-80 hover:opacity-100'} ${step?.disabled ? 'opacity-50 cursor-not-allowed' : ''} ${isCompleted ? 'ring-2 ring-emerald-500' : ''}`}
-              onClick={() => !step?.disabled && handleStepClick(step?.id)}
-              // whileHover={!step?.disabled ? { scale: 1.1 } : {}}
-              
-              
-              style={{
-                backgroundColor: activeStep === step?.id ? emerald : 'transparent',
-                color: activeStep === step?.id ? '#FFFFFF' : `${textColor}80`,
-                border: isMobile && openDropdown === step?.id ? `2px solid ${emerald}` : 'none',
-                boxShadow: 'none'
-              }}
-            >
-              {getStepIcon(step?.id)}
-            </motion.button>
-          </div>
-        </Tooltip>
+    <div key={step.id} className="relative">
+      {isLightType && (
+        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-10 h-1 bg-gray-300" />
       )}
-      
-      {/* Button without tooltip when dropdown is open */}
-      {openDropdown === step?.id && (
-        <motion.button
-          className={`relative w-12 h-12 rounded-full flex items-center justify-center text-base transition-all duration-300 ${activeStep === step?.id ? 'shadow-lg' : 'opacity-80 hover:opacity-100'} ${step?.disabled ? 'opacity-50 cursor-not-allowed' : ''} ${isCompleted ? 'ring-2 ring-emerald-500' : ''}`}
-          style={{
-            backgroundColor: isMobile ? charlestonGreen : emerald,
-            color: '#FFFFFF'
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleDropdown(step?.id);
-          }}
-          onTouchStart={(e) => e.stopPropagation()}
-          
-        >
-          {getStepIcon(step?.id)}
-        </motion.button>
-      )}
-      
-      {/* Dropdown content */}
-      {/* <AnimatePresence> */}
-        {openDropdown === step?.id && (
-          <div
-            ref={el => step?.id && (dropdownRefs.current[step.id] = el)}
-            className="absolute max-sm:fixed right-full mr-4 top-0 bg-gray-800 max-sm:bg-[#2b2d2f] rounded-lg shadow-xl z-[200] overflow-hidden
-              sm:right-full sm:mr-3 sm:top-0 max-sm:top-[25vh] max-sm:-mr-[16px] max-sm:right-0"
+      {/* One button only – no remounting between states */}
+      <Tooltip
+        content={isOpen ? '' : (step.tooltip || 'Navigation option')}
+        position="right"
+      >
+        <div className="relative group">
+          <button
+            className={`
+              relative w-12 h-12 rounded-full overflow-hidden
+              flex items-center justify-center text-base
+              transition-colors  duration-200
+              ${step.disabled ? 'opacity-50 cursor-not-allowed' : 'opacity-100'}
+              ${isCompleted ? 'ring-2 ring-emerald-500' : ''}
+            `}
             style={{
-              boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px ${isMobile ? charlestonGreen : emerald}20`,
-              width: isMobile ? `${containerDimensions.width || screenWidth}px` : '280px',
-              maxWidth: isMobile ? `${containerDimensions.width || screenWidth}px` : 'calc(100vw - 2rem)',
-              // Position at 25% from the top of the container on mobile
-              ...(isMobile && containerDimensions.height > 0 && {
-                top: `360px`,
-              })
+              backgroundColor: 'transparent', // let gradient show
+              border: 'none',
+              boxShadow: 'none',
             }}
-            onClick={(e) => e.stopPropagation()}
+            onClick={handleClick}
             onTouchStart={(e) => e.stopPropagation()}
           >
-            {children}
-          </div>
-        )}
-      {/* </AnimatePresence> */}
+            {/* Inner solid circle */}
+            <span
+              className="
+                absolute inset-[2px] rounded-full flex items-center justify-center
+              "
+              style={{
+                backgroundColor: isActive ? '#141414' : 'rgba(255, 255, 255, 0.6)',
+
+                color: isActive ? '#DCDCDC' : '#141414',
+              }}
+            >
+              {/* {getStepIcon(step.id)}
+               */}
+               {React.cloneElement(step.icon, { size: 20 })}
+            </span>
+          </button>
+        </div>
+      </Tooltip>
+
+      {/* Dropdown content */}
+      {isOpen && (
+        <div
+          ref={(el) => step.id && (dropdownRefs.current[step.id] = el)}
+          className="
+      absolute max-sm:fixed left-full ml-4 top-0
+      rounded-xl z-[200] overflow-hidden
+      sm:left-full sm:ml-3 sm:top-0
+      max-sm:top-[25vh] max-sm:left-auto max-sm:right-0
+      bg-white/60 text-[#141414]
+    "
+          style={{
+            width: isMobile
+              ? `${containerDimensions.width || screenWidth}px`
+              : "280px",
+            maxWidth: isMobile
+              ? `${containerDimensions.width || screenWidth}px`
+              : "calc(100vw - 2rem)",
+            ...(isMobile && containerDimensions.height > 0 && {
+              top: `360px`,
+            }),
+          }}
+          onClick={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 };
