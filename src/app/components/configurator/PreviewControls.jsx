@@ -257,7 +257,7 @@ export const PreviewControls = ({
   return (
     <div className="noselect">
       {/* Header Overlay */}
-      <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-4 animate-fadeIn">
+      <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-2 animate-fadeIn">
         <div className="relative flex items-center w-full">
           {/* Logo - Left on mobile, centered on desktop */}
           <div className="pl-4 sm:pl-8">
@@ -270,9 +270,9 @@ export const PreviewControls = ({
               <Image
                 src="/images/svgLogos/__Icon_Wordmark_White.svg"
                 alt="LIMI Logo"
-                width={300}
-                height={60}
-                className="filter-none w-[160px] h-auto sm:w-[260px]"
+                width={220}
+                height={44}
+                className="filter-none w-[130px] h-auto sm:w-[210px]"
                 priority
               />
             </Link>
