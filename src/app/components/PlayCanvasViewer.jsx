@@ -366,7 +366,8 @@ const PlayCanvasViewer = ({
         id="playcanvas-app"
         title="3D Configurator Preview"
         // https://configurator.limilighting
-        src="https://playcanv.as/e/p/7c2273a2/"
+        // src="https://playcanv.as/e/p/7c2273a2/"
+        src="https://playcanv.as/E/p/Ogx9l0py/"
         // src="https://limi-conf.vercel.app/"
         // src='https://limi-configurator-temp.vercel.app/'
         // src='https://limiliveconfigurator.vercel.app/'
