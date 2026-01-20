@@ -365,7 +365,7 @@ const PlayCanvasViewer = ({
         ref={iframeRef}
         id="playcanvas-app"
         title="3D Configurator Preview"
-        // https://configurator.limilighting
+        // https://configurator.limilig
         // src="https://playcanv.as/e/p/7c2273a2/"
         src="https://limi-live-configurator.vercel.app/"
         // src="https://limi-conf.vercel.app/"
