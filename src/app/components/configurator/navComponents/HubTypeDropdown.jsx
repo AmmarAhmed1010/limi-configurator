@@ -1,0 +1,250 @@
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { sendMessageToPlayCanvas } from "../configuratorUtils";
+
+export const HubTypeDropdown = ({
+  config,
+  setConfig,
+  onBaseTypeChange,
+  onLightAmountChange,
+  setActiveStep,
+  setOpenDropdown,
+  tourActive,
+  onTourSelection,
+  setShowLoadingScreen,
+}) => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [activeTab, setActiveTab] = useState("round");
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const handleSelect = (baseType, amount) => {
+    if (setShowLoadingScreen) {
+      setShowLoadingScreen(true);
+    }
+
+    if (tourActive && onTourSelection) {
+      onTourSelection("baseType", baseType);
+      onTourSelection("lightAmount", amount);
+    }
+
+    if (baseType === "round") {
+      if (amount === 1) {
+        onBaseTypeChange(baseType);
+      }
+      if (amount === 3) {
+        setConfig((prev) => ({
+          ...prev,
+          baseType: baseType,
+        }));
+        sendMessageToPlayCanvas(`base_type:${baseType}`);
+        onLightAmountChange(amount, baseType);
+      }
+      if (amount === 6) {
+        setConfig((prev) => ({
+          ...prev,
+          baseType: baseType,
+        }));
+        sendMessageToPlayCanvas(`base_type:${baseType}`);
+        onLightAmountChange(amount, baseType);
+      }
+    } else if (baseType === "rectangular") {
+      if (amount === 3) {
+        onBaseTypeChange(baseType);
+      }
+    }
+
+    setActiveStep("pendantSelection");
+    setOpenDropdown(null);
+
+    if (setShowLoadingScreen) {
+      setTimeout(() => {
+        setShowLoadingScreen(false);
+      }, 3000);
+    }
+  };
+
+  const RoundOptionButton = ({ amount }) => (
+    <motion.button
+      key={`round-${amount}`}
+      className={`flex-shrink-0 flex flex-col items-center ${
+        config.baseType === "round" && config.lightAmount === amount
+          ? "text-emerald-500"
+          : "text-gray-300 hover:text-white"
+      }`}
+      onClick={() => handleSelect("round", amount)}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <div
+        className={`w-16 h-16 rounded-full overflow-hidden relative ${
+          config.baseType === "round" && config.lightAmount === amount
+            ? "ring-2 ring-emerald-500"
+            : ""
+        }`}
+      >
+        <Image
+          src={`/images/configIcons/${
+            config.lightType || "ceiling"
+          }/${amount}.png`}
+          alt={`${amount} light${amount !== 1 ? "s" : ""}`}
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+      <span className="text-sm text-black mt-1">
+        {amount} Light{amount !== 1 ? "s" : ""}
+      </span>
+    </motion.button>
+  );
+
+  const RectOptionButton = ({ amount }) => (
+    <motion.button
+      key={`rect-${amount}`}
+      className={`flex-shrink-0 flex flex-col items-center ${
+        config.baseType === "rectangular" && config.lightAmount === amount
+          ? "text-emerald-500"
+          : "text-gray-300 hover:text-white"
+      }`}
+      onClick={() => handleSelect("rectangular", amount)}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <div
+        className={`w-16 h-16 rounded-full overflow-hidden relative ${
+          config.baseType === "rectangular" && config.lightAmount === amount
+            ? "ring-2 ring-emerald-500"
+            : ""
+        }`}
+      >
+        <Image
+          src={`/images/configIcons/${
+            config.lightType || "ceiling"
+          }/${amount}.png`}
+          alt={`${amount} light${amount !== 1 ? "s" : ""}`}
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+      <span className="text-sm text-black mt-1">
+        {amount} Light{amount !== 1 ? "s" : ""}
+      </span>
+    </motion.button>
+  );
+
+  return (
+    <div className="p-4">
+      {!isMobile && (
+        <>
+          <h3 className="text-base font-bold text-black mb-3 font-['Amenti']">
+            Hub Type
+          </h3>
+
+          <div className="space-y-4">
+            <div>
+              <div className="mt-2 flex items-center">
+                <span className="text-sm font-semibold text-black">Round</span>
+              </div>
+              <div className="mt-2 flex gap-3">
+                {[1, 3, 6].map((amount) => (
+                  <RoundOptionButton key={amount} amount={amount} />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="mt-2 flex items-center">
+                <span className="text-sm font-semibold text-black">
+                  Rectangular
+                </span>
+              </div>
+              <div className="mt-2 flex gap-3">
+                <RectOptionButton amount={3} />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {isMobile && (
+        <>
+          <div className="flex mb-4 border-b border-gray-300">
+            <button
+              type="button"
+              className={`flex-1 py-2 text-sm font-semibold ${
+                activeTab === "round"
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("round")}
+            >
+              Round
+            </button>
+            <button
+              type="button"
+              className={`flex-1 py-2 text-sm font-semibold ${
+                activeTab === "rectangular"
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("rectangular")}
+            >
+              Rectangular
+            </button>
+          </div>
+
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+          >
+            {activeTab === "round" && (
+              <div className="space-y-4">
+                <div>
+                  <div className="mt-2 flex items-center">
+                    <span className="text-sm font-semibold text-black">Round</span>
+                  </div>
+                  <div className="mt-2 flex gap-3">
+                    {[1, 3, 6].map((amount) => (
+                      <RoundOptionButton key={amount} amount={amount} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "rectangular" && (
+              <div className="space-y-4">
+                <div>
+                  <div className="mt-2 flex items-center">
+                    <span className="text-sm font-semibold text-black">
+                      Rectangular
+                    </span>
+                  </div>
+                  <div className="mt-2 flex gap-3">
+                    <RectOptionButton amount={3} />
+                  </div>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default HubTypeDropdown;

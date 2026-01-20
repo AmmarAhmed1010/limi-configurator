@@ -45,25 +45,15 @@ export const useNavSteps = (config) => {
       id: "info",
       icon: <FaInfoCircle />,
       label: "Information",
-      tooltip: "View product information",
+      tooltip: "Navigation Guide",
       isActive: true,
       isCompleted: false,
     },
-
-    {
-      id: "lightType",
-      icon: <FaLightbulb />, // Fallback icon
-      // image: getLightTypeImage(),
-      label: "Light Type",
-      tooltip: "Select light type",
-      isActive: true, // Always active
-      isCompleted: Boolean(config.lightType),
-    },
-    {
+ {
       id: "lightingControl",
       icon: <TbBrightnessFilled />,
       label: "Lighting Control",
-      tooltip: "Adjust lighting settings",
+      tooltip: "Ambient Setting",
       isActive: true,
       isCompleted: false,
     },
@@ -71,9 +61,37 @@ export const useNavSteps = (config) => {
       id: "environment",
       icon: <FiHome />,
       label: "Environment",
-      tooltip: "Select environment scene ",
+      tooltip: "Environmental Setting",
       isActive: true, // Always active
       isCompleted: Boolean(config.environment),
+    },
+       {
+      id: "lightType",
+      icon: <FaLightbulb />, // Fallback icon
+      // image: getLightTypeImage(),
+      label: "Light Type",
+      tooltip: "Light Type",
+      isActive: true, // Always active
+      isCompleted: Boolean(config.lightType),
+    },
+   
+    {
+      id: "hubType",
+      icon: <FaLightbulb />, // Fallback icon
+      // image: getLightTypeImage(),
+      label: "Hub Type",
+      tooltip: "Hub Type",
+      isActive: config.lightType === "ceiling",
+      isCompleted: Boolean(config.lightType),
+    },
+ 
+       {
+      id: "baseColor",
+      icon: <FaPalette />,
+      label: "Base Color",
+      tooltip: "Colour Setting",
+      isActive: config.lightType === "ceiling" && Boolean(config.baseType), // Active after base type is selected
+      isCompleted: Boolean(config.baseColor),
     },
     {
       id: "baseType",
@@ -84,14 +102,7 @@ export const useNavSteps = (config) => {
       isActive: config.lightType === "ceiling", // Only active for ceiling lights
       isCompleted: Boolean(config.baseType),
     },
-    {
-      id: "baseColor",
-      icon: <FaPalette />,
-      label: "Base Color",
-      tooltip: "Select base color ",
-      isActive: config.lightType === "ceiling" && Boolean(config.baseType), // Active after base type is selected
-      isCompleted: Boolean(config.baseColor),
-    },
+ 
 
     {
       id: "lightAmount",
@@ -109,10 +120,7 @@ export const useNavSteps = (config) => {
         config.configurationType === "pendant"
           ? "Select Pendants"
           : "Select Systems",
-      tooltip:
-        config.configurationType === "pendant"
-          ? "Configure individual pendants"
-          : "Configure system options",
+      tooltip: "Configure Pendant",
       isActive: true, // Always active - fixed to allow switching back
       isCompleted: false,
     },

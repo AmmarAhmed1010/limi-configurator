@@ -6,10 +6,10 @@ export const Tooltip = ({ children, content, position = 'top' }) => {
   const [isVisible, setIsVisible] = useState(false);
   
   const positionClasses = {
-    top: 'bottom-full left-1/2 transform -translate-x-1/2 mb-2',
+    top: 'bottom-full left-1/2 transform -translate-x-1/2 mb-3',
     bottom: 'top-full left-1/2 transform -translate-x-1/2 mt-2',
-    left: 'right-full top-1/2 transform -translate-y-1/2 mr-2',
-    right: 'left-full top-1/2 transform -translate-y-1/2 ml-2',
+    left: 'right-full top-1/2 transform -translate-y-1/2 -mt-4 mr-2',
+    right: 'left-full top-1/2 transform -translate-y-1/2 -mt-4 ml-2',
   };
   
   const handleMouseEnter = useCallback(() => {
@@ -28,7 +28,7 @@ export const Tooltip = ({ children, content, position = 'top' }) => {
     >
       {children}
       
-      {isVisible && (
+      {isVisible && content && (
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}

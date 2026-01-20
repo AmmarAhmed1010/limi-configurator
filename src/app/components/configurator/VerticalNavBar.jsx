@@ -27,6 +27,7 @@ import { LightTypeDropdown } from './navComponents/LightTypeDropdown';
 import { EnvironmentDropdown } from './navComponents/EnvironmentDropdown';
 import { BaseTypeDropdown } from './navComponents/BaseTypeDropdown';
 import { LightAmountDropdown } from './navComponents/LightAmountDropdown';
+import HubTypeDropdown from './navComponents/HubTypeDropdown';
 import { PendantSelectionDropdown } from './navComponents/PendantSelectionDropdown';
 import { SystemTypeDropdown } from './navComponents/SystemTypeDropdown';
 import { SystemConfigurationDropdown } from './navComponents/SystemConfigurationDropdown';
@@ -57,6 +58,7 @@ const VerticalNavBar = ({
   setShowColorPicker,
   setCables,
   brightness,
+  setConfig,
   setBrightness,
   colorTemperature,
   setColorTemperature,
@@ -656,13 +658,8 @@ const VerticalNavBar = ({
     // Always set this step as the active step
     setActiveStep(stepId);
 
-    // Toggle the dropdown for this step
-    setOpenDropdown(openDropdown === stepId ? null : stepId);
-
-    // Close any other dropdowns
-    if (openDropdown && openDropdown !== stepId) {
-      setOpenDropdown(null);
-    }
+    // Toggle the dropdown for this step using the latest state
+    setOpenDropdown((prev) => (prev === stepId ? null : stepId));
   };
 
   // Toggle dropdown for a step - with auto-close config panel
@@ -831,7 +828,7 @@ const VerticalNavBar = ({
       {/* Desktop vertical nav */}
       {showVerticalNav && !isMobile && (
         <div
-          className="absolute left-8 top-1/2 transform -translate-y-1/2 z-[100] pointer-events-auto"
+          className="absolute left-8 top-1/2 transform -translate-y-1/2 z-[1100] pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >
@@ -845,23 +842,26 @@ const VerticalNavBar = ({
             {/* Render NavButtons with data-tour-step for guided tour */}
             {steps
               .filter((step) => {
+                // Always hide Base Type and Light Amount here; they are handled via Hub Type
+                if (step.id === "baseType" || step.id === "lightAmount") {
+                  return false;
+                }
+
+                // Base Color only for ceiling light type
                 if (
-                  (step.id === "baseType" || step.id === "baseColor") &&
+                  step.id === "baseColor" &&
                   config.lightType !== "ceiling"
                 ) {
+                  return false;
+                }
+
+                if (step.id === "hubType" && config.lightType !== "ceiling") {
                   return false;
                 }
 
                 // Hide environment button for wall and floor light types
                 if (
                   step.id === "environment" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
-                ) {
-                  return false;
-                }
-                // Hide environment button for wall and floor light types
-                if (
-                  step.id === "lightAmount" &&
                   (config.lightType === "wall" || config.lightType === "floor")
                 ) {
                   return false;
@@ -874,6 +874,7 @@ const VerticalNavBar = ({
                   <NavButton
                     step={step}
                     index={index}
+                    setActiveStep={setActiveStep}
                     activeStep={activeStep}
                     openDropdown={openDropdown}
                     handleStepClick={handleStepClick}
@@ -892,6 +893,21 @@ const VerticalNavBar = ({
                       <LightTypeDropdown
                         config={config}
                         onLightTypeChange={onLightTypeChange}
+                        setActiveStep={setActiveStep}
+                        setOpenDropdown={setOpenDropdown}
+                        tourActive={tourState.isActive}
+                        onTourSelection={handleTourSubSelection}
+                        setShowLoadingScreen={setShowLoadingScreen}
+                      />
+                    )}
+
+                    {step?.id === "hubType" && openDropdown === step?.id && (
+                      <HubTypeDropdown
+                        config={config}
+                        setConfig={setConfig}
+                        sendMessageToPlayCanvas={sendMessageToPlayCanvas}
+                        onBaseTypeChange={onBaseTypeChange}
+                        onLightAmountChange={onLightAmountChange}
                         setActiveStep={setActiveStep}
                         setOpenDropdown={setOpenDropdown}
                         tourActive={tourState.isActive}
@@ -1101,7 +1117,13 @@ const VerticalNavBar = ({
                 // Hide environment button for wall and floor light types
                 if (
                   step.id === "lightAmount" &&
-                  (config.lightType === "wall" || config.lightType === "floor")
+                  (config.lightType === "wall" || config.lightType === "floor" || config.lightType === "ceiling")
+                ) {
+                  return false;
+                }
+                 if (
+                  step.id === "baseType" &&
+                  (config.lightType === "wall" || config.lightType === "floor" || config.lightType === "ceiling")
                 ) {
                   return false;
                 }
@@ -1151,6 +1173,7 @@ const VerticalNavBar = ({
         setLocalConfiguringType={setLocalConfiguringType}
         onClose={() => setMobileBottomMenuOpen(false)}
         config={config}
+        setConfig={setConfig}
         onLightTypeChange={onLightTypeChange}
         onEnvironmentChange={onEnvironmentChange}
         onBaseTypeChange={onBaseTypeChange}

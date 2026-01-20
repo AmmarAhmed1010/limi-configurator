@@ -2,8 +2,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   FaEye,
-  FaSave,
-  FaFolderOpen,
   FaMousePointer,
   FaMouse,
   FaArrowsAlt,
@@ -15,8 +13,8 @@ import {
   FaLightbulb,
   FaRoute,
   FaPalette,
-  FaHome,
 } from "react-icons/fa";
+import { FiHeart, FiHome, FiUser } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
@@ -66,6 +64,7 @@ export const PreviewControls = ({
   showLoadingScreen,
   setShowLoadingScreen,
   onStartTour, // Add tour callback prop
+  savedConfigurationsCount,
 }) => {
   // Debug loading screen prop changes
   useEffect(() => {
@@ -258,10 +257,10 @@ export const PreviewControls = ({
   return (
     <div className="noselect">
       {/* Header Overlay */}
-      <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-4 animate-fadeIn">
+      <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-2 animate-fadeIn">
         <div className="relative flex items-center w-full">
-          {/* Logo - Centered */}
-          <div className="absolute left-1/2 transform -translate-x-1/2">
+          {/* Logo - Left on mobile, centered on desktop */}
+          <div className="pl-4 sm:pl-8">
             <Link
               href="https://limiai.co"
               target="_blank"
@@ -271,49 +270,58 @@ export const PreviewControls = ({
               <Image
                 src="/images/svgLogos/__Icon_Wordmark_White.svg"
                 alt="LIMI Logo"
-                width={200}
-                height={80}
-                className="filter-none"
+                width={220}
+                height={44}
+                className="filter-none w-[130px] h-auto sm:w-[210px]"
                 priority
               />
             </Link>
           </div>
           
           {/* Navigation Buttons - Right Aligned */}
-          <div className="ml-auto pr-8">
+          <div className="ml-auto pr-4 sm:pr-8">
             <div className="flex items-center space-x-2">
-          {/* <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
-            onClick={() => {
-              onSaveConfig(config, cables);
-              handleOpenSaveModal();
-            }}
-            title="Save Configuration"
-          >
-            <FaSave className="h-6 w-6" />
-          </button> */}
+              <button
+                type="button"
+                className="relative flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                onClick={() => {
+                  onSaveConfig(config, cables);
+                  handleOpenSaveModal();
+                }}
+                title="Save Configuration"
+              >
+                <FiHeart className="h-9 w-9" strokeWidth={1} />
+                <span className="absolute bottom-[7px] right-[5px] flex h-4 w-4 items-center justify-center rounded-full bg-white text-black text-[9px] leading-none">
+                  {savedConfigurationsCount && savedConfigurationsCount > 0 ? (
+                    savedConfigurationsCount
+                  ) : (
+                    <span className="text-[11px] leading-none">+</span>
+                  )}
+                </span>
+              </button>
 
-          {/* <button
-            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
-            onClick={() => {
-              onLoadConfig();
-              handleOpenSaveModal();
-            }}
-            title="Load Configuration"
-          >
-            <FaFolderOpen className="h-6 w-6" />
-          </button> */}
+              <button
+                className="flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                onClick={() => {
+                  onLoadConfig();
+                  handleOpenSaveModal();
+                }}
+                title="Load Configuration"
+              >
+                <span className="flex h-11 w-11 items-center justify-center ">
+                  <FiUser className="h-9 w-9" strokeWidth={1.3} />
+                </span>
+              </button>
 
-          <Link
-            href="https://limiai.co"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
-            title="Home"
-          >
-              <FaHome className="h-6 w-6" />
-            </Link>
+              <Link
+                href="https://limiai.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                title="Home"
+              >
+                <FiHome className="h-9 w-9" strokeWidth={1} />
+              </Link>
             </div>
           </div>
         </div>

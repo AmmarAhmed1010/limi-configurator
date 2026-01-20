@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const LUMEN_LEVELS = [400, 800, 1200, 2000, 3000];
+const LUMEN_LEVELS = [0, 400, 800, 1200, 2000, 3000];
 const TEMP_LEVELS = [2000, 2700, 3000, 3500, 4000, 5000, 6000, 6500, 8000];
 
 const findClosestIndex = (arr, target) => {
@@ -41,7 +41,12 @@ const LightingControl = ({
   onPresetChange,
 }) => {
   const [lumenIndex, setLumenIndex] = useState(
-    findClosestIndex(LUMEN_LEVELS, (externalBrightness / 100) * (3000 - 400) + 400)
+    findClosestIndex(
+      LUMEN_LEVELS,
+      (externalBrightness / 100) *
+        (LUMEN_LEVELS[LUMEN_LEVELS.length - 1] - LUMEN_LEVELS[0]) +
+        LUMEN_LEVELS[0]
+    )
   );
   const [tempIndex, setTempIndex] = useState(
     findClosestIndex(TEMP_LEVELS, externalTemperature)
@@ -169,7 +174,7 @@ const LightingControl = ({
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-700">Brightness</span>
           <span className="text-sm font-semibold text-gray-900">
-            {LUMEN_LEVELS[lumenIndex]} lm
+            {LUMEN_LEVELS[lumenIndex]} lumen
           </span>
         </div>
         <input
@@ -181,11 +186,6 @@ const LightingControl = ({
           onChange={handleLumenChange}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
         />
-        <div className="flex justify-between text-[10px] text-gray-500 mt-1">
-          {LUMEN_LEVELS.map((lvl) => (
-            <span key={lvl}>{lvl}</span>
-          ))}
-        </div>
       </div>
 
       {/* Temperature control */}

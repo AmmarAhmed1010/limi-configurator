@@ -102,7 +102,6 @@ export const ConfigPanel = ({
   } = useBarState();
 // Add this useEffect right after the useBarState hook
 useEffect(() => {
-  console.log('barArray updated:', barArray);
 }, [barArray]); // This will run every time barArray changes
 
   // Function to turn off pendant loading
@@ -736,6 +735,7 @@ useEffect(() => {
         });
       }
       config.onItemSelect = (itemId) => {
+        setShowColorPicker(false);
         // Reset system type state when selecting system
         if (itemId === "system") {
           setCurrentDesign(null);
@@ -858,7 +858,7 @@ useEffect(() => {
       config.onItemSelect = (itemId) => {
         // Show loading overlay
         setPendantLoading(true);
-
+     
         // Loading will only be turned off when "loadingOff" message is received from iframe
 
         setCurrentDesign(itemId);
@@ -895,12 +895,7 @@ useEffect(() => {
           },
         ];
         config.onItemSelect = (systemType) => {
-          // Show color picker if ball system is selected
-          if (systemType === "ball") {
-            // setShowColorPicker(true);
-          } else {
-            setShowColorPicker(false);
-          }
+          setShowColorPicker(false);
 
           if (systemType === "bar") {
             // Initialize the bar array with the number of selected pendants
@@ -1163,6 +1158,10 @@ useEffect(() => {
 
   // Custom breadcrumb navigation handler
   const handleBreadcrumbNavigation = (id) => {
+    // if (id !== "ball") {
+    //   setShowColorPicker(false);
+    // }
+
     // Use the navigation state to determine where to go
     if (id === "home") {
       // Reset to configuration type selection (first level)
@@ -1263,19 +1262,30 @@ useEffect(() => {
     <>
       {/* Full-Screen Loading Overlay for Pendant Selection */}
       {pendantLoading && (
-        <motion.div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex flex-col items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+       <div
+          id="playcanvas-loader"
+          className="absolute inset-0 flex flex-col items-center justify-center bg-[#2B2D2F] z-10 overflow-hidden"
         >
-          <div className="flex flex-col items-center space-y-4">
-            {/* Spinning loader */}
-            <div className="w-12 h-12 border-3 border-gray-600 border-t-emerald-500 rounded-full animate-spin"></div>
-            <p className="text-white text-lg font-medium font-['Amenti']">Loading pendant...</p>
+          <div className="flex flex-col items-center justify-center space-y-16">
+            {/* Logo */}
+            <div className="relative w-32 h-32 flex items-center justify-center">
+              {/* Spinner - Adjusted size */}
+              <div className="absolute inset-0 border-2 border-t-white border-transparent rounded-full animate-spin"></div>
+              {/* Logo with adjusted size and spacing */}
+              <div className="w-16 h-16 flex items-center justify-center">
+                <img
+                  src="/images/svgLogos/__Logo_Icon_White.svg"
+                  alt="LIMI Logo"
+                  className="w-full h-full object-contain"
+                  style={{
+                    minWidth: "64px",
+                    minHeight: "64px",
+                  }}
+                />
+              </div>  
+            </div>
           </div>
-        </motion.div>
+        </div>
       )}
 
       <div className="flex justify-center items-center w-full">

@@ -8,14 +8,14 @@ export const useNavDropdown = (setActiveStep) => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (openDropdown && dropdownRefs.current[openDropdown] && 
+      if (openDropdown && dropdownRefs.current[openDropdown] &&
           !dropdownRefs.current[openDropdown].contains(event.target)) {
         setOpenDropdown(null);
       }
     };
-    
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [openDropdown]);
   
   // Handle step click - toggle dropdown or navigate to step
