@@ -367,10 +367,10 @@ const PlayCanvasViewer = ({
         title="3D Configurator Preview"
         // https://configurator.limilig
         // src="https://playcanv.as/e/p/7c2273a2/"
-        src="https://limi-live-configurator.vercel.app/"
+        // src="https://limi-live-configurator.vercel.app/"
         // src="https://limi-conf.vercel.app/"
         // src='https://limi-configurator-temp.vercel.app/'
-        // src='https://limiliveconfigurator.vercel.app/'
+        src='https://limiliveconfigurator.vercel.app/'
         // src='https://limi-configurator-dev.vercel.app/'
         allow="autoplay; fullscreen; vr"
         className={`w-full h-full min-h-screen transition-opacity duration-500 ${
