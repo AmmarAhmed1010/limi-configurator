@@ -23,36 +23,24 @@ export default function ConfiguratorPage() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Scroll to top on page load
     window.scrollTo(0, 0);
 
-    // Check if we're on mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 640);
     };
-    
-    // Initial check
     checkMobile();
-    
-    // Add resize listener
     window.addEventListener('resize', checkMobile);
 
-    // Cleanup function
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
-
-    // Add keyboard shortcut for toggling fullscreen mode
     const handleKeyDown = (e) => {
       if (e.key === 'f' || e.key === 'F') {
-        setIsFullScreen(prev => !prev);
+        setIsFullScreen((prev) => !prev);
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
+
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 

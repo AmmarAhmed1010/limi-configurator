@@ -107,7 +107,7 @@ export default function OrderHistory({ orders }) {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-[#292929] text-white w-full pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#54BB74]"
+              className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-9"
               placeholder="Search orders..."
             />
           </div>
@@ -117,7 +117,7 @@ export default function OrderHistory({ orders }) {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="appearance-none bg-[#292929] text-white pl-3 pr-8 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#54BB74]"
+                className="appearance-none bg-charleston-green-9 text-white pl-3 pr-8 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-9"
               >
                 <option value="all">All Status</option>
                 <option value="processing">Processing</option>
@@ -131,7 +131,7 @@ export default function OrderHistory({ orders }) {
             
             <button
               onClick={toggleSortOrder}
-              className="flex items-center gap-2 bg-[#292929] text-white px-3 py-2 rounded-md hover:bg-[#333] transition-colors"
+              className="flex items-center gap-2 bg-charleston-green-9 text-white px-3 py-2 rounded-md hover:bg-charleston-green-8 transition-colors"
             >
               <FaSortAmountDown className={sortOrder === 'desc' ? '' : 'rotate-180'} />
             </button>
@@ -148,7 +148,7 @@ export default function OrderHistory({ orders }) {
           <div className="mt-4">
             <button
               onClick={() => window.location.href = '/product-catalog'}
-              className="inline-flex items-center gap-2 bg-[#54BB74] text-white px-4 py-2 rounded-md hover:bg-[#48a064] transition-colors"
+              className="inline-flex items-center gap-2 bg-emerald-9 text-white px-4 py-2 rounded-md hover:bg-emerald-10 transition-colors"
             >
               <span>Shop Now</span>
             </button>
@@ -162,7 +162,7 @@ export default function OrderHistory({ orders }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="bg-[#292929] rounded-lg overflow-hidden"
+              className="bg-charleston-green-9 rounded-lg overflow-hidden"
             >
               {/* Order header */}
               <div 
@@ -170,7 +170,7 @@ export default function OrderHistory({ orders }) {
                 onClick={() => toggleOrderDetails(order.id)}
               >
                 <div className="flex items-start gap-4">
-                  <div className="bg-[#1e1e1e] p-3 rounded-lg">
+                  <div className="bg-charleston-green-11 p-3 rounded-lg">
                     {getStatusIcon(order.status)}
                   </div>
                   
@@ -196,7 +196,7 @@ export default function OrderHistory({ orders }) {
                 
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <div className="font-semibold text-[#54BB74]">${order.total.toFixed(2)}</div>
+                    <div className="font-semibold text-emerald-9">${order.total.toFixed(2)}</div>
                     {order.trackingNumber && (
                       <div className="text-xs text-gray-400">
                         Tracking: {order.trackingNumber.slice(0, 8)}...
@@ -219,7 +219,7 @@ export default function OrderHistory({ orders }) {
                     <div className="space-y-3">
                       {order.items.map((item, index) => (
                         <div key={index} className="flex items-center gap-4">
-                          <div className="relative w-16 h-16 rounded-md overflow-hidden bg-[#1e1e1e]">
+                          <div className="relative w-16 h-16 rounded-md overflow-hidden bg-charleston-green-11">
                             <Image
                               src={item.image}
                               alt={item.name}
@@ -234,7 +234,7 @@ export default function OrderHistory({ orders }) {
                             <Link 
                               href={`/product-catalog/${item.id}`} 
                               target="_blank"
-                              className="inline-flex items-center gap-1 text-xs text-[#54BB74] hover:underline mt-1"
+                              className="inline-flex items-center gap-1 text-xs text-emerald-9 hover:underline mt-1"
                             >
                               <span>View Product</span>
                               <FaExternalLinkAlt size={10} />
@@ -256,7 +256,7 @@ export default function OrderHistory({ orders }) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
                       <h4 className="text-white font-medium mb-3">Shipping Address</h4>
-                      <div className="bg-[#1e1e1e] p-3 rounded-lg">
+                      <div className="bg-charleston-green-11 p-3 rounded-lg">
                         <p className="text-white">{order.shippingAddress.name}</p>
                         <p className="text-gray-400">{order.shippingAddress.street}</p>
                         <p className="text-gray-400">
@@ -268,7 +268,7 @@ export default function OrderHistory({ orders }) {
                     
                     <div>
                       <h4 className="text-white font-medium mb-3">Order Summary</h4>
-                      <div className="bg-[#1e1e1e] p-3 rounded-lg">
+                      <div className="bg-charleston-green-11 p-3 rounded-lg">
                         <div className="flex justify-between mb-2">
                           <span className="text-gray-400">Subtotal:</span>
                           <span className="text-white">${(order.total * 0.9).toFixed(2)}</span>
@@ -283,7 +283,7 @@ export default function OrderHistory({ orders }) {
                         </div>
                         <div className="flex justify-between pt-2 border-t border-gray-700">
                           <span className="text-white font-medium">Total:</span>
-                          <span className="text-[#54BB74] font-semibold">${order.total.toFixed(2)}</span>
+                          <span className="text-emerald-9 font-semibold">${order.total.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
@@ -293,7 +293,7 @@ export default function OrderHistory({ orders }) {
                   {order.trackingNumber && (
                     <div className="mb-6">
                       <h4 className="text-white font-medium mb-3">Tracking Information</h4>
-                      <div className="bg-[#1e1e1e] p-3 rounded-lg">
+                      <div className="bg-charleston-green-11 p-3 rounded-lg">
                         <div className="flex justify-between items-center">
                           <div>
                             <p className="text-gray-400">Tracking Number:</p>
@@ -305,7 +305,7 @@ export default function OrderHistory({ orders }) {
                             )}
                           </div>
                           
-                          <button className="bg-[#292929] text-[#54BB74] px-3 py-2 rounded-md hover:bg-[#333] transition-colors flex items-center gap-2">
+                          <button className="bg-charleston-green-9 text-emerald-9 px-3 py-2 rounded-md hover:bg-charleston-green-8 transition-colors flex items-center gap-2">
                             <span>Track Package</span>
                             <FaExternalLinkAlt className="text-xs" />
                           </button>
@@ -316,17 +316,17 @@ export default function OrderHistory({ orders }) {
                   
                   {/* Action buttons */}
                   <div className="flex flex-wrap gap-3">
-                    <button className="flex-1 flex items-center justify-center gap-2 bg-[#292929] border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-[#333] transition-colors">
+                    <button className="flex-1 flex items-center justify-center gap-2 bg-charleston-green-9 border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-charleston-green-8 transition-colors">
                       <FaFileInvoice />
                       <span>View Invoice</span>
                     </button>
                     
-                    <button className="flex-1 flex items-center justify-center gap-2 bg-[#292929] border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-[#333] transition-colors">
+                    <button className="flex-1 flex items-center justify-center gap-2 bg-charleston-green-9 border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-charleston-green-8 transition-colors">
                       <FaBox />
                       <span>Return Items</span>
                     </button>
                     
-                    <button className="flex-1 flex items-center justify-center gap-2 bg-[#292929] border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-[#333] transition-colors">
+                    <button className="flex-1 flex items-center justify-center gap-2 bg-charleston-green-9 border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-charleston-green-8 transition-colors">
                       <FaTruck />
                       <span>Contact Support</span>
                     </button>

@@ -33,10 +33,10 @@ export default function CustomerPortal() {
   
   if (loading) {
     return (
-      <main className="bg-[#292929] text-white min-h-screen">
+      <main className="min-h-screen bg-charleston-green-9 text-white">
         {/* <Header /> */}
         <div className="pt-[120px] pb-16 flex justify-center items-center min-h-[50vh]">
-          <div className="animate-pulse text-2xl text-[#54BB74]">Loading...</div>
+          <div className="animate-pulse text-2xl text-emerald-9">Loading...</div>
         </div>
         {/* <Footer /> */}
       </main>
@@ -44,8 +44,8 @@ export default function CustomerPortal() {
   }
   
   return (
-    <div className="min-h-screen flex flex-col bg-[#292929] text-white">
-        <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-4 animate-fadeIn">
+    <div className="min-h-screen flex flex-col bg-charleston-green-9 text-white">
+        <header className="fixed top-0 left-0 right-0 z-[1000] border-b border-charleston-green-8 bg-charleston-green-10 py-4 animate-fadeIn">
           <div className="relative flex items-center w-full px-4">
             {/* Logo - Centered */}
             <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -65,8 +65,8 @@ export default function CustomerPortal() {
             <div className="ml-auto">
               <Link
                 href="/configurator"
-                className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
-                title="Home"
+                className="flex h-10 w-10 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110 hover:text-emerald-9"
+                title="Configurator"
               >
                 <FaHome className="h-6 w-6" />
               </Link>

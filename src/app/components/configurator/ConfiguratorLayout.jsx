@@ -15,7 +15,7 @@ import ConfigurationSpecSheetModal from "./ConfigurationSpecSheetModal";
 import BaseColorPanel from "./navComponents/BaseColorPanel";
 import { useSelector, useDispatch } from "react-redux";
 import { saveConfiguration } from "../../../app/redux/slices/userSlice.js";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import ConfigurationSummary from "../lightConfigurator/ConfigurationSummary";
 import { fetchUserByToken } from "../../../app/redux/slices/userSlice.js";
 import { useBarState } from "../../hooks/useBarState";
@@ -63,7 +63,6 @@ const ConfiguratorLayout = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useSelector((state) => state.user);
-  const searchParams = useSearchParams();
   const { barArray, setBarState, initializeBarArray } = useBarState();
   // Version constant to track localStorage schema changes
   const STORAGE_VERSION = "1.6.0";
@@ -447,8 +446,9 @@ const ConfiguratorLayout = () => {
     }
   }, [hasConfigIdParam]);
 
-  // Listen for app:ready1 message from PlayCanvas iframe
-  const handleLoadSpecificConfig = (configData) => {
+  // Listen for app:ready1 message from PlayCanvas iframe — must be stable (useCallback)
+  // so the message listener effect does not re-subscribe every render.
+  const handleLoadSpecificConfig = useCallback((configData) => {
     try {
       // Input validation
       if (!configData?.config) {
@@ -490,7 +490,10 @@ const ConfiguratorLayout = () => {
       sendMessageToPlayCanvas(`light_type:${lightType}`);
       sendMessageToPlayCanvas(`base_type:${baseType}`);
       sendMessageToPlayCanvas(`light_amount:${lightAmount}`);
-      sendMessageToPlayCanvas(`mount_model:${matchingMount.modelUrl}`);
+      const mountModelUrl = matchingMount?.modelUrl || matchingMount?.mountModel || matchingMount?.mountUrl;
+      if (mountModelUrl) {
+        sendMessageToPlayCanvas(`mount_model:${mountModelUrl}`);
+      }
 
       console.log('Matching mount found:', matchingMount);
 
@@ -538,7 +541,7 @@ const ConfiguratorLayout = () => {
       // Uncomment to show error to user
       // toast.error('Failed to load configuration. Please try again.');
     }
-  };
+  }, []);
   useEffect(() => {
     const handleMessageLoad = (event) => {
       if (event.data === "loadingOffMount") {
@@ -998,16 +1001,8 @@ const ConfiguratorLayout = () => {
     [cables, config.lightAmount]
   );
 
-  useEffect(() => {
-    setShowPendantLoadingScreen(true);
-    const timer = setTimeout(() => {
-      setShowPendantLoadingScreen(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [handlePendantDesignChange]);
-
-  useEffect(() => { }, [showPendantLoadingScreen]);
+  // Do not tie pendant loading UI to handlePendantDesignChange identity — that callback
+  // updates whenever `cables` changes and would retrigger this every frame / message.
   // Handle base type change
   const handleBaseTypeChange = useCallback((baseType) => {
     // Update config state

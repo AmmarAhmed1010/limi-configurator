@@ -421,7 +421,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
   // Render profile tab
   const renderProfileTab = () => (
     <div className="space-y-8">
-      <div className="bg-[#1f1f1f] rounded-xl p-0 sm:p-6 shadow-lg">
+      <div className="rounded-xl bg-charleston-green-11 p-0 shadow-lg sm:p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-xl font-semibold text-white">
@@ -451,12 +451,12 @@ export default function AccountSettings({ user, onUserUpdate }) {
                     onChange={(e) =>
                       setFormData({ ...formData, username: e.target.value })
                     }
-                    className="bg-[#292929] text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-700 focus:border-[#54BB74] focus:ring-2 focus:ring-[#54BB74]/20 focus:outline-none transition-all duration-200"
+                    className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-700 focus:border-emerald-9 focus:ring-2 focus:ring-emerald-9/20 focus:outline-none transition-all duration-200"
                     placeholder="Enter your full name"
                     required
                   />
                 ) : (
-                  <div className="bg-[#292929] text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-transparent">
+                  <div className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-transparent">
                     {formData.username || (
                       <span className="text-gray-500">Not set</span>
                     )}
@@ -481,12 +481,12 @@ export default function AccountSettings({ user, onUserUpdate }) {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="bg-[#292929] text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-700 focus:border-[#54BB74] focus:ring-2 focus:ring-[#54BB74]/20 focus:outline-none transition-all duration-200"
+                    className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-700 focus:border-emerald-9 focus:ring-2 focus:ring-emerald-9/20 focus:outline-none transition-all duration-200"
                     placeholder="your.email@example.com"
                     required
                   />
                 ) : (
-                  <div className="bg-[#292929] text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-transparent">
+                  <div className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-transparent">
                     {formData.email || (
                       <span className="text-gray-500">Not set</span>
                     )}
@@ -514,11 +514,11 @@ export default function AccountSettings({ user, onUserUpdate }) {
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
-                    className="bg-[#292929] text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-700 focus:border-[#54BB74] focus:ring-2 focus:ring-[#54BB74]/20 focus:outline-none transition-all duration-200"
+                    className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-700 focus:border-emerald-9 focus:ring-2 focus:ring-emerald-9/20 focus:outline-none transition-all duration-200"
                     placeholder="+1 (555) 123-4567"
                   />
                 ) : (
-                  <div className="bg-[#292929] text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-transparent">
+                  <div className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-transparent">
                     {formData.phone || (
                       <span className="text-gray-500">Not set</span>
                     )}
@@ -544,7 +544,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                       onChange={(e) =>
                         setFormData({ ...formData, password: e.target.value })
                       }
-                      className="bg-[#292929] text-white w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-700 focus:border-[#54BB74] focus:ring-2 focus:ring-[#54BB74]/20 focus:outline-none transition-all duration-200"
+                      className="bg-charleston-green-9 text-white w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-700 focus:border-emerald-9 focus:ring-2 focus:ring-emerald-9/20 focus:outline-none transition-all duration-200"
                       placeholder="Enter new password"
                       autoComplete="new-password"
                     />
@@ -580,7 +580,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                       )}
                   </div>
                 ) : (
-                  <div className="flex items-center bg-[#292929] text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-transparent">
+                  <div className="flex items-center bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2.5 rounded-lg border border-transparent">
                     <span className="tracking-widest">••••••••••••</span>
                   </div>
                 )}
@@ -592,7 +592,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
               <button
                 type="button"
                 onClick={() => setEditMode(true)}
-                className="inline-flex items-center gap-2 bg-[#292929] hover:bg-[#333] text-white px-4 py-2.5 rounded-lg transition-colors duration-200 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#54BB74]/20 sm:w-auto w-full"
+                className="inline-flex items-center gap-2 bg-charleston-green-9 hover:bg-charleston-green-8 text-white px-4 py-2.5 rounded-lg transition-colors duration-200 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-9/20 sm:w-auto w-full"
               >
                 <FaEdit className="text-sm" />
                 <span>Edit Profile</span>
@@ -613,7 +613,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                     password: user?.password || "",
                   });
                 }}
-                className="px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white bg-[#292929] hover:bg-[#333] rounded-lg border border-gray-700 transition-colors duration-200 w-full sm:w-auto"
+                className="px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white bg-charleston-green-9 hover:bg-charleston-green-8 rounded-lg border border-gray-700 transition-colors duration-200 w-full sm:w-auto"
               >
                 Cancel
               </button>
@@ -621,7 +621,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className={`px-4 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-[#54BB74] to-[#3a9b5a] hover:from-[#48a064] hover:to-[#2e8a4f] rounded-lg shadow-md hover:shadow-[#54BB74]/20 transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto ${
+                  className={`px-4 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-emerald-9 to-emerald-10 hover:from-emerald-10 hover:to-emerald-11 rounded-lg shadow-md hover:shadow-emerald-9/20 transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto ${
                     isSaving ? "opacity-75 cursor-not-allowed" : ""
                   }`}
                 >
@@ -654,16 +654,16 @@ export default function AccountSettings({ user, onUserUpdate }) {
         </h3>
 
         {/* Profile Picture Section */}
-        <div className="bg-[#1a1a1a] p-6 rounded-2xl border border-gray-800/50 shadow-lg mb-8">
+        <div className="mb-8 rounded-2xl border border-charleston-green-8/50 bg-charleston-green-12 p-6 shadow-lg">
           <h4 className="text-lg font-medium text-white mb-5 flex items-center gap-2">
-            <span className="w-1.5 h-5 bg-[#54BB74] rounded-full"></span>
+            <span className="w-1.5 h-5 bg-emerald-9 rounded-full"></span>
             Profile Picture
           </h4>
 
           <div className="flex flex-col sm:flex-row items-center gap-8">
             <div className="relative group">
-              <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden bg-gradient-to-br from-[#2a2a2a] to-[#1f1f1f] p-1">
-                <div className="relative w-full h-full rounded-full overflow-hidden ring-2 ring-[#333] group-hover:ring-[#54BB74] transition-all duration-300 bg-emerald flex items-center justify-center">
+              <div className="h-32 w-32 overflow-hidden rounded-full bg-gradient-to-br from-charleston-green-9 to-charleston-green-11 p-1 sm:h-36 sm:w-36">
+                <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-emerald-9 ring-2 ring-charleston-green-8 transition-all duration-300 group-hover:ring-emerald-9">
                   {user?.data?.profilePicture?.url ? (
                     <Image
                       src={user?.data?.profilePicture?.url}
@@ -716,7 +716,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploadingMedia}
-                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#54BB74] to-[#3a9b5a] hover:from-[#4aaa67] hover:to-[#2d8a4f] text-white px-6 py-3 rounded-xl transition-all duration-300 disabled:opacity-50 w-full sm:w-auto shadow-lg hover:shadow-[#54BB74]/30 hover:-translate-y-0.5"
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-9 to-emerald-10 hover:from-emerald-8 hover:to-emerald-11 text-white px-6 py-3 rounded-xl transition-all duration-300 disabled:opacity-50 w-full sm:w-auto shadow-lg hover:shadow-emerald-9/30 hover:-translate-y-0.5"
                 >
                   {uploadingMedia ? (
                     <>
@@ -755,7 +755,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                     type="button"
                     onClick={handleRemovePicture}
                     disabled={uploadingMedia}
-                    className="flex items-center justify-center gap-2 bg-[#2a2a2a] hover:bg-[#333] text-gray-300 hover:text-white px-4 py-3 rounded-xl transition-all duration-200 disabled:opacity-50 border border-gray-700/50 hover:border-gray-600 w-full sm:w-auto"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-charleston-green-7/50 bg-charleston-green-9 px-4 py-3 text-gray-300 transition-all duration-200 hover:border-charleston-green-6 hover:bg-charleston-green-8 hover:text-white disabled:opacity-50 sm:w-auto"
                   >
                     <FaTrash className="text-red-500" />
                     <span>Remove</span>
@@ -818,7 +818,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
         {/* Notification Settings */}
         <div className="space-y-4">
           <h4 className="text-lg font-medium text-white mb-5 flex items-center gap-2">
-            <span className="w-1.5 h-5 bg-[#54BB74] rounded-full"></span>
+            <span className="w-1.5 h-5 bg-emerald-9 rounded-full"></span>
             Notification Preferences
           </h4>
 
@@ -848,11 +848,11 @@ export default function AccountSettings({ user, onUserUpdate }) {
             ].map((item) => (
               <div
                 key={item.id}
-                className="bg-[#1a1a1a] hover:bg-[#202020] p-5 rounded-xl border border-gray-800/50 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+                className="rounded-xl border border-charleston-green-8/50 bg-charleston-green-12 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:bg-charleston-green-11 hover:shadow-lg"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="p-2.5 bg-[#54BB74]/10 rounded-lg text-[#54BB74]">
+                    <div className="p-2.5 bg-emerald-9/10 rounded-lg text-emerald-9">
                       {item.icon}
                     </div>
                     <div>
@@ -870,7 +870,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                       checked={item.checked}
                       onChange={() => toggleNotification(item.id)}
                     />
-                    <div className="w-10 h-5 sm:w-11 sm:h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 sm:peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-[#54BB74] after:shadow-lg"></div>
+                    <div className="w-10 h-5 sm:w-11 sm:h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 sm:peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-emerald-9 after:shadow-lg"></div>
                   </label>
                 </div>
               </div>
@@ -999,7 +999,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
           {showAddressForm || !userAddress?.street ? (
             <form
               onSubmit={handleAddressSubmit}
-              className="bg-[#292929] p-4 rounded-lg"
+              className="bg-charleston-green-9 p-4 rounded-lg"
             >
               <h4 className="text-white font-medium mb-4">
                 {userAddress?.street ? "Edit Address" : "Add Your Address"}
@@ -1019,7 +1019,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                         name: e.target.value,
                       })
                     }
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1037,7 +1037,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                         street: e.target.value,
                       })
                     }
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1053,7 +1053,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                         city: e.target.value,
                       })
                     }
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1071,7 +1071,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                         state: e.target.value,
                       })
                     }
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1089,7 +1089,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                         zip: e.target.value,
                       })
                     }
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1105,7 +1105,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                         country: e.target.value,
                       })
                     }
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1118,23 +1118,23 @@ export default function AccountSettings({ user, onUserUpdate }) {
                     setShowAddressForm(false);
                     setEditingAddressId(null);
                   }}
-                  className="bg-[#1e1e1e] border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-[#333] transition-colors"
+                  className="bg-charleston-green-11 border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-charleston-green-8 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#54BB74] text-white px-4 py-2 rounded-md hover:bg-[#48a064] transition-colors"
+                  className="bg-emerald-9 text-white px-4 py-2 rounded-md hover:bg-emerald-10 transition-colors"
                 >
                   {userAddress?.street ? "Update Address" : "Save Address"}
                 </button>
               </div>
             </form>
           ) : (
-            <div className="bg-[#292929] p-4 rounded-lg">
+            <div className="bg-charleston-green-9 p-4 rounded-lg">
               <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center gap-2">
-                  <FaHome className="text-[#54BB74]" />
+                  <FaHome className="text-emerald-9" />
                   <div className="font-medium text-white">Primary Address</div>
                 </div>
 
@@ -1201,15 +1201,15 @@ export default function AccountSettings({ user, onUserUpdate }) {
 
           <div className="space-y-4">
             {user?.paymentMethods?.map((method) => (
-              <div key={method.id} className="bg-[#292929] p-4 rounded-lg">
+              <div key={method.id} className="bg-charleston-green-9 p-4 rounded-lg">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-2">
-                    <FaCreditCard className="text-[#54BB74]" />
+                    <FaCreditCard className="text-emerald-9" />
                     <div className="font-medium text-white">
                       {method.type} •••• {method.last4}
                     </div>
                     {method.default && (
-                      <span className="bg-[#54BB74]/20 text-[#54BB74] text-xs px-2 py-1 rounded">
+                      <span className="bg-emerald-9/20 text-emerald-9 text-xs px-2 py-1 rounded">
                         Default
                       </span>
                     )}
@@ -1249,7 +1249,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                 {!method.default && (
                   <button
                     onClick={() => handleSetDefaultPaymentMethod(method.id)}
-                    className="text-[#54BB74] text-sm hover:underline"
+                    className="text-emerald-9 text-sm hover:underline"
                   >
                     Set as Default
                   </button>
@@ -1268,7 +1268,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
           {showPaymentForm ? (
             <form
               onSubmit={handlePaymentSubmit}
-              className="bg-[#292929] p-4 rounded-lg"
+              className="bg-charleston-green-9 p-4 rounded-lg"
             >
               <h4 className="text-white font-medium mb-4">
                 {editingPaymentId
@@ -1287,7 +1287,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                         type: e.target.value,
                       })
                     }
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                   >
                     <option value="Credit Card">Credit Card</option>
                     <option value="Debit Card">Debit Card</option>
@@ -1308,7 +1308,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                         name: e.target.value,
                       })
                     }
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1327,7 +1327,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                       })
                     }
                     placeholder="•••• •••• •••• ••••"
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1346,7 +1346,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                       })
                     }
                     placeholder="MM/YY"
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1363,7 +1363,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
                       })
                     }
                     placeholder="•••"
-                    className="bg-[#1e1e1e] text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#54BB74]"
+                    className="bg-charleston-green-11 text-white w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                     required
                   />
                 </div>
@@ -1376,13 +1376,13 @@ export default function AccountSettings({ user, onUserUpdate }) {
                     setShowPaymentForm(false);
                     setEditingPaymentId(null);
                   }}
-                  className="bg-[#1e1e1e] border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-[#333] transition-colors"
+                  className="bg-charleston-green-11 border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-charleston-green-8 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#54BB74] text-white px-4 py-2 rounded-md hover:bg-[#48a064] transition-colors"
+                  className="bg-emerald-9 text-white px-4 py-2 rounded-md hover:bg-emerald-10 transition-colors"
                 >
                   {editingPaymentId
                     ? "Update Payment Method"
@@ -1393,7 +1393,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
           ) : (
             <button
               onClick={() => setShowPaymentForm(true)}
-              className="flex items-center gap-2 bg-[#292929] border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-[#333] transition-colors"
+              className="flex items-center gap-2 bg-charleston-green-9 border border-gray-700 text-white px-4 py-2 rounded-md hover:bg-charleston-green-8 transition-colors"
             >
               <FaPlus />
               <span>Add Payment Method</span>
@@ -1401,9 +1401,9 @@ export default function AccountSettings({ user, onUserUpdate }) {
           )}
         </div>
 
-        <div className="mt-6 p-4 bg-[#1e1e1e] rounded-lg">
+        <div className="mt-6 p-4 bg-charleston-green-11 rounded-lg">
           <div className="flex items-center gap-3 mb-2">
-            <FaShieldAlt className="text-[#54BB74]" />
+            <FaShieldAlt className="text-emerald-9" />
             <div className="text-white font-medium">
               Secure Payment Processing
             </div>
@@ -1445,7 +1445,7 @@ export default function AccountSettings({ user, onUserUpdate }) {
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-400">
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#54BB74] animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-9 animate-pulse"></span>
               <span>Active</span>
             </span>
             <span>•</span>
@@ -1480,14 +1480,14 @@ export default function AccountSettings({ user, onUserUpdate }) {
                 onClick={() => setActiveTab(tab.id)}
                 className={`relative px-5 py-3.5 font-medium text-sm flex items-center gap-2 transition-all duration-200 ${
                   activeTab === tab.id
-                    ? "text-[#54BB74]"
+                    ? "text-emerald-9"
                     : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/30"
                 }`}
               >
                 {tab.icon}
                 <span>{tab.label}</span>
                 {activeTab === tab.id && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#54BB74] to-[#3a9b5a] rounded-full"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-9 to-emerald-10 rounded-full"></span>
                 )}
               </button>
             ))}

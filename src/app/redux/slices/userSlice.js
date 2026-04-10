@@ -68,61 +68,101 @@ const initialState = {
   successMessage: null,
 };
 
+/**
+ * Website email/password login: verify_otp + user profile (login form only — not used for signup).
+ */
+async function loginWithEmailPassword(email, password) {
+  const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.VERIFY_OTP), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      isWebsiteLogin: true,
+    }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.error_message || data.message || 'Login failed');
+  }
+
+  if (!data.data?.token) {
+    throw new Error('No token received');
+  }
+
+  const token = data.data.token.startsWith('Bearer ')
+    ? data.data.token
+    : `${data.data.token}`;
+  localStorage.setItem('limiToken', token);
+
+  const profileResponse = await fetch(buildApi1Url(API_CONFIG.ENDPOINTS.USER_PROFILE), {
+    headers: {
+      Authorization: token,
+    },
+  });
+
+  if (!profileResponse.ok) {
+    throw new Error('Failed to fetch user profile');
+  }
+
+  const userData = await profileResponse.json();
+  saveUserToStorage(userData);
+  return userData;
+}
+
+/**
+ * Token from send_otp success body — backend may nest differently after it verifies OTP server-side.
+ */
+function extractTokenFromSendOtpResponse(d) {
+  if (!d || typeof d !== 'object') return null;
+  const t =
+    d?.data?.token ??
+    d?.data?.data?.token ??
+    d?.token ??
+    d?.otp?.token ??
+    d?.otp?.access_token ??
+    d?.data?.access_token ??
+    d?.access_token;
+  return t != null && t !== '' ? t : null;
+}
+
+/** Persist token and load profile (signup success path — no verify_otp call). */
+async function loadProfileAfterSendOtpToken(tokenRaw) {
+  const token = String(tokenRaw).startsWith('Bearer ')
+    ? tokenRaw
+    : `${tokenRaw}`;
+  localStorage.setItem('limiToken', token);
+  const profileResponse = await fetch(buildApi1Url(API_CONFIG.ENDPOINTS.USER_PROFILE), {
+    headers: { Authorization: token },
+  });
+  if (!profileResponse.ok) {
+    throw new Error('Failed to fetch user profile');
+  }
+  const userData = await profileResponse.json();
+  saveUserToStorage(userData);
+  return userData;
+}
+
 // Real API login thunk
 export const loginUser = createAsyncThunk(
   'user/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      // Validation
       if (!credentials.email || !credentials.password) {
         return rejectWithValue('Please enter both email and password');
       }
-      
-      // Make API request 
-      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.VERIFY_OTP), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-          isWebsiteLogin: true
-        
-        }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        return rejectWithValue(errorData.error_message || 'Login failed');
-      }
-      
-      const data = await response.json();
-      // Save token to localStorage with Bearer prefix for consistency
-      if (data.data.token) {
-        const token = data.data.token.startsWith('Bearer ') ? data.data.token : `${data.data.token}`;
-        localStorage.setItem('limiToken', token);
-      }
-      
-      // Get user profile with token
-      const token = data.data.token.startsWith('Bearer ') ? data.data.token : `${data.data.token}`;
-      const profileResponse = await fetch(buildApi1Url(API_CONFIG.ENDPOINTS.USER_PROFILE), {
-        headers: {
-          'Authorization': token
-        }
-      });
-      
-      if (!profileResponse.ok) {
-        return rejectWithValue('Failed to fetch user profile');
-      }
-      
-      const userData = await profileResponse.json();
-      
-      // Save to localStorage
-      saveUserToStorage(userData);
-      
+
+      const userData = await loginWithEmailPassword(
+        credentials.email,
+        credentials.password
+      );
       return userData;
     } catch (error) {
-      return rejectWithValue(error.error_message || 'Login failed');
+      return rejectWithValue(error?.message || 'Login failed');
     }
   }
 );
@@ -160,19 +200,15 @@ export const fetchUserByToken = createAsyncThunk(
 );
 
 
-// Real API signup thunk
+// Real API signup thunk — website registration uses send_otp only (no verify_otp here)
 export const signupUser = createAsyncThunk(
   'user/signup',
   async (userData, { rejectWithValue }) => {
-    const { name, email, password } = userData;
-
     try {
-      // Validation
       if (!userData.email || !userData.password || !userData.name) {
         return rejectWithValue('Please fill in all required fields');
       }
-      
-      // Make API request to create account (send_otp)
+
       const signupResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.SEND_OTP), {
         method: 'POST',
         headers: {
@@ -182,65 +218,58 @@ export const signupUser = createAsyncThunk(
           username: userData.name,
           email: userData.email,
           password: userData.password,
-          isWebsiteSignup: true
+          isWebsiteSignup: 'true',
         }),
       });
+
+      const responseData = await signupResponse.json().catch(() => ({}));
 
       if (!signupResponse.ok) {
-        const errorData = await signupResponse.json();
-        return rejectWithValue(errorData.error_message || 'Signup failed');
+        return rejectWithValue(
+          responseData.error_message ||
+            responseData.message ||
+            'Signup failed'
+        );
       }
 
-      // Now verify OTP (auto verification after signup)
-      const verifyResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.VERIFY_OTP), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: userData.email,
-          password: userData.password,
-          isWebsiteLogin: true
-        }),
-      });
-
-      if (!verifyResponse.ok) {
-        const errorData = await verifyResponse.json();
-        return rejectWithValue(errorData.error_message || 'OTP Verification failed');
-      }
-
-      const verifyData = await verifyResponse.json();
-
-      // Save token to localStorage with Bearer prefix for consistency
-      if (verifyData.data && verifyData.data.token) {
-        const token = verifyData.data.token.startsWith('Bearer ') ? verifyData.data.token : `${verifyData.data.token}`;
-        localStorage.setItem('limiToken', token);
-      } else {
-        return rejectWithValue('No token received after OTP verification');
-      }
-
-      // Get user profile with token
-      const token = verifyData.data.token.startsWith('Bearer ') ? verifyData.data.token : `${verifyData.data.token}`;
-      const profileResponse = await fetch(buildApi1Url(API_CONFIG.ENDPOINTS.USER_PROFILE), {
-        headers: {
-          'Authorization': token
+      // Signup calls only POST send_otp. Backend verifies OTP / account logic — never call verify_otp here.
+      // When success is true and the response includes a session token, log in by loading profile.
+      if (responseData.success === true) {
+        const token = extractTokenFromSendOtpResponse(responseData);
+        if (token) {
+          try {
+            const profile = await loadProfileAfterSendOtpToken(token);
+            return { loggedIn: true, profile };
+          } catch (e) {
+            return rejectWithValue(
+              e?.message || 'Account created but we could not load your profile.'
+            );
+          }
         }
-      });
-
-      if (!profileResponse.ok) {
-        return rejectWithValue('Failed to fetch user profile');
+        const otpMeta = responseData.otp;
+        return {
+          loggedIn: false,
+          emailVerificationPending: true,
+          message:
+            responseData.message ||
+            responseData.data?.message ||
+            otpMeta?.message ||
+            'Check your email to verify your account, then sign in.',
+        };
       }
 
-      const profileData = await profileResponse.json();
-
-      // Save to localStorage
-      saveUserToStorage(profileData);
-
-      return profileData;
+      return {
+        loggedIn: false,
+        emailVerificationPending: true,
+        message:
+          responseData.message ||
+          responseData.data?.message ||
+          responseData.otp?.message ||
+          'Check your email to verify your account, then sign in.',
+      };
     } catch (error) {
-      return rejectWithValue(error.error_message || 'Login failed');
+      return rejectWithValue(error?.message || 'Signup failed');
     }
-
   }
 );
 
@@ -535,12 +564,24 @@ export const userSlice = createSlice({
       .addCase(signupUser.pending, (state) => {
         state.signupStatus = 'loading';
         state.error = null;
+        state.successMessage = null;
       })
       .addCase(signupUser.fulfilled, (state, action) => {
-        state.registeredUsers.push(action.payload);
-        state.user = action.payload;
-        state.isLoggedIn = true;
+        const payload = action.payload;
         state.signupStatus = 'succeeded';
+        state.error = null;
+
+        if (payload?.loggedIn && payload?.profile) {
+          state.user = payload.profile;
+          state.isLoggedIn = true;
+          state.successMessage = null;
+          state.loginStatus = 'succeeded';
+          return;
+        }
+
+        state.successMessage =
+          payload?.message ||
+          'Check your email to verify your account, then sign in.';
       })
       .addCase(signupUser.rejected, (state, action) => {
         state.signupStatus = 'failed';

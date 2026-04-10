@@ -42,10 +42,11 @@ export const LoadConfigModal = ({
   const fallbackImage = getRandomFallbackImage();
 
   useEffect(() => {
-    if (isOpen && onRetry) {
-      onRetry();
-    }
-  }, [isOpen, onRetry]);
+    if (!isOpen || !onRetry) return;
+    onRetry();
+    // Intentionally only when the modal opens — onRetry identity must not re-fetch in a loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable fetch from parent
+  }, [isOpen]);
 
   const handleLoadConfig = async (configId) => {
     try {

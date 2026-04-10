@@ -96,7 +96,7 @@ export default function Favorites({ favorites }) {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-[#292929] text-white w-full pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#54BB74]"
+              className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-9"
               placeholder="Search favorites..."
             />
           </div>
@@ -106,7 +106,7 @@ export default function Favorites({ favorites }) {
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
-                className="appearance-none bg-[#292929] text-white pl-3 pr-8 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#54BB74]"
+                className="appearance-none bg-charleston-green-9 text-white pl-3 pr-8 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-9"
               >
                 {categories.map(category => (
                   <option key={category} value={category}>
@@ -123,7 +123,7 @@ export default function Favorites({ favorites }) {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="appearance-none bg-[#292929] text-white pl-3 pr-8 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#54BB74]"
+                className="appearance-none bg-charleston-green-9 text-white pl-3 pr-8 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-9"
               >
                 <option value="addedAt">Date Added</option>
                 <option value="name">Name</option>
@@ -137,7 +137,7 @@ export default function Favorites({ favorites }) {
             
             <button
               onClick={toggleSortOrder}
-              className="flex items-center gap-2 bg-[#292929] text-white px-3 py-2 rounded-md hover:bg-[#333] transition-colors"
+              className="flex items-center gap-2 bg-charleston-green-9 text-white px-3 py-2 rounded-md hover:bg-charleston-green-8 transition-colors"
             >
               <FaSortAmountDown className={sortOrder === 'desc' ? '' : 'rotate-180'} />
             </button>
@@ -154,7 +154,7 @@ export default function Favorites({ favorites }) {
           <div className="mt-4">
             <Link
               href="/product-catalog"
-              className="inline-flex items-center gap-2 bg-[#54BB74] text-white px-4 py-2 rounded-md hover:bg-[#48a064] transition-colors"
+              className="inline-flex items-center gap-2 bg-emerald-9 text-white px-4 py-2 rounded-md hover:bg-emerald-10 transition-colors"
             >
               <span>Browse Products</span>
             </Link>
@@ -168,7 +168,7 @@ export default function Favorites({ favorites }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="bg-[#292929] rounded-lg overflow-hidden group"
+              className="bg-charleston-green-9 rounded-lg overflow-hidden group"
             >
               <div className="relative h-48">
                 <Image
@@ -178,7 +178,7 @@ export default function Favorites({ favorites }) {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-2 right-2">
-                  <button className="bg-[#1e1e1e]/80 text-red-500 p-2 rounded-full hover:bg-[#1e1e1e] transition-colors">
+                  <button className="bg-charleston-green-11/80 text-red-500 p-2 rounded-full hover:bg-charleston-green-11 transition-colors">
                     <FaHeart />
                   </button>
                 </div>
@@ -187,22 +187,22 @@ export default function Favorites({ favorites }) {
                     Out of Stock
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e1e] to-transparent opacity-0 group-hover:opacity-60 transition-opacity"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-charleston-green-11 to-transparent opacity-0 group-hover:opacity-60 transition-opacity"></div>
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <Link
                     href={`/product-catalog/${item.id}`}
-                    className="bg-[#54BB74] text-white p-3 rounded-full mx-2 hover:bg-[#48a064] transition-colors"
+                    className="bg-emerald-9 text-white p-3 rounded-full mx-2 hover:bg-emerald-10 transition-colors"
                   >
                     <FaEye />
                   </Link>
                   <button
-                    className="bg-[#292929] text-white p-3 rounded-full mx-2 hover:bg-[#333] transition-colors"
+                    className="bg-charleston-green-9 text-white p-3 rounded-full mx-2 hover:bg-charleston-green-8 transition-colors"
                     disabled={!item.inStock}
                   >
                     <FaShoppingCart />
                   </button>
                   <button
-                    className="bg-[#292929] text-white p-3 rounded-full mx-2 hover:bg-[#333] transition-colors"
+                    className="bg-charleston-green-9 text-white p-3 rounded-full mx-2 hover:bg-charleston-green-8 transition-colors"
                   >
                     <FaTrash />
                   </button>
@@ -224,13 +224,13 @@ export default function Favorites({ favorites }) {
                 <h3 className="text-white font-medium mb-1">{item.name}</h3>
                 
                 <div className="flex justify-between items-center">
-                  <div className="text-[#54BB74] font-semibold">${item.price.toFixed(2)}</div>
+                  <div className="text-emerald-9 font-semibold">${item.price.toFixed(2)}</div>
                   <div className="text-xs text-gray-400">Added {formatDate(item.addedAt)}</div>
                 </div>
                 
                 <div className="mt-3 flex gap-2">
                   <button
-                    className="flex-1 flex items-center justify-center gap-1 bg-[#54BB74] text-white px-3 py-2 rounded hover:bg-[#48a064] transition-colors disabled:bg-gray-700 disabled:text-gray-400"
+                    className="flex-1 flex items-center justify-center gap-1 bg-emerald-9 text-white px-3 py-2 rounded hover:bg-emerald-10 transition-colors disabled:bg-gray-700 disabled:text-gray-400"
                     disabled={!item.inStock}
                   >
                     <FaShoppingCart className="text-sm" />
@@ -238,7 +238,7 @@ export default function Favorites({ favorites }) {
                   </button>
                   
                   <button
-                    className="flex items-center justify-center gap-1 bg-[#292929] border border-gray-700 text-white px-3 py-2 rounded hover:bg-[#333] transition-colors"
+                    className="flex items-center justify-center gap-1 bg-charleston-green-9 border border-gray-700 text-white px-3 py-2 rounded hover:bg-charleston-green-8 transition-colors"
                   >
                     <FaTrash className="text-sm" />
                   </button>

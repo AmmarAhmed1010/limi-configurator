@@ -111,7 +111,7 @@ export default function Promotions({ promotions }) {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-[#292929] text-white w-full pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#54BB74]"
+              className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-9"
               placeholder="Search promotions..."
             />
           </div>
@@ -121,7 +121,7 @@ export default function Promotions({ promotions }) {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="appearance-none bg-[#292929] text-white pl-3 pr-8 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#54BB74]"
+                className="appearance-none bg-charleston-green-9 text-white pl-3 pr-8 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-9"
               >
                 <option value="all">All Promotions</option>
                 <option value="active">Active Only</option>
@@ -134,7 +134,7 @@ export default function Promotions({ promotions }) {
             
             <button
               onClick={toggleSortOrder}
-              className="flex items-center gap-2 bg-[#292929] text-white px-3 py-2 rounded-md hover:bg-[#333] transition-colors"
+              className="flex items-center gap-2 bg-charleston-green-9 text-white px-3 py-2 rounded-md hover:bg-charleston-green-8 transition-colors"
             >
               <FaSortAmountDown className={sortOrder === 'desc' ? '' : 'rotate-180'} />
             </button>
@@ -162,7 +162,7 @@ export default function Promotions({ promotions }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className={`bg-[#292929] rounded-lg overflow-hidden ${isExpired ? 'opacity-70' : ''}`}
+                className={`bg-charleston-green-9 rounded-lg overflow-hidden ${isExpired ? 'opacity-70' : ''}`}
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Promo image */}
@@ -174,11 +174,11 @@ export default function Promotions({ promotions }) {
                       className="object-cover"
                     />
                     {promo.appExclusive && (
-                      <div className="absolute top-2 left-2 bg-[#54BB74] text-white text-xs font-bold px-2 py-1 rounded">
+                      <div className="absolute top-2 left-2 bg-emerald-9 text-white text-xs font-bold px-2 py-1 rounded">
                         App Exclusive
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#1e1e1e] to-transparent opacity-50"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-charleston-green-11 to-transparent opacity-50"></div>
                   </div>
                   
                   {/* Promo details */}
@@ -190,7 +190,7 @@ export default function Promotions({ promotions }) {
                         
                         <div className="flex items-center gap-4 mb-4">
                           <div className="flex items-center gap-2 text-sm">
-                            <FaCalendarAlt className="text-[#54BB74]" />
+                            <FaCalendarAlt className="text-emerald-9" />
                             <span className="text-gray-400">
                               Valid until {formatDate(promo.validTo)}
                             </span>
@@ -198,7 +198,7 @@ export default function Promotions({ promotions }) {
                           
                           {promo.appExclusive && (
                             <div className="flex items-center gap-2 text-sm">
-                              <FaMobileAlt className="text-[#54BB74]" />
+                              <FaMobileAlt className="text-emerald-9" />
                               <span className="text-gray-400">App Exclusive</span>
                             </div>
                           )}
@@ -209,7 +209,7 @@ export default function Promotions({ promotions }) {
                           {promo.categories.map((category, index) => (
                             <span 
                               key={index}
-                              className="bg-[#1e1e1e] text-gray-300 text-xs px-2 py-1 rounded"
+                              className="bg-charleston-green-11 text-gray-300 text-xs px-2 py-1 rounded"
                             >
                               {category}
                             </span>
@@ -218,9 +218,9 @@ export default function Promotions({ promotions }) {
                       </div>
                       
                       <div className="text-center md:text-right">
-                        <div className="inline-block bg-[#1e1e1e] px-4 py-2 rounded-lg mb-3">
+                        <div className="inline-block bg-charleston-green-11 px-4 py-2 rounded-lg mb-3">
                           <div className="text-sm text-gray-400">Discount</div>
-                          <div className="text-xl font-bold text-[#54BB74]">{promo.discount}</div>
+                          <div className="text-xl font-bold text-emerald-9">{promo.discount}</div>
                         </div>
                         
                         {isEnding && !isExpired && (
@@ -242,13 +242,13 @@ export default function Promotions({ promotions }) {
                     {/* Promo code and actions */}
                     <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
                       {promo.code ? (
-                        <div className="flex-1 flex items-center gap-2 bg-[#1e1e1e] p-2 rounded-lg">
-                          <div className="bg-[#292929] px-3 py-2 rounded font-mono font-bold text-white flex-1 text-center">
+                        <div className="flex-1 flex items-center gap-2 bg-charleston-green-11 p-2 rounded-lg">
+                          <div className="bg-charleston-green-9 px-3 py-2 rounded font-mono font-bold text-white flex-1 text-center">
                             {promo.code}
                           </div>
                           <button
                             onClick={() => copyToClipboard(promo.code)}
-                            className="bg-[#292929] text-white p-2 rounded hover:bg-[#333] transition-colors"
+                            className="bg-charleston-green-9 text-white p-2 rounded hover:bg-charleston-green-8 transition-colors"
                             disabled={isExpired}
                           >
                             {copiedCode === promo.code ? <FaCheck className="text-green-500" /> : <FaCopy />}
@@ -265,7 +265,7 @@ export default function Promotions({ promotions }) {
                         className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md transition-colors ${
                           isExpired 
                             ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
-                            : 'bg-[#54BB74] text-white hover:bg-[#48a064]'
+                            : 'bg-emerald-9 text-white hover:bg-emerald-10'
                         }`}
                       >
                         <FaTag />
@@ -281,12 +281,12 @@ export default function Promotions({ promotions }) {
       )}
       
       {/* App download reminder */}
-      <div className="mt-8 bg-gradient-to-r from-[#292929] to-[#1e1e1e] rounded-lg p-5 border border-[#54BB74]/30">
+      <div className="mt-8 bg-gradient-to-r from-charleston-green-9 to-charleston-green-11 rounded-lg p-5 border border-emerald-9/30">
         <div className="flex flex-col md:flex-row gap-6 items-center">
           <div className="md:w-2/3">
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-[#54BB74]/20 p-2 rounded-full">
-                <FaMobileAlt className="text-[#54BB74] text-xl" />
+              <div className="bg-emerald-9/20 p-2 rounded-full">
+                <FaMobileAlt className="text-emerald-9 text-xl" />
               </div>
               <h3 className="text-lg font-semibold text-white">
                 Get App-Exclusive Promotions
@@ -301,14 +301,14 @@ export default function Promotions({ promotions }) {
               <Link 
                 href="https://apps.apple.com/app/limi-lighting"
                 target="_blank"
-                className="flex items-center gap-2 bg-[#54BB74] text-white px-4 py-2 rounded-md hover:bg-[#48a064] transition-colors"
+                className="flex items-center gap-2 bg-emerald-9 text-white px-4 py-2 rounded-md hover:bg-emerald-10 transition-colors"
               >
                 <span>iOS App</span>
               </Link>
               <Link 
                 href="https://play.google.com/store/apps/details?id=com.limi.lighting"
                 target="_blank"
-                className="flex items-center gap-2 bg-[#292929] border border-[#54BB74] text-[#54BB74] px-4 py-2 rounded-md hover:bg-[#54BB74] hover:text-white transition-colors"
+                className="flex items-center gap-2 bg-charleston-green-9 border border-emerald-9 text-emerald-9 px-4 py-2 rounded-md hover:bg-emerald-9 hover:text-white transition-colors"
               >
                 <span>Android App</span>
               </Link>
@@ -323,7 +323,7 @@ export default function Promotions({ promotions }) {
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e1e] to-transparent opacity-60"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-charleston-green-11 to-transparent opacity-60"></div>
               <div className="absolute bottom-3 left-3 right-3">
                 <div className="text-white font-semibold">LIMI Mobile App</div>
                 <div className="text-sm text-gray-300">Exclusive offers await</div>
