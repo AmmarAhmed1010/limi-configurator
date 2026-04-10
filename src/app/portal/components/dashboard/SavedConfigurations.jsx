@@ -9,10 +9,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { fetchUserByToken } from "../../../redux/slices/userSlice";
 import { buildApi1Url, API_CONFIG } from '../../../config/api.config';
+import { downloadLightConfigPdf } from '../../../util/lightConfigPdfDownload';
 import "react-toastify/dist/ReactToastify.css";
 import {
   FaEye,
-  FaDownload,
   FaShoppingCart,
   FaEdit,
   FaTrash,
@@ -22,6 +22,7 @@ import {
   FaChevronDown,
   FaExternalLinkAlt,
   FaSpinner,
+  FaFilePdf,
 } from "react-icons/fa";
 
 const CableItem = ({ designName, cableType, cableSize, additionalDetails }) => (
@@ -96,6 +97,7 @@ export default function SavedConfigurations({ isARView = false }) {
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedConfig, setSelectedConfig] = useState(null);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [pdfDownloadingId, setPdfDownloadingId] = useState(null);
 
   // Token-based auto-login for AR view
   useEffect(() => {
@@ -184,6 +186,24 @@ export default function SavedConfigurations({ isARView = false }) {
   // View in configurator
   const viewInConfigurator = (configId) => {
     router.push(`/configurator?configId=${configId}`);
+  };
+
+  const handleDownloadPdf = async (config) => {
+    const id = config?._id;
+    if (!id) return;
+    setPdfDownloadingId(id);
+    try {
+      const result = await downloadLightConfigPdf(id, {
+        fileName: config?.name || `LIMI-Config-${id}`,
+      });
+      if (result.ok) {
+        toast.success("Specification PDF downloaded");
+      } else {
+        toast.error(result.error || "Could not download PDF");
+      }
+    } finally {
+      setPdfDownloadingId(null);
+    }
   };
 
   // Filter and sort configurations
@@ -399,6 +419,20 @@ export default function SavedConfigurations({ isARView = false }) {
                     </span>
                   </button>
 
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadPdf(config)}
+                    disabled={pdfDownloadingId === config._id}
+                    className="flex items-center justify-center gap-1 bg-[#292929] border border-gray-600 text-gray-200 px-3 py-2 rounded hover:border-[#54BB74] hover:text-[#54BB74] transition-colors disabled:opacity-50"
+                    title="Download specification PDF"
+                  >
+                    {pdfDownloadingId === config._id ? (
+                      <FaSpinner className="animate-spin" />
+                    ) : (
+                      <FaFilePdf />
+                    )}
+                  </button>
+
                   {!isARView && (
                     <button
                       onClick={() => deleteConfiguration(config._id)}
@@ -506,6 +540,22 @@ export default function SavedConfigurations({ isARView = false }) {
                         >
                           <FaEdit className="h-4 w-4 transition-transform group-hover:scale-110" />
                           <span>Open in Configurator</span>
+                        </button>
+                      )}
+
+                      {!isARView && (
+                        <button
+                          type="button"
+                          onClick={() => handleDownloadPdf(selectedConfig)}
+                          disabled={pdfDownloadingId === selectedConfig._id}
+                          className="group flex items-center justify-center gap-2 border border-gray-600 bg-[#1a1a1a] text-white px-6 py-3 rounded-lg font-medium hover:border-[#54BB74] hover:text-[#54BB74] transition-all disabled:opacity-60"
+                        >
+                          {pdfDownloadingId === selectedConfig._id ? (
+                            <FaSpinner className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <FaFilePdf className="h-4 w-4" />
+                          )}
+                          <span>Download specification PDF</span>
                         </button>
                       )}
 

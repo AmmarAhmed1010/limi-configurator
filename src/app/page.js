@@ -49,10 +49,10 @@ export default function Home() {
 
   useEffect(() => {
     // Initialize dynamic hourly theme switcher
-    if (typeof window !== 'undefined') {
-      initDynamicThemeSwitcher();
-      setDayNightTheme(testHour); // Set initial hour for testing
-    }
+    // if (typeof window !== 'undefined') {
+    //   initDynamicThemeSwitcher();
+    //   setDayNightTheme(testHour); // Set initial hour for testing
+    // }
     // Check if device is mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
