@@ -376,9 +376,9 @@ export async function generateSpecSheetPdf(payload) {
       2: { cellWidth: 22, fontStyle: "bold" },
       3: { cellWidth: 32, fontStyle: "bold" },
       4: { cellWidth: 22 },
-      5: { cellWidth: 9, fontSize: 7 },
-      6: { cellWidth: 9, fontSize: 7 },
-      7: { cellWidth: 10, fontSize: 7 },
+      5: { cellWidth: 20, fontSize: 7 },
+      6: { cellWidth: 20, fontSize: 7 },
+      7: { cellWidth: 20, fontSize: 7 },
     },
     didDrawCell: (data) => {
       if (data.section !== "body" || data.column.index !== 1) return;
