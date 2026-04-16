@@ -240,6 +240,93 @@ export const PreviewControls = ({
 
   return (
     <div className="noselect">
+      {/* Header Overlay */}
+      <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#232B2B] py-2 animate-fadeIn">
+        <div className="relative flex items-center w-full">
+          {/* Logo - Left on mobile, centered on desktop */}
+          <div className="pl-4 sm:pl-8">
+            <Link
+              href="https://limiai.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center no-underline"
+            >
+              <Image
+                src="/images/svgLogos/__Icon_Wordmark_White.svg"
+                alt="LIMI Logo"
+                width={220}
+                height={44}
+                className="filter-none w-[130px] h-auto sm:w-[210px]"
+                priority
+              />
+            </Link>
+          </div>
+          
+          {/* Navigation Buttons - Right Aligned */}
+          <div className="ml-auto pr-4 sm:pr-8">
+            <div className="flex items-center space-x-2">
+              <button
+                type="button"
+                className="relative flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                onClick={() => {
+                  onSaveConfig(config, cables);
+                  handleOpenSaveModal();
+                }}
+                title="Save Configuration"
+              >
+                <FiHeart className="h-9 w-9" strokeWidth={1} />
+                <span className="absolute bottom-[7px] right-[5px] flex h-4 w-4 items-center justify-center rounded-full bg-white text-black text-[9px] leading-none">
+                  {savedConfigurationsCount && savedConfigurationsCount > 0 ? (
+                    savedConfigurationsCount
+                  ) : (
+                    <span className="text-[11px] leading-none">+</span>
+                  )}
+                </span>
+              </button>
+
+              <button
+                className="flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                onClick={() => {
+                  onLoadConfig();
+                  handleOpenSaveModal();
+                }}
+                title="Load Configuration"
+              >
+                <span className="flex h-11 w-11 items-center justify-center ">
+                  <FiUser className="h-9 w-9" strokeWidth={1.3} />
+                </span>
+              </button>
+
+              <Link
+                href="https://limiai.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-11 w-11 items-center justify-center text-white no-underline transition-transform duration-200 hover:scale-110"
+                title="Home"
+              >
+                <FiHome className="h-9 w-9" strokeWidth={1} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
+      {/* Vertical Color Picker */}
+      {showColorPicker && (
+        <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
+          <h3 className="text-sm font-medium text-black mb-3 ">Select Color</h3>
+          <div className="grid grid-cols-3 gap-3">
+            {colorOptions.map((color) => (
+              <button
+                key={color.id}
+                className={`w-14 h-14 rounded-full border-2 transition-transform duration-200 hover:scale-110 ${selectedColor?.id === color.id ? 'ring-2 ring-blue-500 ring-offset-2' : 'border-gray-200'}`}
+                style={{ backgroundColor: color.color }}
+                onClick={() => handleColorSelect(color)}
+                title={color.name}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       {/* Onboarding Animation */}
       {showOnboarding && (
         <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center">

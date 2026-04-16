@@ -121,7 +121,7 @@ export default function CustomerDashboard({ onLogout }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#54BB74]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-9"></div>
       </div>
     );
   }
@@ -133,21 +133,21 @@ export default function CustomerDashboard({ onLogout }) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-8 bg-[#1e1e1e] rounded-lg p-6"
+        className="mb-8 rounded-lg border border-charleston-green-8 bg-charleston-green-11 p-6 shadow-lg shadow-black/20"
       >
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-            <div className="relative w-16 h-16 rounded-full overflow-hidden bg-emerald flex items-center justify-center">
+            <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-emerald-9">
               {user?.user?.data?.profilePicture?.url ? (
                 <Image
                   src={user?.user?.data?.profilePicture?.url}
                   alt={user?.user?.data?.username || "User"}
                   fill
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                   priority
                 />
               ) : (
-                <span className="text-2xl font-bold text-charleston-green">
+                <span className="text-2xl font-bold text-white">
                   {getUserInitials()}
                 </span>
               )}
@@ -166,12 +166,12 @@ export default function CustomerDashboard({ onLogout }) {
           <div className="flex items-center gap-4">
             {/* <button className="relative p-2 text-gray-400 hover:text-white">
               <FaBell />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-[#54BB74] rounded-full"></span>
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-emerald-9"></span>
             </button> */}
 
             <button
               onClick={onLogout}
-              className="flex items-center gap-2 bg-[#292929] text-white px-4 py-2 rounded-md hover:bg-[#333] transition-colors"
+              className="flex items-center gap-2 rounded-md border border-charleston-green-8 bg-charleston-green-9 px-4 py-2 text-white transition-colors hover:bg-charleston-green-10"
             >
               <FaSignOutAlt />
               <span>Sign Out</span>
@@ -189,7 +189,7 @@ export default function CustomerDashboard({ onLogout }) {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="md:col-span-1"
         >
-          <div className="bg-[#1e1e1e] rounded-lg p-4">
+          <div className="rounded-lg border border-charleston-green-8 bg-charleston-green-11 p-4">
             <nav>
               <ul className="space-y-2">
                 {navItems.map((item) => (
@@ -198,8 +198,8 @@ export default function CustomerDashboard({ onLogout }) {
                       onClick={() => setActiveSection(item.id)}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${
                         activeSection === item.id
-                          ? "bg-[#54BB74] text-white"
-                          : "text-gray-300 hover:bg-[#292929]"
+                          ? "bg-emerald-9 text-white shadow-md shadow-emerald-9/20"
+                          : "text-gray-300 hover:bg-charleston-green-9"
                       }`}
                     >
                       {item.icon}
@@ -210,7 +210,7 @@ export default function CustomerDashboard({ onLogout }) {
               </ul>
             </nav>
             <div className="hidden sm:flex">
-              <div className="mt-6 p-4 bg-[#292929] rounded-lg">
+              <div className="mt-6 rounded-lg border border-charleston-green-8 bg-charleston-green-9 p-4">
                 <h3 className="text-white font-semibold mb-2">Need Help?</h3>
                 <p className="text-gray-400 text-sm mb-3">
                   Contact our support team for assistance with your LIMI
@@ -218,7 +218,7 @@ export default function CustomerDashboard({ onLogout }) {
                 </p>
                 <Link
                   href="/support"
-                  className="text-[#54BB74] text-sm hover:underline flex items-center gap-1"
+                  className="flex items-center gap-1 text-sm text-emerald-9 hover:underline"
                 >
                   <span>Contact Support</span>
                   <FaDownload className="rotate-180" />
@@ -229,10 +229,10 @@ export default function CustomerDashboard({ onLogout }) {
 
           {/* App Download Reminder */}
           <div className="hidden sm:flex">
-            <div className="mt-6 bg-gradient-to-r from-[#292929] to-[#1e1e1e] rounded-lg p-4 border border-[#54BB74]/30">
+            <div className="mt-6 rounded-lg border border-emerald-9/30 bg-gradient-to-r from-charleston-green-9 to-charleston-green-11 p-4">
               <div className="flex items-center gap-3 mb-3">
-                <div className="bg-[#54BB74]/20 p-2 rounded-full">
-                  <FaDownload className="text-[#54BB74]" />
+                <div className="rounded-full bg-emerald-9/20 p-2">
+                  <FaDownload className="text-emerald-9" />
                 </div>
                 <h3 className="text-white font-semibold">LIMI Mobile App</h3>
               </div>
@@ -244,14 +244,14 @@ export default function CustomerDashboard({ onLogout }) {
                 <Link
                   href="https://apps.apple.com/app/limi-lighting"
                   target="_blank"
-                  className="flex-1 flex items-center justify-center gap-1 bg-[#292929] text-white text-sm py-2 rounded-md hover:bg-[#333] transition-colors"
+                  className="flex flex-1 items-center justify-center gap-1 rounded-md bg-charleston-green-9 py-2 text-sm text-white transition-colors hover:bg-charleston-green-10"
                 >
                   iOS
                 </Link>
                 <Link
                   href="https://play.google.com/store/apps/details?id=com.limi.lighting"
                   target="_blank"
-                  className="flex-1 flex items-center justify-center gap-1 bg-[#292929] text-white text-sm py-2 rounded-md hover:bg-[#333] transition-colors"
+                  className="flex flex-1 items-center justify-center gap-1 rounded-md bg-charleston-green-9 py-2 text-sm text-white transition-colors hover:bg-charleston-green-10"
                 >
                   Android
                 </Link>
@@ -267,15 +267,15 @@ export default function CustomerDashboard({ onLogout }) {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="md:col-span-3"
         >
-          <div className="bg-[#1e1e1e] rounded-lg p-6">
+          <div className="rounded-lg border border-charleston-green-8 bg-charleston-green-11 p-6 shadow-lg shadow-black/20">
             {renderSectionContent()}
           </div>
         </motion.div>
         <div className="sm:hidden flex">
-          <div className="mt-6 bg-gradient-to-r  from-[#292929] to-[#1e1e1e] rounded-lg p-4 border border-[#54BB74]/30">
+          <div className="mt-6 rounded-lg border border-emerald-9/30 bg-gradient-to-r from-charleston-green-9 to-charleston-green-11 p-4">
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-[#54BB74]/20 p-2 rounded-full">
-                <FaDownload className="text-[#54BB74]" />
+              <div className="rounded-full bg-emerald-9/20 p-2">
+                <FaDownload className="text-emerald-9" />
               </div>
               <h3 className="text-white font-semibold">LIMI Mobile App</h3>
             </div>
@@ -287,14 +287,14 @@ export default function CustomerDashboard({ onLogout }) {
               <Link
                 href="https://apps.apple.com/app/limi-lighting"
                 target="_blank"
-                className="flex-1 flex items-center justify-center gap-1 bg-[#292929] text-white text-sm py-2 rounded-md hover:bg-[#333] transition-colors"
+                className="flex flex-1 items-center justify-center gap-1 rounded-md bg-charleston-green-9 py-2 text-sm text-white transition-colors hover:bg-charleston-green-10"
               >
                 iOS
               </Link>
               <Link
                 href="https://play.google.com/store/apps/details?id=com.limi.lighting"
                 target="_blank"
-                className="flex-1 flex items-center justify-center gap-1 bg-[#292929] text-white text-sm py-2 rounded-md hover:bg-[#333] transition-colors"
+                className="flex flex-1 items-center justify-center gap-1 rounded-md bg-charleston-green-9 py-2 text-sm text-white transition-colors hover:bg-charleston-green-10"
               >
                 Android
               </Link>
@@ -302,14 +302,14 @@ export default function CustomerDashboard({ onLogout }) {
           </div>
         </div>
         <div className="sm:hidden flex">
-          <div className="p-4 bg-[#292929] border border-[#54BB74]/30 rounded-lg">
+          <div className="rounded-lg border border-emerald-9/30 bg-charleston-green-9 p-4">
             <h3 className="text-white font-semibold mb-2">Need Help?</h3>
             <p className="text-gray-400 text-sm mb-3">
               Contact our support team for assistance with your LIMI products.
             </p>
             <Link
               href="/support"
-              className="text-[#54BB74] text-sm hover:underline flex items-center gap-1"
+              className="flex items-center gap-1 text-sm text-emerald-9 hover:underline"
             >
               <span>Contact Support</span>
               <FaDownload className="rotate-180" />

@@ -176,7 +176,7 @@ export const handleColorPicker = (color) => {
  * @param {string} message - The message to send
  */
 export const sendMessageToPlayCanvas = (message) => {
- console.log("Sending message to PlayCanvas iframe:", message);
+//  console.log("Sending message to PlayCanvas iframe:", message);
   const iframe = document.getElementById("playcanvas-app");
   if (iframe && iframe.contentWindow) {
     iframe.contentWindow.postMessage(message, "*");
@@ -583,6 +583,68 @@ export const filterSelectedPendants = (selectedPendants, amount) => {
   return selectedPendants
     ? selectedPendants.filter((index) => index < amount)
     : [];
+};
+
+/**
+ * Resolve a path or URL for display / img src in the configurator UI.
+ * @param {string} path - Relative path or absolute URL
+ * @returns {string|null}
+ */
+export const resolveConfiguratorAssetUrl = (path) => {
+  if (!path || typeof path !== "string") return null;
+  const t = path.trim();
+  if (!t) return null;
+  if (t.startsWith("http://") || t.startsWith("https://")) return t;
+  if (typeof window !== "undefined" && t.startsWith("/")) {
+    return `${window.location.origin}${t}`;
+  }
+  return t;
+};
+
+/**
+ * Default cable values used when the user hasn't explicitly set them.
+ */
+const CABLE_DEFAULTS = {
+  cableSize: "2mm",
+  connectorColor: "black",
+  cableColor: "black",
+};
+
+/**
+ * Merge each cable with matching system-assignment row (API / cache) for spec sheets.
+ * Falls back to CABLE_DEFAULTS when user hasn't set size / connector / color.
+ * Also pulls the product image URL for the pendant icon.
+ * @param {Array} cables - cables state
+ * @returns {Array}
+ */
+export const enrichCablesForSpecSheet = (cables) => {
+  if (!Array.isArray(cables)) return [];
+  return cables.map((cable, index) => {
+    const raw = (cable?.design || "").trim();
+    const baseKey = raw.split("(")[0].trim();
+    const assignment =
+      findSystemAssignmentByDesign(baseKey) ||
+      findSystemAssignmentByDesign(raw) ||
+      null;
+    const modelUrl =
+      (assignment?.media?.model?.url && String(assignment.media.model.url)) ||
+      (assignment?.modelUrl && String(assignment.modelUrl)) ||
+      "";
+    const imageUrl =
+      (assignment?.media?.image?.url && String(assignment.media.image.url)) ||
+      "";
+    return {
+      slot: index + 1,
+      cable,
+      assignment,
+      modelUrl,
+      imageUrl,
+      displayDesign: raw || "—",
+      cableSize: cable?.size || cable?.cableSize || CABLE_DEFAULTS.cableSize,
+      connectorColor: cable?.connectorColor || CABLE_DEFAULTS.connectorColor,
+      cableColor: cable?.cableColor || CABLE_DEFAULTS.cableColor,
+    };
+  });
 };
 
 // ============================================================================

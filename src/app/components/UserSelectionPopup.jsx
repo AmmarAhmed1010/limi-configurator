@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 /**
- * A popup component that asks users to select whether they are a customer or distributor.
+ * A popup coasks users to select whether they are a customer or distributor.
  * 
  * @param {Object} props - Component props
  * @param {boolean} props.isVisible - Whether the popup is visible

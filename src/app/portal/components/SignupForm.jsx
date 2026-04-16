@@ -14,7 +14,9 @@ export default function SignupForm({ onSwitchToLogin }) {
   const [passwordError, setPasswordError] = useState('');
   
   const dispatch = useDispatch();
-  const { signupStatus, error, successMessage } = useSelector((state) => state.user);
+  const { signupStatus, error, successMessage, isLoggedIn } = useSelector(
+    (state) => state.user
+  );
   
   // Clear auth status when component unmounts
   useEffect(() => {
@@ -23,14 +25,7 @@ export default function SignupForm({ onSwitchToLogin }) {
     };
   }, [dispatch]);
   
-  // Redirect to dashboard after successful signup
-  const router = require('next/navigation').useRouter();
-  const user = useSelector((state) => state.user.user);
-  useEffect(() => {
-    if (signupStatus === 'succeeded' && user) {
-      router.push('/portal'); // or '/portal' or your desired route
-    }
-  }, [signupStatus, user, router]);
+  // Signup completes after send_otp only — user verifies via email, then signs in (no auto-login)
   
   const validatePassword = () => {
     if (password !== confirmPassword) {
@@ -60,8 +55,8 @@ export default function SignupForm({ onSwitchToLogin }) {
   // Loading overlay
   if (signupStatus === 'loading') {
     return (
-      <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex flex-col items-center justify-center">
-        <div className="w-16 h-16 border-t-4 border-[#93cfa2] border-solid rounded-full animate-spin mb-6"></div>
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-charleston-green-15/90">
+        <div className="mb-6 h-16 w-16 animate-spin rounded-full border-4 border-solid border-emerald-9 border-t-transparent"></div>
         <p className="text-gray-300">Creating Your Account...</p>
       </div>
     );
@@ -74,18 +69,36 @@ export default function SignupForm({ onSwitchToLogin }) {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <h2 className="text-2xl font-bold font-['Amenti'] text-emerald mb-6">
+      <h2 className="mb-6 font-['Amenti'] text-2xl font-bold text-emerald-9">
         Create Your Account
       </h2>
       
-      {signupStatus === 'succeeded' ? (
-        <div className="bg-emerald/10 border border-emerald/20 rounded-lg p-4 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="bg-emerald rounded-full p-1">
-              <FaCheck className="text-charleston-green-dark text-sm" />
+      {signupStatus === 'succeeded' && isLoggedIn ? (
+        <div className="mb-6 rounded-lg border border-emerald-9/25 bg-emerald-9/10 p-4 text-center">
+          <div className="mb-3 flex justify-center">
+            <div className="rounded-full bg-emerald-9 p-2">
+              <FaCheck className="text-lg text-white" />
             </div>
-            <p className="text-emerald font-medium">{successMessage}</p>
           </div>
+          <p className="font-medium text-emerald-9">
+            Welcome back — you&apos;re signed in. Redirecting…
+          </p>
+        </div>
+      ) : signupStatus === 'succeeded' ? (
+        <div className="mb-6 space-y-4 rounded-lg border border-emerald-9/25 bg-emerald-9/10 p-4">
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 shrink-0 rounded-full bg-emerald-9 p-1">
+              <FaCheck className="text-sm text-white" />
+            </div>
+            <p className="font-medium text-emerald-9">{successMessage}</p>
+          </div>
+          <button
+            type="button"
+            onClick={onSwitchToLogin}
+            className="w-full rounded-md bg-emerald-9 py-3 font-medium text-white transition-colors hover:bg-emerald-10"
+          >
+            Sign in
+          </button>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
@@ -99,7 +112,7 @@ export default function SignupForm({ onSwitchToLogin }) {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="bg-charleston-green-dark text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                className="w-full rounded-md border border-charleston-green-8 bg-charleston-green-11 py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-emerald-9"
                 placeholder="John Doe"
                 required
               />
@@ -116,7 +129,7 @@ export default function SignupForm({ onSwitchToLogin }) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-charleston-green-dark text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                className="w-full rounded-md border border-charleston-green-8 bg-charleston-green-11 py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-emerald-9"
                 placeholder="your@email.com"
                 required
               />
@@ -133,7 +146,7 @@ export default function SignupForm({ onSwitchToLogin }) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-charleston-green-dark text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                className="w-full rounded-md border border-charleston-green-8 bg-charleston-green-11 py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-emerald-9"
                 placeholder="••••••••"
                 required
               />
@@ -150,7 +163,7 @@ export default function SignupForm({ onSwitchToLogin }) {
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="bg-charleston-green-dark text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                className="w-full rounded-md border border-charleston-green-8 bg-charleston-green-11 py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-emerald-9"
                 placeholder="••••••••"
                 required
               />
@@ -169,10 +182,10 @@ export default function SignupForm({ onSwitchToLogin }) {
           <button
             type="submit"
             disabled={signupStatus === 'loading'}
-            className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium"
+            className="flex w-full items-center justify-center gap-2 rounded-md bg-emerald-9 py-3 font-medium text-white transition-colors hover:bg-emerald-10"
           >
             {signupStatus === 'loading' ? (
-              <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
             ) : (
               <>
                 <span>Create Account</span>
@@ -187,7 +200,7 @@ export default function SignupForm({ onSwitchToLogin }) {
               <button
                 type="button"
                 onClick={onSwitchToLogin}
-                className="text-emerald hover:underline"
+                className="text-emerald-9 hover:underline"
               >
                 Sign In
               </button>

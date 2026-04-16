@@ -15,10 +15,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { fetchUserByToken } from "../../../redux/slices/userSlice";
 import { buildApi1Url, API_CONFIG } from '../../../config/api.config';
+import { downloadLightConfigPdf } from '../../../util/lightConfigPdfDownload';
 import "react-toastify/dist/ReactToastify.css";
 import {
   FaEye,
-  FaDownload,
   FaShoppingCart,
   FaEdit,
   FaTrash,
@@ -28,11 +28,12 @@ import {
   FaChevronDown,
   FaExternalLinkAlt,
   FaSpinner,
+  FaFilePdf,
 } from "react-icons/fa";
 
 const CableItem = ({ designName, cableType, cableSize, additionalDetails }) => (
   <details className="group">
-    <summary className="flex items-center justify-between p-3 bg-[#1e1e1e] rounded-lg border border-gray-800 cursor-pointer hover:bg-[#252525] transition-colors duration-200">
+    <summary className="flex items-center justify-between p-3 rounded-lg border border-charleston-green-8 bg-charleston-green-11 cursor-pointer hover:bg-charleston-green-10 transition-colors duration-200">
       <div className="flex items-center">
         <span className="w-2 h-2 rounded-full bg-blue-500 mr-3"></span>
         <span className="font-medium text-white">{designName}</span>
@@ -61,7 +62,7 @@ const CableItem = ({ designName, cableType, cableSize, additionalDetails }) => (
         />
       </svg>
     </summary>
-    <div className="mt-1 p-3 bg-[#252525] rounded-b-lg border border-t-0 border-gray-800">
+    <div className="mt-1 rounded-b-lg border border-t-0 border-charleston-green-8 bg-charleston-green-9 p-3">
       <div className="space-y-2">
         {cableSize && (
           <div className="flex justify-between text-sm py-1">
@@ -102,6 +103,7 @@ export default function SavedConfigurations({ isARView = false }) {
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedConfig, setSelectedConfig] = useState(null);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [pdfDownloadingId, setPdfDownloadingId] = useState(null);
 
   // Token-based auto-login for AR view
   useEffect(() => {
@@ -193,6 +195,24 @@ export default function SavedConfigurations({ isARView = false }) {
     console.log("configId",configId);
   };
 
+  const handleDownloadPdf = async (config) => {
+    const id = config?._id;
+    if (!id) return;
+    setPdfDownloadingId(id);
+    try {
+      const result = await downloadLightConfigPdf(id, {
+        fileName: config?.name || `LIMI-Config-${id}`,
+      });
+      if (result.ok) {
+        toast.success("Specification PDF downloaded");
+      } else {
+        toast.error(result.error || "Could not download PDF");
+      }
+    } finally {
+      setPdfDownloadingId(null);
+    }
+  };
+
   // Filter and sort configurations
   const filteredConfigurations = configurations
     .filter((config) => {
@@ -281,7 +301,7 @@ export default function SavedConfigurations({ isARView = false }) {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-[#292929] text-white w-full pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#54BB74]"
+                className="bg-charleston-green-9 text-white w-full pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-9"
                 placeholder="Search configurations..."
               />
             </div>
@@ -290,7 +310,7 @@ export default function SavedConfigurations({ isARView = false }) {
               <div className="relative">
                 <button
                   onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-                  className="flex items-center gap-2 bg-[#292929] text-white px-3 py-2 rounded-md hover:bg-[#333] transition-colors"
+                  className="flex items-center gap-2 bg-charleston-green-9 text-white px-3 py-2 rounded-md hover:bg-charleston-green-8 transition-colors"
                 >
                   <FaFilter />
                   <span className="text-sm">
@@ -299,13 +319,13 @@ export default function SavedConfigurations({ isARView = false }) {
                   <FaChevronDown className="text-xs" />
                 </button>
                 {showFilterDropdown && (
-                  <div className="absolute top-full right-0 mt-1 bg-[#292929] rounded-md shadow-lg z-10 w-40 py-1">
+                  <div className="absolute top-full right-0 mt-1 bg-charleston-green-9 rounded-md shadow-lg z-10 w-40 py-1">
                     <button
                       onClick={() => {
                         setFilterStatus("all");
                         setShowFilterDropdown(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-white hover:bg-[#333] transition-colors"
+                      className="w-full text-left px-4 py-2 text-white hover:bg-charleston-green-8 transition-colors"
                     >
                       All
                     </button>
@@ -315,7 +335,7 @@ export default function SavedConfigurations({ isARView = false }) {
 
               <button
                 onClick={toggleSortOrder}
-                className="flex items-center gap-2 bg-[#292929] text-white px-3 py-2 rounded-md hover:bg-[#333] transition-colors"
+                className="flex items-center gap-2 bg-charleston-green-9 text-white px-3 py-2 rounded-md hover:bg-charleston-green-8 transition-colors"
               >
                 <FaSortAmountDown
                   className={sortOrder === "desc" ? "" : "rotate-180"}
@@ -340,7 +360,7 @@ export default function SavedConfigurations({ isARView = false }) {
             <div className="mt-4">
               <Link
                 href="/configurator"
-                className="inline-flex items-center gap-2 bg-[#54BB74] text-white px-4 py-2 rounded-md hover:bg-[#48a064] transition-colors"
+                className="inline-flex items-center gap-2 bg-emerald-9 text-white px-4 py-2 rounded-md hover:bg-emerald-10 transition-colors"
               >
                 <span>Go to Configurator</span>
               </Link>
@@ -348,6 +368,7 @@ export default function SavedConfigurations({ isARView = false }) {
           )}
         </div>
       ) : (
+<<<<<<< HEAD
         <div className="w-full max-w-6xl mx-auto">
           <div className="relative rounded-3xl  bg-black pt-6 pb-12">
             <div className="pointer-events-none absolute inset-x-16 -top-10 h-24 blur-3xl" />
@@ -377,6 +398,59 @@ export default function SavedConfigurations({ isARView = false }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                     className="bg-[#15161b] rounded-2xl overflow-hidden border border-white/5 shadow-xl shadow-black/70 w-full"
+=======
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filteredConfigurations.map((config) => (
+            <motion.div
+              key={config._id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bg-charleston-green-9 rounded-lg overflow-hidden"
+            >
+              <div className="flex items-center h-[200px] w-full justify-center py-2 bg-charleston-green-9 border-b border-charleston-green-8">
+                <Image
+                  src={
+                    // buildApi1Url(config.thumbnail?.url) ||
+                    `/images/homepage-products/${
+                      Math.floor(Math.random() * 7) + 1
+                    }-mobile.jpg`
+                  }
+                  alt={config.name || "Configuration"}
+                  height={1000}
+                  width={1000}
+                  className="w-full h-full object-cover"
+                  priority
+                />
+              </div>
+
+              <div className="p-4 ">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-white mb-1">
+                    {config.name || "Unnamed Configuration"}
+                  </h3>
+                  <span>{formatDate(config.createdAt)}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm text-gray-400 mb-4">
+                  <div></div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {!isARView && (
+                    <button
+                      onClick={() => viewConfigDetails(config)}
+                      className="flex-1 flex items-center justify-center gap-1 bg-emerald-9 text-white px-3 py-2 rounded hover:bg-emerald-10 transition-colors"
+                    >
+                      <FaEye />
+                      <span className="text-sm">View</span>
+                    </button>
+                  )}
+                  
+                  <button
+                    id="open_id"
+                    onClick={() => viewInConfigurator(config._id)}
+                    className="flex-1 flex items-center justify-center gap-1 bg-charleston-green-9 border border-emerald-9 text-emerald-9 px-3 py-2 rounded hover:bg-emerald-9 hover:text-white transition-colors"
+>>>>>>> 9833b5ea0725527fa8ae5fcf49634f4dbb7b5290
                   >
                     <div className="relative flex items-center h-[330px] w-full justify-center bg-[#1f2229]">
                       <Image
@@ -399,6 +473,7 @@ export default function SavedConfigurations({ isARView = false }) {
                       </div>
                     </div>
 
+<<<<<<< HEAD
                     <div className="p-4 sm:p-5">
                       <div className="flex items-center justify-between text-[11px] text-gray-400 mb-4">
                         <div className="flex items-center gap-2">
@@ -450,6 +525,39 @@ export default function SavedConfigurations({ isARView = false }) {
               ))}
             </Swiper>
           </div>
+=======
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadPdf(config)}
+                    disabled={pdfDownloadingId === config._id}
+                    className="flex items-center justify-center gap-1 bg-charleston-green-9 border border-gray-600 text-gray-200 px-3 py-2 rounded hover:border-emerald-9 hover:text-emerald-9 transition-colors disabled:opacity-50"
+                    title="Download specification PDF"
+                  >
+                    {pdfDownloadingId === config._id ? (
+                      <FaSpinner className="animate-spin" />
+                    ) : (
+                      <FaFilePdf />
+                    )}
+                  </button>
+
+                  {!isARView && (
+                    <button
+                      onClick={() => deleteConfiguration(config._id)}
+                      className="flex items-center justify-center gap-1 bg-charleston-green-9 border border-gray-700 text-white px-3 py-2 rounded hover:bg-red-600 hover:border-red-600 transition-colors"
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? (
+                        <FaSpinner className="animate-spin" />
+                      ) : (
+                        <FaTrash />
+                      )}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+>>>>>>> 9833b5ea0725527fa8ae5fcf49634f4dbb7b5290
         </div>
       )}
 
@@ -461,10 +569,10 @@ export default function SavedConfigurations({ isARView = false }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-            className="bg-gradient-to-br from-[#1e1e1e] to-[#141414] rounded-xl shadow-2xl border border-gray-800 w-full max-w-6xl my-8 overflow-hidden"
+            className="my-8 w-full max-w-6xl overflow-hidden rounded-xl border border-charleston-green-8 bg-gradient-to-br from-charleston-green-11 to-charleston-green-14 shadow-2xl"
           >
             {/* Header with close button */}
-            <div className="border-b border-gray-800 p-4 flex justify-between items-center bg-gradient-to-r from-[#1e1e1e] to-[#1a1a1a]">
+            <div className="flex items-center justify-between border-b border-charleston-green-8 bg-gradient-to-r from-charleston-green-11 to-charleston-green-12 p-4">
               <div>
                 <h2 className="text-xl font-bold text-white">
                   Configuration Details
@@ -498,7 +606,7 @@ export default function SavedConfigurations({ isARView = false }) {
               <div className="flex flex-col lg:flex-row gap-8">
                 {/* Left Section - Image & Actions */}
                 <div className="w-full lg:w-2/5">
-                  <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800 shadow-lg">
+                  <div className="rounded-xl border border-charleston-green-8 bg-charleston-green-12 p-4 shadow-lg">
                     <div className="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
                       <Image
                         src={buildApi1Url(selectedConfig.thumbnail?.url)}
@@ -536,10 +644,26 @@ export default function SavedConfigurations({ isARView = false }) {
                       {!isARView && (
                         <button
                           onClick={() => viewInConfigurator(selectedConfig._id)}
-                          className="group flex items-center justify-center gap-2 bg-gradient-to-r from-[#54BB74] to-[#3e8e5a] text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-[#54BB74]/20"
+                          className="group flex transform items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-9 to-emerald-10 px-6 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-emerald-9/20"
                         >
                           <FaEdit className="h-4 w-4 transition-transform group-hover:scale-110" />
                           <span>Open in Configurator</span>
+                        </button>
+                      )}
+
+                      {!isARView && (
+                        <button
+                          type="button"
+                          onClick={() => handleDownloadPdf(selectedConfig)}
+                          disabled={pdfDownloadingId === selectedConfig._id}
+                          className="group flex items-center justify-center gap-2 rounded-lg border border-charleston-green-7 bg-charleston-green-12 px-6 py-3 font-medium text-white transition-all hover:border-emerald-9 hover:text-emerald-9 disabled:opacity-60"
+                        >
+                          {pdfDownloadingId === selectedConfig._id ? (
+                            <FaSpinner className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <FaFilePdf className="h-4 w-4" />
+                          )}
+                          <span>Download specification PDF</span>
                         </button>
                       )}
 
@@ -571,8 +695,8 @@ export default function SavedConfigurations({ isARView = false }) {
                 {/* Right Section - Details */}
                 <div className="w-full lg:w-3/5 space-y-6">
                   {/* Configuration Details */}
-                  <div className="bg-gradient-to-br from-[#1a1a1a] to-[#141414] rounded-xl border border-gray-800 overflow-hidden shadow-lg">
-                    <div className="p-5 bg-gradient-to-r from-[#1a1a1a] to-[#1e1e1e] border-b border-gray-800">
+                  <div className="overflow-hidden rounded-xl border border-charleston-green-8 bg-gradient-to-br from-charleston-green-12 to-charleston-green-14 shadow-lg">
+                    <div className="border-b border-charleston-green-8 bg-gradient-to-r from-charleston-green-12 to-charleston-green-11 p-5">
                       <div className="flex items-center">
                         <h3 className="text-lg font-semibold text-white">
                           Configuration Specifications
@@ -620,8 +744,8 @@ export default function SavedConfigurations({ isARView = false }) {
                   {/* Cables Section - Accordion */}
                   {selectedConfig.config?.cables &&
                     Object.keys(selectedConfig.config.cables).length > 0 && (
-                      <div className="bg-gradient-to-br from-[#1a1a1a] to-[#141414] rounded-xl border border-gray-800 overflow-hidden shadow-lg">
-                        <div className="p-5 bg-gradient-to-r from-[#1a1a1a] to-[#1e1e1e] border-b border-gray-800">
+                      <div className="overflow-hidden rounded-xl border border-charleston-green-8 bg-gradient-to-br from-charleston-green-12 to-charleston-green-14 shadow-lg">
+                        <div className="border-b border-charleston-green-8 bg-gradient-to-r from-charleston-green-12 to-charleston-green-11 p-5">
                           <div className="flex items-center justify-between">
                             <h3 className="text-lg font-semibold text-white">
                               Cable Configuration

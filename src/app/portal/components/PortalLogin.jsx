@@ -39,6 +39,7 @@ export default function PortalLogin({ onLogin }) {
   const [forgotPassword, setForgotPassword] = useState(false);
   const [resetStep, setResetStep] = useState(1);
   const [resetEmail, setResetEmail] = useState("");
+  const [resetOtp, setResetOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -390,7 +391,7 @@ export default function PortalLogin({ onLogin }) {
   if (isFetchingByToken) {
     return (
       <div className="flex justify-center items-center min-h-[300px]">
-        <span className="text-emerald">Logging you in...</span>
+        <span className="text-emerald-9">Logging you in...</span>
       </div>
     );
   }
@@ -405,9 +406,9 @@ export default function PortalLogin({ onLogin }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-charleston-green-dark p-8 rounded-lg"
+            className="rounded-lg bg-charleston-green-11 p-8"
           >
-            <h1 className="text-2xl md:text-3xl font-bold font-[Amenti] text-emerald mb-6">
+            <h1 className="mb-6 font-[Amenti] text-2xl font-bold text-emerald-9 md:text-3xl">
               Customer Portal
             </h1>
 
@@ -467,7 +468,7 @@ export default function PortalLogin({ onLogin }) {
                             type="email"
                             value={resetEmail}
                             onChange={(e) => setResetEmail(e.target.value)}
-                            className="bg-charleston-green text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                            className="bg-charleston-green text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                             placeholder="your@email.com"
                             required
                             disabled={resetStatus.type === "loading"}
@@ -478,10 +479,10 @@ export default function PortalLogin({ onLogin }) {
                       <button
                         type="submit"
                         disabled={resetStatus.type === "loading"}
-                        className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-emerald-9 py-3 rounded-md text-white hover:bg-emerald-10 transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {resetStatus.type === "loading" ? (
-                          <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                          <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                         ) : (
                           <>
                             <span>Next</span>
@@ -509,7 +510,7 @@ export default function PortalLogin({ onLogin }) {
                               e.target.value.replace(/[^0-9]/g, "").slice(0, 6)
                             )
                           }
-                          className="bg-charleston-green text-white w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald text-center tracking-widest font-mono text-xl"
+                          className="bg-charleston-green text-white w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9 text-center tracking-widest font-mono text-xl"
                           placeholder="123456"
                           maxLength={6}
                           required
@@ -520,10 +521,10 @@ export default function PortalLogin({ onLogin }) {
                       <button
                         type="submit"
                         disabled={resetStatus.type === "loading"}
-                        className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-emerald-9 py-3 rounded-md text-white hover:bg-emerald-10 transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {resetStatus.type === "loading" ? (
-                          <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                          <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                         ) : (
                           <>
                             <span>Verify OTP</span>
@@ -537,7 +538,7 @@ export default function PortalLogin({ onLogin }) {
                         <button
                           type="button"
                           onClick={handleSendResetOtp}
-                          className="text-emerald hover:underline"
+                          className="text-emerald-9 hover:underline"
                           disabled={resetStatus.type === "loading"}
                         >
                           Resend OTP
@@ -560,7 +561,7 @@ export default function PortalLogin({ onLogin }) {
                             type={showNewPassword ? "text" : "password"}
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                            className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                             placeholder="••••••••"
                             required
                             minLength={8}
@@ -589,7 +590,7 @@ export default function PortalLogin({ onLogin }) {
                             type={showConfirmPassword ? "text" : "password"}
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                            className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                             placeholder="••••••••"
                             required
                             minLength={8}
@@ -611,10 +612,10 @@ export default function PortalLogin({ onLogin }) {
                       <button
                         type="submit"
                         disabled={resetStatus.type === "loading"}
-                        className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-emerald-9 py-3 rounded-md text-white hover:bg-emerald-10 transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {resetStatus.type === "loading" ? (
-                          <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                          <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                         ) : (
                           <>
                             <span>Save Password</span>
@@ -634,12 +635,12 @@ export default function PortalLogin({ onLogin }) {
                   transition={{ duration: 0.3 }}
                   className="mb-6"
                 >
-                  <div className="flex border-b border-charleston-green-light mb-6">
+                  <div className="flex border-b border-charleston-green-7 mb-6">
                     <button
                       onClick={() => setLoginMethod("email")}
                       className={`px-4 py-2 font-medium flex items-center gap-2 ${
                         loginMethod === "email"
-                          ? "text-emerald border-b-2 border-emerald"
+                          ? "border-b-2 border-emerald-9 text-emerald-9"
                           : "text-gray-400 hover:text-gray-300"
                       }`}
                     >
@@ -648,7 +649,7 @@ export default function PortalLogin({ onLogin }) {
                     </button>
                     {/* <button
                     onClick={() => setLoginMethod('otp')}
-                    className={`px-4 py-2 font-medium flex items-center gap-2 ${loginMethod === 'otp' ? 'text-emerald border-b-2 border-emerald' : 'text-gray-400 hover:text-gray-300'}`}
+                    className={`flex items-center gap-2 px-4 py-2 font-medium ${loginMethod === 'otp' ? 'border-b-2 border-emerald-9 text-emerald-9' : 'text-gray-400 hover:text-gray-300'}`}
                   >
                     <FaMobileAlt />
                     OTP Login
@@ -669,7 +670,7 @@ export default function PortalLogin({ onLogin }) {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="bg-charleston-green w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                            className="bg-charleston-green w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                             placeholder="your@email.com"
                             required
                             disabled={loginStatus === "loading"}
@@ -689,7 +690,7 @@ export default function PortalLogin({ onLogin }) {
                             type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                            className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                             placeholder="••••••••"
                             required
                             disabled={loginStatus === "loading"}
@@ -709,7 +710,7 @@ export default function PortalLogin({ onLogin }) {
                         <button
                           type="button"
                           onClick={handleForgotPassword}
-                          className="text-emerald hover:underline text-sm"
+                          className="text-emerald-9 hover:underline text-sm"
                           disabled={loginStatus === "loading"}
                         >
                           Forgot Password?
@@ -719,10 +720,10 @@ export default function PortalLogin({ onLogin }) {
                       <button
                         type="submit"
                         disabled={loginStatus === "loading"}
-                        className="w-full bg-white text-black py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex w-full items-center justify-center gap-2 rounded-md bg-white py-3 font-medium text-charleston-green-15 transition-colors hover:bg-emerald-0 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {loginStatus === "loading" ? (
-                          <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-charleston-green-9 border-t-transparent"></div>
                         ) : (
                           <>
                             <span>Sign In</span>
@@ -775,7 +776,7 @@ export default function PortalLogin({ onLogin }) {
                                 type="email"
                                 value={resetEmail}
                                 onChange={(e) => setResetEmail(e.target.value)}
-                                className="bg-charleston-green text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                                className="bg-charleston-green text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                                 placeholder="your@email.com"
                                 required
                                 disabled={resetStatus.type === "loading"}
@@ -786,10 +787,10 @@ export default function PortalLogin({ onLogin }) {
                           <button
                             type="submit"
                             disabled={resetStatus.type === "loading"}
-                            className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-emerald-9 py-3 rounded-md text-white hover:bg-emerald-10 transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {resetStatus.type === "loading" ? (
-                              <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                              <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                             ) : (
                               <>
                                 <span>Next</span>
@@ -819,7 +820,7 @@ export default function PortalLogin({ onLogin }) {
                                     .slice(0, 4)
                                 )
                               }
-                              className="bg-charleston-green text-white w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald text-center tracking-widest font-mono text-xl"
+                              className="bg-charleston-green text-white w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9 text-center tracking-widest font-mono text-xl"
                               placeholder="1234"
                               maxLength={4}
                               required
@@ -830,10 +831,10 @@ export default function PortalLogin({ onLogin }) {
                           <button
                             type="submit"
                             disabled={resetStatus.type === "loading"}
-                            className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-emerald-9 py-3 rounded-md text-white hover:bg-emerald-10 transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {resetStatus.type === "loading" ? (
-                              <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                              <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                             ) : (
                               <>
                                 <span>Verify OTP</span>
@@ -847,7 +848,7 @@ export default function PortalLogin({ onLogin }) {
                             <button
                               type="button"
                               onClick={handleSendResetOtp}
-                              className="text-emerald hover:underline"
+                              className="text-emerald-9 hover:underline"
                               disabled={resetStatus.type === "loading"}
                             >
                               Resend OTP
@@ -870,7 +871,7 @@ export default function PortalLogin({ onLogin }) {
                                 type={showNewPassword ? "text" : "password"}
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                                className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                                 placeholder="••••••••"
                                 required
                                 minLength={8}
@@ -903,7 +904,7 @@ export default function PortalLogin({ onLogin }) {
                                 onChange={(e) =>
                                   setConfirmPassword(e.target.value)
                                 }
-                                className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                                className="bg-charleston-green text-white w-full pl-10 pr-12 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                                 placeholder="••••••••"
                                 required
                                 minLength={8}
@@ -929,10 +930,10 @@ export default function PortalLogin({ onLogin }) {
                           <button
                             type="submit"
                             disabled={resetStatus.type === "loading"}
-                            className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-emerald-9 py-3 rounded-md text-white hover:bg-emerald-10 transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {resetStatus.type === "loading" ? (
-                              <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                              <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                             ) : (
                               <>
                                 <span>Save Password</span>
@@ -959,7 +960,7 @@ export default function PortalLogin({ onLogin }) {
                                 type="tel"
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
-                                className="bg-charleston-green text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald"
+                                className="bg-charleston-green text-white w-full pl-10 pr-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9"
                                 placeholder="+1 (234) 567-8900"
                                 required
                                 disabled={otpStatus === "sending"}
@@ -976,10 +977,10 @@ export default function PortalLogin({ onLogin }) {
                           <button
                             type="submit"
                             disabled={otpStatus === "sending"}
-                            className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium"
+                            className="w-full bg-emerald-9 py-3 rounded-md text-white hover:bg-emerald-10 transition-colors flex items-center justify-center gap-2 font-medium"
                           >
                             {otpStatus === "sending" ? (
-                              <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                              <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                             ) : (
                               <>
                                 <span>Send OTP</span>
@@ -1000,7 +1001,7 @@ export default function PortalLogin({ onLogin }) {
                                   setOtpStatus("idle");
                                   setOtpError("");
                                 }}
-                                className="text-emerald ml-2 hover:underline"
+                                className="ml-2 text-emerald-9 hover:underline"
                                 disabled={otpStatus === "verifying"}
                               >
                                 Change
@@ -1022,7 +1023,7 @@ export default function PortalLogin({ onLogin }) {
                                     .slice(0, 6)
                                 )
                               }
-                              className="bg-charleston-green text-white w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald text-center tracking-widest font-mono text-xl"
+                              className="bg-charleston-green text-white w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-9 text-center tracking-widest font-mono text-xl"
                               placeholder="123456"
                               maxLength={6}
                               required
@@ -1039,10 +1040,10 @@ export default function PortalLogin({ onLogin }) {
                           <button
                             type="submit"
                             disabled={otpStatus === "verifying"}
-                            className="w-full bg-emerald text-charleston-green-dark py-3 rounded-md hover:bg-emerald-light transition-colors flex items-center justify-center gap-2 font-medium"
+                            className="w-full bg-emerald-9 py-3 rounded-md text-white hover:bg-emerald-10 transition-colors flex items-center justify-center gap-2 font-medium"
                           >
                             {otpStatus === "verifying" ? (
-                              <div className="animate-spin h-5 w-5 border-2 border-charleston-green-dark border-t-transparent rounded-full"></div>
+                              <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                             ) : (
                               <>
                                 <span>Verify OTP</span>
@@ -1061,24 +1062,24 @@ export default function PortalLogin({ onLogin }) {
 
                   {/* <div className="mt-6">
               <div className="relative flex items-center justify-center">
-                <div className="border-t border-charleston-green-light w-full"></div>
-                <span className="bg-charleston-green-dark text-gray-400 px-3 text-sm relative z-10">
+                <div className="border-t border-charleston-green-7 w-full"></div>
+                <span className="bg-charleston-green-11 text-gray-400 px-3 text-sm relative z-10">
                   or continue with
                 </span>
-                <div className="border-t border-charleston-green-light w-full"></div>
+                <div className="border-t border-charleston-green-7 w-full"></div>
               </div>
               
               <div className="flex gap-4 mt-4">
                 <button
                   type="button"
-                  className="flex-1 flex items-center justify-center gap-2 bg-charleston-green text-white py-2 rounded-md hover:bg-charleston-green-light transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 bg-charleston-green-9 py-2 text-white rounded-md hover:bg-charleston-green-8 transition-colors"
                 >
                   <FaGoogle />
                   <span>Google</span>
                 </button>
                 <button
                   type="button"
-                  className="flex-1 flex items-center justify-center gap-2 bg-charleston-green text-white py-2 rounded-md hover:bg-charleston-green-light transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 bg-charleston-green-9 py-2 text-white rounded-md hover:bg-charleston-green-8 transition-colors"
                 >
                   <FaApple />
                   <span>Apple</span>
@@ -1091,7 +1092,7 @@ export default function PortalLogin({ onLogin }) {
                       {/* <button
                   type="button"
                   onClick={loginAsDemoUser}
-                  className="text-emerald hover:underline"
+                  className="text-emerald-9 hover:underline"
                 >
                   Login as Demo User
                 </button> */}
@@ -1099,7 +1100,7 @@ export default function PortalLogin({ onLogin }) {
                       <button
                         type="button"
                         onClick={switchToSignup}
-                        className="text-emerald hover:underline"
+                        className="text-emerald-9 hover:underline"
                       >
                         Create a new account
                       </button>
@@ -1117,18 +1118,18 @@ export default function PortalLogin({ onLogin }) {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-center md:text-left"
           >
-            <h2 className="text-xl md:text-2xl font-bold text-emerald mb-4">
+            <h2 className="mb-4 font-[Amenti] text-xl font-bold text-emerald-9 md:text-2xl">
               Access Your LIMI Experience
             </h2>
-            <p className="text-gray-300 mb-6">
+            <p className="mb-6 text-gray-300">
               Sign in to view your saved configurations, order history, and
               manage your LIMI lighting experience across all devices.
             </p>
 
-            <div className="bg-charleston-green-dark p-6 rounded-lg mb-6 border border-charleston-green-light/50">
+            <div className="mb-6 rounded-lg border border-emerald-9/25 bg-charleston-green-11 p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="bg-emerald/20 p-3 rounded-full">
-                  <FaMobileAlt className="text-emerald text-xl" />
+                <div className="rounded-full bg-emerald-9/20 p-3">
+                  <FaMobileAlt className="text-xl text-emerald-9" />
                 </div>
                 <div className="text-left">
                   <h3 className="font-semibold text-white">
@@ -1147,7 +1148,7 @@ export default function PortalLogin({ onLogin }) {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-charleston-green-dark to-transparent opacity-60"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-charleston-green-11 to-transparent opacity-60"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white text-sm font-medium">
                     Your configurations sync automatically between the app and
@@ -1163,7 +1164,7 @@ export default function PortalLogin({ onLogin }) {
               <Link 
                 href="https://apps.apple.com/app/limi-lighting"
                 target="_blank"
-                className="flex items-center gap-1 text-emerald hover:underline"
+                className="flex items-center gap-1 text-emerald-9 hover:underline"
               >
                 <FaApple   />
                 <span>App Store</span>
@@ -1171,7 +1172,7 @@ export default function PortalLogin({ onLogin }) {
               <Link 
                 href="https://play.google.com/store/apps/details?id=com.limi.lighting"
                 target="_blank"
-                className="flex items-center gap-1 text-emerald hover:underline"
+                className="flex items-center gap-1 text-emerald-9 hover:underline"
               >
                 <FaGoogle />
                 <span>Google Play</span>

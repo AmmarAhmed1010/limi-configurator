@@ -11,10 +11,11 @@ import { Breadcrumb } from "./navComponents/Breadcrumb";
 import { PreviewControls } from "./PreviewControls";
 import { SaveConfigModal } from "./SaveConfigModal";
 import { LoadConfigModal } from "./LoadConfigModal";
+import ConfigurationSpecSheetModal from "./ConfigurationSpecSheetModal";
 import BaseColorPanel from "./navComponents/BaseColorPanel";
 import { useSelector, useDispatch } from "react-redux";
 import { saveConfiguration } from "../../../app/redux/slices/userSlice.js";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import ConfigurationSummary from "../lightConfigurator/ConfigurationSummary";
 import { fetchUserByToken } from "../../../app/redux/slices/userSlice.js";
 import { useBarState } from "../../hooks/useBarState";
@@ -25,6 +26,7 @@ import {
   getSystemAssignmentsSync,
   findSystemAssignmentByDesign,
   getMountDataSync,
+  getSceneDataSync,
 } from "./pendantSystemData";
 import {
   listenForCableMessages,
@@ -61,7 +63,6 @@ const ConfiguratorLayout = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useSelector((state) => state.user);
-  const searchParams = useSearchParams();
   const { barArray, setBarState, initializeBarArray } = useBarState();
   // Version constant to track localStorage schema changes
   const STORAGE_VERSION = "1.6.0";
@@ -354,6 +355,8 @@ const ConfiguratorLayout = () => {
   // Modal states
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
+  const [isSpecSheetOpen, setIsSpecSheetOpen] = useState(false);
+  const [specSheetPayload, setSpecSheetPayload] = useState(null);
   const [configToSave, setConfigToSave] = useState(null);
 
   // State for saving light amounts
@@ -443,8 +446,9 @@ const ConfiguratorLayout = () => {
     }
   }, [hasConfigIdParam]);
 
-  // Listen for app:ready1 message from PlayCanvas iframe
-  const handleLoadSpecificConfig = (configData) => {
+  // Listen for app:ready1 message from PlayCanvas iframe — must be stable (useCallback)
+  // so the message listener effect does not re-subscribe every render.
+  const handleLoadSpecificConfig = useCallback((configData) => {
     try {
       // Input validation
       if (!configData?.config) {
@@ -486,7 +490,10 @@ const ConfiguratorLayout = () => {
       sendMessageToPlayCanvas(`light_type:${lightType}`);
       sendMessageToPlayCanvas(`base_type:${baseType}`);
       sendMessageToPlayCanvas(`light_amount:${lightAmount}`);
-      sendMessageToPlayCanvas(`mount_model:${matchingMount.modelUrl}`);
+      const mountModelUrl = matchingMount?.modelUrl || matchingMount?.mountModel || matchingMount?.mountUrl;
+      if (mountModelUrl) {
+        sendMessageToPlayCanvas(`mount_model:${mountModelUrl}`);
+      }
 
       console.log('Matching mount found:', matchingMount);
 
@@ -534,7 +541,7 @@ const ConfiguratorLayout = () => {
       // Uncomment to show error to user
       // toast.error('Failed to load configuration. Please try again.');
     }
-  };
+  }, []);
   useEffect(() => {
     const handleMessageLoad = (event) => {
       if (event.data === "loadingOffMount") {
@@ -994,16 +1001,8 @@ const ConfiguratorLayout = () => {
     [cables, config.lightAmount]
   );
 
-  useEffect(() => {
-    setShowPendantLoadingScreen(true);
-    const timer = setTimeout(() => {
-      setShowPendantLoadingScreen(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [handlePendantDesignChange]);
-
-  useEffect(() => { }, [showPendantLoadingScreen]);
+  // Do not tie pendant loading UI to handlePendantDesignChange identity — that callback
+  // updates whenever `cables` changes and would retrigger this every frame / message.
   // Handle base type change
   const handleBaseTypeChange = useCallback((baseType) => {
     // Update config state
@@ -1253,56 +1252,67 @@ const ConfiguratorLayout = () => {
     return prepareConfigForSave(config, cables);
   };
 
-  // Handle final save after user enters configuration name
-  const handleFinalSave = async (configName, thumbnail, modelId) => {
-    if (!configToSave) {
-      return;
-    }
+  // Ref to hold the last saved API payload so we can attach the PDF blob later
+  const pendingSaveRef = useRef(null);
 
-    // Add name to the configuration
+  const handleFinalSave = async (configName, thumbnail, modelId) => {
+    if (!configToSave) return;
+
+    // Build the spec-sheet payload (no screenshot needed — PDF is generated client-side)
+    const specPayload = {
+      name: configName,
+      savedAt: new Date().toISOString(),
+      thumbnail: thumbnail || "",
+      modelId: modelId || "",
+      config: JSON.parse(JSON.stringify(config)),
+      cables: JSON.parse(JSON.stringify(cables)),
+      configSummary: JSON.parse(JSON.stringify(configToSave)),
+      sceneList: getSceneDataSync(),
+    };
+
+    // Open the PDF spec-sheet modal immediately
+    setSpecSheetPayload(specPayload);
+    setIsSpecSheetOpen(true);
+
+    // --- Continue with the normal save-to-API flow ---
+
     const finalConfig = {
       ...configToSave,
       name: configName,
       date: new Date().toISOString(),
     };
 
-    // Create iframe messages array and UI config using utility functions
     const iframeMessagesArray = createIframeMessagesArray(config, configToSave);
     const uiConfig = createUIConfig(config, cables, configToSave);
 
-    // Prepare data for API
     const apiPayload = createAPIPayload(
       configName,
-      thumbnail,
+      thumbnail || "",
       modelId,
       uiConfig,
       user?.data?._id,
       iframeMessagesArray
     );
 
+    // Attach the spec-sheet data so the backend can re-render a PDF if needed
+    apiPayload.specSheet = specPayload;
+
+    // Store reference so the PDF blob callback can send it
+    pendingSaveRef.current = { apiPayload, finalConfig };
+
     try {
-      // Get dashboardToken from localStorage
       const dashboardToken = localStorage.getItem("limiToken");
-      console.log("dashboardToken", dashboardToken);
-      // Take screenshot of the configurator area
-      const configuratorElement = document.getElementById("playcanvas-app");
-
-      // Log the API payload for debugging
-
-      // Send data to backend API
       const response = await fetch(
         buildApi1Url("/admin/products/light-configs"),
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `${dashboardToken}`, // Include token in authorization header
+            Authorization: `${dashboardToken}`,
           },
           body: JSON.stringify(apiPayload),
         }
       );
-
-      // Log the response status
 
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
@@ -1310,20 +1320,84 @@ const ConfiguratorLayout = () => {
 
       const data = await response.json();
 
-      // Save configuration to Redux store
-      dispatch(saveConfiguration(finalConfig));
+      const savedId =
+        data?._id ||
+        data?.id ||
+        data?.data?._id ||
+        data?.data?.id ||
+        "";
 
-      // Refresh saved configurations list for header count and modal
+      if (pendingSaveRef.current) {
+        pendingSaveRef.current.savedLightConfigId = savedId;
+      }
+
+      dispatch(saveConfiguration(finalConfig));
       fetchUserConfigurations();
 
-      // Close modal and show success toast
-      setIsSaveModalOpen(false);
       toast.success("Configuration saved successfully");
     } catch (error) {
-      // toast.error('Failed to save configuration. Please try again.');
-      setIsSaveModalOpen(false);
+      console.error("Save failed:", error);
     }
   };
+
+  /**
+   * Called by the spec-sheet modal once the PDF blob is ready.
+   * POST multipart to backend: /admin/products/light-configs/pdf
+   * (Backend must implement this route to store the file.)
+   * Waits briefly for the main save to return an id so we can link the PDF.
+   */
+  const handlePdfBlobReady = useCallback(async (blob) => {
+    if (!blob || !pendingSaveRef.current) return;
+
+    try {
+      for (let i = 0; i < 50; i += 1) {
+        if (pendingSaveRef.current?.savedLightConfigId) break;
+        await new Promise((r) => setTimeout(r, 200));
+      }
+
+      const dashboardToken = localStorage.getItem("limiToken");
+      const snap = pendingSaveRef.current;
+      if (!snap) return;
+
+      const { apiPayload, savedLightConfigId } = snap;
+
+      const formData = new FormData();
+      const fileName = `LIMI-Config-${(apiPayload.name || "config")
+        .replace(/[^a-zA-Z0-9]/g, "-")
+        .toLowerCase()}.pdf`;
+      formData.append("pdf", blob, fileName);
+      formData.append("configName", apiPayload.name || "");
+      if (apiPayload.user_id) {
+        formData.append("user_id", apiPayload.user_id);
+      }
+      if (savedLightConfigId) {
+        formData.append("light_config_id", savedLightConfigId);
+      }
+
+      const res = await fetch(
+        buildApi1Url("/admin/products/light-configs/pdf"),
+        {
+          method: "POST",
+          headers: {
+            Authorization: `${dashboardToken}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (!res.ok) {
+        console.warn(
+          "[SpecSheet] PDF upload returned",
+          res.status,
+          "— ensure POST /admin/products/light-configs/pdf exists on the API."
+        );
+      }
+
+      pendingSaveRef.current = null;
+    } catch (e) {
+      console.warn("[SpecSheet] PDF upload failed:", e);
+    }
+  }, []);
 
   // Load configuration function
   const handleLoadConfig = () => {
@@ -1587,6 +1661,16 @@ const ConfiguratorLayout = () => {
           />
         )}
       </AnimatePresence>
+
+      <ConfigurationSpecSheetModal
+        isOpen={isSpecSheetOpen}
+        onClose={() => {
+          setIsSpecSheetOpen(false);
+          setSpecSheetPayload(null);
+        }}
+        payload={specSheetPayload}
+        onPdfBlob={handlePdfBlobReady}
+      />
 
       <ToastContainer position="bottom-center" autoClose={3000} />
 
